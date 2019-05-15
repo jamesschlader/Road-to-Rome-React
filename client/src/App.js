@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import Row from "react-materialize";
-import Col from "react-materialize";
 
 class App extends Component {
   render() {
