@@ -162,10 +162,7 @@ const ArmorType = new GraphQLObjectType({
     image: { type: GraphQLString },
     shield: { type: GraphQLBoolean },
     size: {
-      type: GraphQLString,
-      resolve(parent, args) {
-        return Armor.findById({ _id: parent.id }, "size");
-      }
+      type: GraphQLString
     }
   })
 });
@@ -181,10 +178,7 @@ const WeaponType = new GraphQLObjectType({
     weight: { type: GraphQLInt },
     image: { type: GraphQLString },
     size: {
-      type: GraphQLString,
-      resolve(parent, args) {
-        return Weapon.findById({ _id: parent.id }, "size");
-      }
+      type: GraphQLString
     }
   })
 });

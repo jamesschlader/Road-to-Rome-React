@@ -33,7 +33,7 @@ app.use(
   "/graphql",
   graphqlHTTP({
     schema: Schema,
-    graphiql: true
+    graphiql: false
   })
 );
 

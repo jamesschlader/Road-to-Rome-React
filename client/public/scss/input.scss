@@ -14,6 +14,7 @@ $colors: (
   primary: #b71c1c,
   primary-light: lighten(#b71c1c, 10%),
   primary-dark: darken(#b71c1c, 40%),
+  secondary: white,
   accent: #ff5252
 );
 
@@ -115,6 +116,10 @@ body {
   right: 0;
   position: absolute;
   z-index: -1;
+
+  h1 {
+    font-size: $medium-text;
+  }
 }
 
 main {
