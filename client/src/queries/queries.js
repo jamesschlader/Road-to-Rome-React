@@ -10,6 +10,31 @@ const getArenasQuery = gql`
       battleQuantity
       warriorIds
       battleIds
+      MarketId
+      Market {
+        name
+        skillsUpgradeCost
+        gearCostFactor
+        armorIds
+        weaponIds
+        weaponList {
+          name
+          damage
+          weight
+          size
+          cost
+          costType
+        }
+        armorList {
+          name
+          strength
+          cost
+          costType
+          weight
+          shield
+          size
+        }
+      }
     }
   }
 `;

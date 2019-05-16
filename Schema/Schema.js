@@ -127,7 +127,7 @@ const MarketType = new GraphQLObjectType({
       }
     },
     skillsUpgradeCost: { type: GraphQLInt },
-    gearCostfactor: { type: GraphQLFloat }
+    gearCostFactor: { type: GraphQLFloat }
   })
 });
 

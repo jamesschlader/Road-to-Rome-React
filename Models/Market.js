@@ -7,7 +7,7 @@ const MarketSchema = new Schema({
   armorIds: [Schema.Types.ObjectId],
   skillsUpgradeCost: Number,
   gearCostFactor: {
-    type: Schema.Types.Decimal128,
+    type: Schema.Types.Number,
     min: 0.1,
     max: 2.0,
     default: 1.0
