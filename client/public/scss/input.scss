@@ -114,7 +114,7 @@ body {
   left: 0;
   bottom: 0;
   right: 0;
-  position: absolute;
+  position: relative;
   z-index: -1;
 
   h1 {
@@ -190,7 +190,8 @@ input[type="range"] + .thumb.active .value {
 
 // NAV STYLES -----------------------------------------------
 
-nav {
+nav,
+footer {
   background-color: color(primary);
   font-family: font(decorative-secondary);
   z-index: 10;
@@ -278,6 +279,7 @@ nav {
 
 .landing-btn {
   height: 100px;
+  width: 100%;
   line-height: 1.2;
 }
 
@@ -384,4 +386,37 @@ nav {
 .collapsible-header {
   display: block;
   text-align: center;
+}
+
+.layout-img {
+  height: 20vw;
+  width: auto;
+}
+
+.body-padding {
+  padding-bottom: 200px;
+  @include reg-desktop {
+    padding-bottom: 220px;
+  }
+  @include tab {
+    padding-bottom: 280px;
+  }
+  @include mobile {
+    padding-bottom: 300px;
+  }
+}
+
+.footer {
+  position: absolute;
+
+  bottom: 0;
+  width: 100vw;
+  color: color(secondary);
+  background-color: color(primary) !important;
+  a {
+    color: color(accent);
+  }
+  a:hover {
+    color: color(secondary);
+  }
 }

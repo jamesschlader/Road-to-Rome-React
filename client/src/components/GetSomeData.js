@@ -16,7 +16,7 @@ class GetSomeData extends Component {
       if (getArmorsQuery.armors) {
         return getArmorsQuery.armors.map(armor => (
           <li key={armor.id} style={{ display: "inline-block", padding: 8 }}>
-            <p>Name: {armor.name}</p>
+            <p>{armor.name}</p>
             <p>Strength: {armor.strength}</p>
             <p>Cost: {armor.cost}</p>
             <p>Cost Type: {armor.costType}</p>
@@ -39,7 +39,7 @@ class GetSomeData extends Component {
       if (getWeaponsQuery.weapons) {
         return getWeaponsQuery.weapons.map(weapon => (
           <li key={weapon.id} style={{ display: "inline-block", padding: 8 }}>
-            <p>Name: {weapon.name}</p>
+            <p>{weapon.name}</p>
             <p>Damage: {weapon.damage}</p>
             <p>Cost: {weapon.cost}</p>
             <p>CostType: {weapon.costType}</p>
@@ -60,15 +60,15 @@ class GetSomeData extends Component {
       if (getArenasQuery.arenas) {
         return getArenasQuery.arenas.map(arena => (
           <li key={arena.id} style={{ display: "inline-block", padding: 8 }}>
-            <p>Name: {arena.name}</p>
-            <p>Id: {arena.id}</p>
+            <p>{arena.name}</p>
+
             <p>Games Frequency: {arena.gamesFrequency}</p>
             <p>Battles per Game day: {arena.battleQuantity}</p>
 
             <p>Market Skills Upgrade Cost: {arena.Market.skillsUpgradeCost}</p>
             <p>Market Gear Cost Factor: {arena.Market.gearCostFactor}</p>
             <p>Armors:</p>
-            <p>Market Armor Size: {arena.Market.armorIds.length}</p>
+            <p>Number of Armors: {arena.Market.armorIds.length}</p>
 
             <ul>
               {arena.Market.armorList.map(armor => (
@@ -76,7 +76,7 @@ class GetSomeData extends Component {
                   key={armor.id}
                   style={{ display: "inline-block", padding: 8 }}
                 >
-                  <p>Name: {armor.name}</p>
+                  <p>{armor.name}</p>
                   <p>Strength: {armor.strength}</p>
                   <p>Market Cost: {armor.cost}</p>
                   <p>Cost Type: {armor.costType}</p>
@@ -88,7 +88,7 @@ class GetSomeData extends Component {
               ))}
             </ul>
             <p>Weapons:</p>
-            <p>Market Weapon Size: {arena.Market.weaponIds.length}</p>
+            <p>Number of Weapons: {arena.Market.weaponIds.length}</p>
 
             <ul>
               {arena.Market.weaponList.map(weapon => (
@@ -96,7 +96,7 @@ class GetSomeData extends Component {
                   key={weapon.id}
                   style={{ display: "inline-block", padding: 8 }}
                 >
-                  <p>Name: {weapon.name}</p>
+                  <p>{weapon.name}</p>
                   <p>Damage: {weapon.damage}</p>
                   <p>Market Cost: {weapon.cost}</p>
                   <p>CostType: {weapon.costType}</p>

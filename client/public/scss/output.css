@@ -1,0 +1,363 @@
+@import url("https://fonts.googleapis.com/css?family=Cinzel|Cinzel+Decorative|Oswald");
+a {
+  color: #b71c1c;
+  font-weight: bolder;
+}
+
+p {
+  font-size: 18px;
+  font-family: "Oswald";
+}
+@media (max-width: 450px) {
+  p {
+    font-size: 15px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Cinzel Decorative";
+  font-weight: bold;
+}
+
+body {
+  color: #060101;
+  font-weight: bolder;
+  line-height: 1.5;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  font-family: "Oswald";
+  background: url("../img/erics-images/roman-empire.png") no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: relative;
+  z-index: -1;
+}
+body h1 {
+  font-size: 550%;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+::-webkit-input-placeholder {
+  color: black;
+  opacity: 1 !important;
+}
+
+.input-field label {
+  color: #000 !important;
+}
+
+.input-field input:focus + label {
+  color: #b71c1c !important;
+}
+
+.input-field input:focus {
+  border-bottom: 1px solid #b71c1c !important;
+  box-shadow: 0 1px 0 0 #b71c1c !important;
+}
+
+.input-field input.valid {
+  border-bottom: 1px solid #b71c1c !important;
+  box-shadow: 0 1px 0 0 #b71c1c !important;
+}
+
+.input-field input.invalid {
+  border-bottom: 1px solid #b71c1c !important;
+  box-shadow: 0 1px 0 0 #b71c1c !important;
+}
+
+.input-field .prefix.active {
+  color: #b71c1c !important;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  background-color: #b71c1c !important;
+}
+
+input[type=range]::-moz-range-thumb {
+  background-color: #b71c1c !important;
+}
+
+input[type=range]::-ms-thumb {
+  background-color: #b71c1c !important;
+}
+
+/***** These are to edit the thumb and the text inside the thumb *****/
+input[type=range] + .thumb {
+  background-color: #dedede;
+}
+
+input[type=range] + .thumb.active .value {
+  color: #b71c1c !important;
+}
+
+[type=radio]:checked + span:after,
+[type=radio].with-gap:checked + span:after {
+  background-color: #b71c1c !important;
+}
+
+[type=radio]:checked + span:after,
+[type=radio].with-gap:checked + span:before,
+[type=radio].with-gap:checked + span:after {
+  border: 2px solid #b71c1c !important;
+}
+
+nav,
+footer {
+  background-color: #b71c1c;
+  font-family: "Cinzel";
+  z-index: 10;
+}
+
+#nav-secondary {
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.nav-equip {
+  max-height: 64px;
+}
+@media (max-width: 680px) {
+  .nav-equip {
+    max-height: 56px;
+  }
+}
+
+.dropdown-content {
+  width: max-content !important;
+  height: auto !important;
+}
+
+#ludus-drop {
+  opacity: 1;
+  position: fixed;
+  left: 80%;
+  right: 0;
+  text-align: right;
+  padding-left: 0px;
+  padding-right: 0px;
+  z-index: 10;
+}
+
+.swiper-container {
+  width: 80%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+}
+
+.btn,
+.btn-floating {
+  background-color: #b71c1c;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+
+.btn:hover,
+.btn-floating:hover,
+.btn:active,
+.btn-floating:active,
+.btn:target,
+.btn-floating:target,
+.btn:focus,
+.btn-floating:focus {
+  background-color: #de2828;
+}
+
+.ludus-btn {
+  height: 250px;
+}
+
+.fixed-action-btn {
+  right: auto;
+  margin-left: 3%;
+}
+
+.fixed-action-btn {
+  position: absolute;
+  bottom: 10%;
+}
+
+.landing-btn {
+  height: 100px;
+  width: 100%;
+  line-height: 1.2;
+}
+
+.purchase-weapon,
+.purchase-armor {
+  font-size: 10px;
+}
+
+#inventory-view {
+  margin-top: 30px;
+  height: 50px;
+}
+
+#equipped-items,
+#add-account {
+  margin-top: 30px;
+  height: 50px;
+  line-height: 1.2;
+}
+
+#player-gear-btn {
+  margin-bottom: 20px;
+}
+
+#arena-name {
+  margin: 20px;
+}
+
+#landing-title {
+  font-size: 900%;
+  text-shadow: 2px 2px 1px rgba(255, 255, 255, 0.9);
+  font-family: "Cinzel Decorative";
+}
+@media (max-width: 1550px) {
+  #landing-title {
+    font-size: 700%;
+  }
+}
+@media (max-width: 1250px) {
+  #landing-title {
+    font-size: 500%;
+  }
+}
+@media (max-width: 680px) {
+  #landing-title {
+    font-size: 250%;
+  }
+}
+
+#billboard {
+  height: 300px;
+  overflow: scroll;
+}
+
+#user-combatant-img,
+#opponent-combatant-img {
+  max-height: 300px !important;
+}
+
+.page-title {
+  text-rendering: optimizeLegibility;
+  text-shadow: 2px 2px 1px rgba(255, 255, 255, 0.9);
+  font-size: 550%;
+  font-family: "Cinzel Decorative";
+}
+@media (max-width: 1250px) {
+  .page-title {
+    font-size: 400%;
+  }
+}
+@media (max-width: 680px) {
+  .page-title {
+    font-size: 300%;
+  }
+}
+@media (max-width: 450px) {
+  .page-title {
+    font-size: 250%;
+  }
+}
+
+.page-subtitle {
+  text-shadow: 2px 2px 1px rgba(255, 255, 255, 0.9);
+  font-size: 350%;
+  font-family: "Cinzel Decorative";
+}
+@media (max-width: 1250px) {
+  .page-subtitle {
+    font-size: 300%;
+  }
+}
+@media (max-width: 680px) {
+  .page-subtitle {
+    font-size: 200%;
+  }
+}
+@media (max-width: 450px) {
+  .page-subtitle {
+    font-size: 150%;
+  }
+}
+
+.rounded-content-box {
+  color: black;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  margin-bottom: 80px;
+}
+
+.brand-logo {
+  margin-left: 10px;
+}
+
+.collapsible-header {
+  display: block;
+  text-align: center;
+}
+
+.layout-img {
+  height: 20vw;
+  width: auto;
+}
+
+.body-padding {
+  padding-bottom: 200px;
+}
+@media (max-width: 1250px) {
+  .body-padding {
+    padding-bottom: 220px;
+  }
+}
+@media (max-width: 680px) {
+  .body-padding {
+    padding-bottom: 280px;
+  }
+}
+@media (max-width: 450px) {
+  .body-padding {
+    padding-bottom: 300px;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  color: white;
+  background-color: #b71c1c !important;
+}
+.footer a {
+  color: #ff5252;
+}
+.footer a:hover {
+  color: white;
+}
+
+/*# sourceMappingURL=output.css.map */
