@@ -11,7 +11,7 @@ export default () => {
           <ul id="nav-mobile" className="right">
             <li className="nav-item">
               <a href="/market">
-                <i class="material-icons">shopping_cart</i>
+                <i className="material-icons">shopping_cart</i>
               </a>
             </li>
             <li className="nav-item">

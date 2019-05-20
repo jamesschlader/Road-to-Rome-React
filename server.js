@@ -7,6 +7,8 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const db = mongoose.connection;
+var Jasmine = require("jasmine");
+var jasmine = new Jasmine();
 
 // Connect to the Mongo DB
 const MONGODB_URI =
@@ -23,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-// Serve up static assets (usually on heroku)
+// Serve up static assets
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
@@ -37,6 +39,12 @@ app.use(
   })
 );
 
+jasmine.loadConfigFile("spec/support/jasmine.json");
+jasmine.configureDefaultReporter({
+  showColors: true
+});
+
 app.listen(PORT, () => {
+  //jasmine.execute();
   console.log(`🌎 ==> Server now on port ${PORT}!`);
 });

@@ -2,6 +2,15 @@ import React from "react";
 import { Row } from "react-materialize";
 import LandingCard from "./LandingCard";
 
+const pics = [
+  "/img/game-weapon-images/battle-axe.svg",
+  "/img/game-weapon-images/shortsword.svg",
+  "/img/game-weapon-images/spearandsheild.svg",
+  "/img/game-weapon-images/advanced-shield.svg",
+  "/img/game-weapon-images/gladius.svg",
+  "/img/game-weapon-images/longsword.svg"
+];
+
 export default () => {
   return (
     <div>
@@ -10,8 +19,9 @@ export default () => {
           Road to Rome
         </h1>
       </Row>
+
       <LandingCard
-        src="/img/game-weapon-images/battle-axe.svg"
+        src={pics}
         text="Customize your equipment"
         details="Use your winnings to buy new armor and weapons in the Market. As you advance through the Arenas, you gain access to more and better equipment."
       />

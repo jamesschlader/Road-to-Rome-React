@@ -1,10 +1,9 @@
-const request = require("request");
+const axios = require("axios");
 const { Armor } = require("../Models/Armor");
 const { Weapon } = require("../Models/Weapon");
+const dnd = "http://www.dnd5eapi.co/api/equipment/";
 const mongoose = require("mongoose");
 const db = mongoose.connection;
-
-const dnd = "http://www.dnd5eapi.co/api/equipment/";
 
 // Connect to the Mongo DB
 const MONGODB_URI =
@@ -14,9 +13,10 @@ mongoose.connect(MONGODB_URI);
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", () => {
   console.log(`Connected succesfully to local mongo db.`);
+
   for (var i = 1; i < 51; i++) {
-    request(`${dnd}${i}`, function(err, response, body) {
-      const target = JSON.parse(body);
+    axios.get(`${dnd}${i}`).then(body => {
+      const target = JSON.parse(body.data);
 
       if (target.equipment_category === "Weapon") {
         if (target.weapon_range === "Melee") {
@@ -28,9 +28,9 @@ db.once("open", () => {
               costType: target.cost.unit,
               weight: target.weight
             };
-            //console.table(item);
+
             let weapon = new Weapon({ ...item });
-            // console.log(weapon);
+
             weapon.save(function(err, result) {
               if (err) console.log(err);
               console.log(
@@ -48,9 +48,9 @@ db.once("open", () => {
           weight: target.weight,
           shield: target.name === "Shield" ? true : false
         };
-        //console.table(item);
+
         let armor = new Armor({ ...item });
-        //console.log(armor);
+
         armor.save(function(err, result) {
           if (err) console.log(err);
           console.log(
