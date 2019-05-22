@@ -38,34 +38,4 @@ const getArenasQuery = gql`
     }
   }
 `;
-
-const getArmorsQuery = gql`
-  {
-    armors {
-      id
-      name
-      strength
-      cost
-      costType
-      weight
-      shield
-      size
-    }
-  }
-`;
-
-const getWeaponsQuery = gql`
-  {
-    weapons {
-      id
-      name
-      damage
-      cost
-      costType
-      weight
-      size
-    }
-  }
-`;
-
-export { getArenasQuery, getArmorsQuery, getWeaponsQuery };
+export default getArenasQuery;

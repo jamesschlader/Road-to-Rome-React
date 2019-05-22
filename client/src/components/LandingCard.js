@@ -7,7 +7,11 @@ const cube = props => {
       <div className="cube pers650">
         <img src={props.src[0]} alt={props.src[0]} className="face front" />
         <img src={props.src[1]} alt={props.src[1]} className="face back" />
-        <img src={props.src[2]} alt={props.src[2]} className="face right" />
+        <img
+          src={props.src[2]}
+          alt={props.src[2]}
+          className="face cube-right"
+        />
         <img src={props.src[3]} alt={props.src[3]} className="face left" />
         <img src={props.src[4]} alt={props.src[4]} className="face top" />
         <img src={props.src[5]} alt={props.src[5]} className="face bottom" />

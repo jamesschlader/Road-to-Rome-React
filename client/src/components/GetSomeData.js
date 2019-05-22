@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import {
-  getArmorsQuery,
-  getWeaponsQuery,
-  getArenasQuery
-} from "../queries/queries";
+import getArmorsQuery from "../api/ArmorAndWeapons/queries/getArmorsQuery";
+import getWeaponsQuery from "../api/ArmorAndWeapons/queries/getWeaponsQuery";
+import getArenasQuery from "../api/Arena/queries/getArenasQuery";
 import { graphql, compose } from "react-apollo";
 
 class GetSomeData extends Component {

@@ -1,11 +1,11 @@
 import React from "react";
-import { Row } from "react-materialize";
+
 import LandingCard from "./LandingCard";
 
 const pics = [
   "/img/game-weapon-images/battle-axe.svg",
   "/img/game-weapon-images/shortsword.svg",
-  "/img/game-weapon-images/spearandsheild.svg",
+  "/img/game-weapon-images/spearandshield.svg",
   "/img/game-weapon-images/advanced-shield.svg",
   "/img/game-weapon-images/gladius.svg",
   "/img/game-weapon-images/longsword.svg"
@@ -14,11 +14,9 @@ const pics = [
 export default () => {
   return (
     <div>
-      <Row className="rounded-content-box">
-        <h1 id="landing-title" className="center-align">
-          Road to Rome
-        </h1>
-      </Row>
+      <h1 id="landing-title" className="center-align">
+        Road to Rome
+      </h1>
 
       <LandingCard
         src={pics}

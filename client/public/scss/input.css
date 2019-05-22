@@ -1,6 +1,160 @@
+/* Cube starts here */
+/* Define the container div, the cube div, and a generic face */
 @import url("https://fonts.googleapis.com/css?family=Cinzel|Cinzel+Decorative|Oswald");
+.cube-container {
+  width: 400px;
+  height: 300px;
+  margin: 50px;
+  border: none;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  perspective-origin: 0% 0%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  animation: rotate 12s infinite;
+  animation-timing-function: ease-in-out;
+  position: relative;
+}
+
+.face {
+  display: block;
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border: none;
+  background: white;
+}
+
+/* Define each face based on direction */
+.front {
+  transform: rotateY(0deg) translate3d(0, 0, 150px);
+}
+
+.back {
+  transform: rotateY(180deg) translate3d(0, 0, 150px);
+}
+
+.cube-right {
+  transform: rotateY(90deg) translate3d(0, 0, 150px);
+}
+
+.left {
+  transform: rotateY(-90deg) translate3d(0, 0, 150px);
+}
+
+.top {
+  transform: rotateX(90deg) translate3d(0, 0, 150px);
+}
+
+.bottom {
+  transform: rotateX(-90deg) translate3d(0, 0, 150px);
+}
+
+.pers650 {
+  perspective: 0px;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translateZ(150px) rotateY(0deg);
+  }
+  12% {
+    transform: translateZ(150px) rotateY(90deg);
+  }
+  28% {
+    transform: translateZ(150px) rotateY(180deg);
+  }
+  42% {
+    transform: translateZ(150px) rotateY(270deg);
+  }
+  56% {
+    transform: translateZ(150px) rotateX(90deg);
+  }
+  70% {
+    transform: translateZ(150px) rotateX(-90deg);
+  }
+}
+/* Cube ends here*/
+.scene {
+  width: 210px;
+  height: 140px;
+  position: relative;
+  perspective: 1000px;
+}
+
+.carousel__rack {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translateZ(-182px);
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  animation: cycleCell 12s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.carousel__cell {
+  position: absolute;
+  background: white;
+  width: 190px;
+  height: 120px;
+  left: 10px;
+  top: 10px;
+}
+
+.carousel__cell:nth-child(1) {
+  transform: rotateY(0deg) translateZ(182px);
+}
+
+.carousel__cell:nth-child(2) {
+  transform: rotateY(60deg) translateZ(182px);
+}
+
+.carousel__cell:nth-child(3) {
+  transform: rotateY(120deg) translateZ(182px);
+}
+
+.carousel__cell:nth-child(4) {
+  transform: rotateY(180deg) translateZ(182px);
+}
+
+.carousel__cell:nth-child(5) {
+  transform: rotateY(240deg) translateZ(182px);
+}
+
+.carousel__cell:nth-child(6) {
+  transform: rotateY(300deg) translateZ(182px);
+}
+
+@keyframes cycleCell {
+  0% {
+    transform: rotateY(0deg);
+  }
+  17% {
+    transform: rotateY(-60deg);
+  }
+  34% {
+    transform: rotateY(-120deg);
+  }
+  50% {
+    transform: rotateY(-180deg);
+  }
+  66% {
+    transform: rotateY(-240deg);
+  }
+  82% {
+    transform: rotateY(-300deg);
+  }
+  100% {
+    transform: rotateY(-360deg);
+  }
+}
 a {
-  color: #b71c1c;
+  color: white;
   font-weight: bolder;
 }
 
@@ -40,7 +194,7 @@ body {
   left: 0;
   bottom: 0;
   right: 0;
-  position: absolute;
+  position: relative;
   z-index: -1;
 }
 body h1 {
@@ -115,7 +269,8 @@ input[type=range] + .thumb.active .value {
   border: 2px solid #b71c1c !important;
 }
 
-nav {
+nav,
+footer {
   background-color: #b71c1c;
   font-family: "Cinzel";
   z-index: 10;
@@ -199,9 +354,17 @@ nav {
   bottom: 10%;
 }
 
+.create-btn, .landing-btn {
+  width: 100%;
+  line-height: 1.2;
+}
+
 .landing-btn {
   height: 100px;
-  line-height: 1.2;
+}
+
+.create-btn {
+  height: 60px;
 }
 
 .purchase-weapon,
@@ -311,6 +474,10 @@ nav {
   margin-bottom: 80px;
 }
 
+.btn-row {
+  margin-bottom: 100px;
+}
+
 .brand-logo {
   margin-left: 10px;
 }
@@ -318,6 +485,65 @@ nav {
 .collapsible-header {
   display: block;
   text-align: center;
+}
+
+.layout-img {
+  height: 20vw;
+  width: auto;
+}
+
+.layout-img-box {
+  height: 20vw;
+  width: 20vw;
+  padding: 0 5px;
+  background: green;
+  display: inline-block;
+  margin: 1rem;
+  flex-direction: row;
+}
+
+.layout-img-box:hover {
+  background: #b71c1c;
+  cursor: pointer;
+}
+
+.body-padding {
+  padding-bottom: 200px;
+}
+@media (max-width: 1250px) {
+  .body-padding {
+    padding-bottom: 220px;
+  }
+}
+@media (max-width: 680px) {
+  .body-padding {
+    padding-bottom: 280px;
+  }
+}
+@media (max-width: 450px) {
+  .body-padding {
+    padding-bottom: 300px;
+  }
+}
+
+.nav-mobile {
+  color: white;
+  width: auto;
+  height: auto;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  color: white;
+  background-color: #b71c1c !important;
+}
+.footer a {
+  color: #ff5252;
+}
+.footer a:hover {
+  color: white;
 }
 
 /*# sourceMappingURL=input.css.map */

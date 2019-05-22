@@ -38,7 +38,7 @@
   transform: rotateY(180deg) translate3d(0, 0, 150px);
 }
 
-.cube-right {
+.right {
   transform: rotateY(90deg) translate3d(0, 0, 150px);
 }
 
@@ -154,7 +154,7 @@
   }
 }
 a {
-  color: white;
+  color: #b71c1c;
   font-weight: bolder;
 }
 
@@ -354,17 +354,10 @@ footer {
   bottom: 10%;
 }
 
-.create-btn, .landing-btn {
-  width: 100%;
-  line-height: 1.2;
-}
-
 .landing-btn {
   height: 100px;
-}
-
-.create-btn {
-  height: 60px;
+  width: 100%;
+  line-height: 1.2;
 }
 
 .purchase-weapon,
@@ -511,12 +504,6 @@ footer {
   }
 }
 
-.nav-mobile {
-  color: white;
-  width: auto;
-  height: auto;
-}
-
 .footer {
   position: absolute;
   bottom: 0;
@@ -531,4 +518,4 @@ footer {
   color: white;
 }
 
-/*# sourceMappingURL=output.css.map */
+/*# sourceMappingURL=outpus.css.map */
