@@ -34,6 +34,15 @@ const ArenaType = new GraphQLObjectType({
         return parent.warriorIds.map(id => Warrior.findById({ _id: id }));
       }
     },
+    userWarrior: {
+      type: new GraphQLList(WarriorType),
+      resolve(parent, args) {
+        const result = parent.warriorIds.filter(id => {
+          if (id === args.warriorId) return Warrior.findById({ _id: id });
+        });
+        return result;
+      }
+    },
     battleIds: { type: new GraphQLList(GraphQLID) },
     scheduledBattles: {
       type: new GraphQLList(BattleType),
@@ -82,9 +91,12 @@ const WarriorType = new GraphQLObjectType({
         return Arena.findById({ _id: parent.ArenaId });
       }
     },
-    weaponsIdList: { type: new GraphQLList(GraphQLID) },
 
-    armorIdList: { type: new GraphQLList(GraphQLID) },
+    armorIdList: {
+      type: new GraphQLList(ArmorType)
+    },
+
+    weaponsIdList: { type: new GraphQLList(WeaponType) },
 
     battlesIdList: { type: new GraphQLList(GraphQLID) },
 
@@ -198,7 +210,8 @@ const RootQuery = new GraphQLObjectType({
     arena: {
       type: ArenaType,
       args: {
-        id: { type: GraphQLID }
+        id: { type: GraphQLID },
+        warriorId: { type: GraphQLID }
       },
       resolve(parent, args) {
         return Arena.findById(args.id);
@@ -253,7 +266,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Warrior.findById(args.id);
+        return Warrior.findById({ _id: args.id });
       }
     },
 
@@ -387,12 +400,11 @@ const Mutation = new GraphQLObjectType({
         MarketId: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Arena.findOneAndUpdate(
-          args.id,
+        return Arena.update(
+          { _id: args.id },
           {
             ...args
-          },
-          { upsert: true }
+          }
         );
       }
     },
@@ -567,11 +579,9 @@ const Mutation = new GraphQLObjectType({
         alive: { type: GraphQLBoolean }
       },
       resolve(parent, args) {
-        return Warrior.findOneAndUpdate(
-          args.id,
-          {
-            ...args
-          },
+        return Warrior.where().update(
+          { _id: args.id },
+          { $set: { ...args } },
           { upsert: true }
         );
       }

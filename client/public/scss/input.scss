@@ -407,6 +407,26 @@ footer {
   text-align: center;
 }
 
+.slide-img {
+  height: 100%;
+  width: auto;
+}
+
+.card-img {
+  width: 100%;
+  height: auto;
+}
+
+.card-layout {
+  width: 12vw;
+  height: auto;
+}
+
+.card-layout:hover {
+  cursor: pointer;
+  box-shadow: 1vw 1vw 5px color(primary-light);
+}
+
 .layout-img {
   height: 20vw;
   width: auto;
@@ -416,7 +436,7 @@ footer {
   height: 20vw;
   width: 20vw;
   padding: 0 5px;
-  background: green;
+
   display: inline-block;
   margin: 1rem;
   flex-direction: row;
@@ -424,6 +444,10 @@ footer {
 .layout-img-box:hover {
   background: color(primary);
   cursor: pointer;
+}
+
+.page-padding {
+  padding: 3vw;
 }
 
 .body-padding {
