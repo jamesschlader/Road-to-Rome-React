@@ -47,13 +47,12 @@ export default class Warrior extends Component {
   };
 
   render() {
-    const { ArenaId, WarriorId } = this.props.context;
+    const { WarriorId } = this.props.context;
     console.log(`WarriorId = ${WarriorId}`);
     return (
       <div>
         <h1 className="landing-title center-align">Warriors</h1>
-        <h3>Arena id = {ArenaId}</h3>
-        <h3>Warrior id = {WarriorId}</h3>
+
         <Row>
           <Col s={8} offset="s2">
             {this.state.clicked ? (
@@ -70,9 +69,9 @@ export default class Warrior extends Component {
           </Col>
         </Row>
 
-        {WarriorId ? (
+        {this.state.card ? (
           <Row>
-            <ActiveWarrior warrior={WarriorId} />
+            <ActiveWarrior warrior={this.state.card} />
           </Row>
         ) : null}
 
@@ -82,7 +81,7 @@ export default class Warrior extends Component {
             showDetails={this.showDetails}
           />
         ) : this.state.clicked ? null : (
-          <Row>
+          <Row className="center-align">
             <ul>
               <AllWarriors
                 card={this.state.card}

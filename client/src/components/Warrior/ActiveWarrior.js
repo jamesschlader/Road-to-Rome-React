@@ -3,8 +3,12 @@ import React from "react";
 export default props => {
   return (
     <div>
-      <h3>Display the active warrior here</h3>
-      <p>Warrior Id = {props.warrior}</p>
+      <img
+        src={props.warrior.image}
+        alt={props.warrior.name}
+        style={{ display: "inline-block", height: "5vw", width: "auto" }}
+      />
+      <h3 style={{ display: "inline-block" }}>{props.warrior.name}</h3>
     </div>
   );
 };

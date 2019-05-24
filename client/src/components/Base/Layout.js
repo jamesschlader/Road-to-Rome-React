@@ -3,11 +3,9 @@ import { Container } from "react-materialize";
 import Header from "./Header";
 import Footer from "./Footer";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-
 import GetSomeData from "../GetSomeData";
 import LandingPage from "./LandingPage";
 import BottomSpacer from "./BottomSpacer";
-
 import ArenaConduit from "../Arena/ArenaConduit";
 import WarriorConduit from "../Warrior/WarriorConduit";
 

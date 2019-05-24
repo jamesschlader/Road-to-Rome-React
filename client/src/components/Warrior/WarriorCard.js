@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button } from "react-materialize";
+import { Card } from "react-materialize";
 import { Link } from "react-router-dom";
 
 export default ({ warrior, showDetails, handleRedirect, context }) => {

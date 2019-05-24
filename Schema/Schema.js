@@ -110,7 +110,7 @@ const WarriorType = new GraphQLObjectType({
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
         return parent.battlesIdList.map(id =>
-          Battle.findById({ _id: id }).filter(battle => battle.scheduled)
+          Battle.find().filter(battle => battle.scheduled)
         );
       }
     },

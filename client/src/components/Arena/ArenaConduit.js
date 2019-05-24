@@ -7,7 +7,7 @@ export default () => {
     <ArenaContext.Consumer>
       {context => (
         <div className="rounded-content-box">
-          <Arena arena={context.ArenaId} warrior={context.WarriorId} />
+          <Arena arenaId={context.ArenaId} warriorId={context.WarriorId} />
         </div>
       )}
     </ArenaContext.Consumer>

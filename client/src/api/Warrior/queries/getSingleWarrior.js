@@ -13,9 +13,11 @@ const getSingleWarrior = gql`
       stamina
       skill
       ArenaId
-
       winnings
       alive
+      Arena {
+        name
+      }
     }
   }
 `;

@@ -2,12 +2,17 @@ import React, { Component } from "react";
 import getSingleArena from "../../api/Arena/queries/getSingleArena";
 import getSingleWarrior from "../../api/Warrior/queries/getSingleWarrior";
 import { Query } from "react-apollo";
-import { Row, Col } from "react-materialize";
+import { Row, Col, Button } from "react-materialize";
 
 export default class Arena extends Component {
-  render() {
-    const { arena, warrior } = this.props;
+  goBack = e => {
+    e.preventDefault();
+    window.history.back();
+  };
 
+  render() {
+    const { arenaId, warriorId } = this.props;
+    console.log(`arena id = ${arenaId} and warrior id = ${warriorId}`);
     const ArenaResult = (id, warriorId) => (
       <Query query={getSingleArena} variables={{ id, warriorId }}>
         {({ loading: loadingArena, error: arenaError, data: { arena } }) => (
@@ -21,12 +26,24 @@ export default class Arena extends Component {
               if (arenaError) return <h5>Error loading the warrior!</h5>;
               if (loadingArena)
                 return <h4 className="center-align">Loading Arena...</h4>;
-              if (loadingWarrior) return <h5>Loading Warrior...</h5>;
-              console.log(arena);
-              console.log(warrior);
+              if (loadingWarrior)
+                return (
+                  <Row className="page-padding">
+                    <h5>Loading Warrior...</h5>
+                  </Row>
+                );
+
               return (
                 <React.Fragment>
                   <Row className="page-padding ">
+                    <Col s={1}>
+                      <Button onClick={this.goBack}>
+                        <span>
+                          <i className="material-icons"> keyboard_backspace</i>
+                        </span>
+                      </Button>
+                    </Col>
+
                     <h1 className="landing-title center-align">
                       {" "}
                       {arena.name}
@@ -51,6 +68,6 @@ export default class Arena extends Component {
       </Query>
     );
 
-    return <React.Fragment>{ArenaResult(arena, warrior)}</React.Fragment>;
+    return <React.Fragment>{ArenaResult(arenaId, warriorId)}</React.Fragment>;
   }
 }
