@@ -1,70 +1,141 @@
 import React, { Component } from "react";
 import getSingleArena from "../../api/Arena/queries/getSingleArena";
-import getSingleWarrior from "../../api/Warrior/queries/getSingleWarrior";
+import ArenaWarrior from "./ArenaWarrior";
 import { Query } from "react-apollo";
 import { Row, Col, Button } from "react-materialize";
+import LudusMagnus from "./LudusMagnus";
+import Market from "./Market";
 
 export default class Arena extends Component {
+  state = {
+    ludus: false,
+    market: false,
+    shoppingCart: []
+  };
+
   goBack = e => {
     e.preventDefault();
     window.history.back();
   };
 
+  openShop = e => {
+    this.setState({
+      market: !this.state.market
+    });
+  };
+  openLudus = e => {
+    this.setState({
+      ludus: !this.state.ludus
+    });
+  };
+  addToCart = obj => {
+    console.log(`${obj.name} is ${obj.cost}`);
+    const item = {
+      name: obj.name,
+      id: obj.id,
+      cost: obj.cost,
+      costType: obj.costType,
+      armor: obj.strength ? true : false
+    };
+    this.setState((state, props) => {
+      return { shoppingCart: [...this.state.shoppingCart, item] };
+    });
+  };
+  removeFromCart = obj => {
+    console.log(`${obj.name} is ${obj.cost}`);
+    const targetId = this.state.shoppingCart.filter(item => {
+      return item.id === obj.id;
+    });
+    targetId.pop();
+    const theRest = this.state.shoppingCart.filter(item => {
+      return item.id !== obj.id;
+    });
+    const updatedArray = [...theRest, ...targetId];
+    this.setState((state, props) => {
+      return { shoppingCart: updatedArray };
+    });
+  };
+  setWarrior = obj => {
+    this.setState((state, props) => {
+      return { activeWarrior: obj };
+    });
+  };
+
   render() {
     const { arenaId, warriorId } = this.props;
-    console.log(`arena id = ${arenaId} and warrior id = ${warriorId}`);
+
     const ArenaResult = (id, warriorId) => (
       <Query query={getSingleArena} variables={{ id, warriorId }}>
-        {({ loading: loadingArena, error: arenaError, data: { arena } }) => (
-          <Query query={getSingleWarrior} variables={{ warriorId }}>
-            {({
-              loading: loadingWarrior,
-              error: warriorError,
-              data: { warrior }
-            }) => {
-              if (warriorError) return <h5>Error loading the warrior!</h5>;
-              if (arenaError) return <h5>Error loading the warrior!</h5>;
-              if (loadingArena)
-                return <h4 className="center-align">Loading Arena...</h4>;
-              if (loadingWarrior)
-                return (
-                  <Row className="page-padding">
-                    <h5>Loading Warrior...</h5>
-                  </Row>
-                );
+        {({ loading: loadingArena, error: arenaError, data: { arena } }) => {
+          if (arenaError) return <h4>There was an error loading the Arena.</h4>;
+          if (loadingArena)
+            return <h4 className="center-align">Loading Arena...</h4>;
 
-              return (
-                <React.Fragment>
-                  <Row className="page-padding ">
-                    <Col s={1}>
-                      <Button onClick={this.goBack}>
-                        <span>
-                          <i className="material-icons"> keyboard_backspace</i>
-                        </span>
-                      </Button>
-                    </Col>
+          return (
+            <React.Fragment>
+              <Row className="page-padding ">
+                <Col s={4}>
+                  <Button onClick={this.goBack} style={{ height: "54px" }}>
+                    <span>
+                      <i className="material-icons"> keyboard_backspace</i>
+                    </span>
+                  </Button>
+                </Col>
+                <Col s={4}>
+                  <Button
+                    name="market"
+                    onClick={this.openShop}
+                    style={{ height: "54px" }}
+                  >
+                    <i className="material-icons">shopping_cart</i>
+                  </Button>
+                </Col>
+                <Col s={4}>
+                  <Button
+                    name="ludus"
+                    onClick={this.openLudus}
+                    style={{ padding: "0 auto", height: "54px" }}
+                  >
+                    <img
+                      src="./img/erics-images/ludus-home.png"
+                      alt="ludus-magnus"
+                      className="card-img center-align"
+                    />
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <h1 className="landing-title center-align"> {arena.name}</h1>
+              </Row>
 
-                    <h1 className="landing-title center-align">
-                      {" "}
-                      {arena.name}
-                    </h1>
-                    <ul>
-                      {arena.warriorList.map(warrior => (
-                        <li key={warrior.id}>{warrior.name}</li>
-                      ))}
-                    </ul>
-                  </Row>
-                  <Row>
-                    <Col s={6}>
-                      {" "}
-                      <h3 className="center-align">{warrior.name}</h3>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              );
-            }}
-          </Query>
-        )}
+              {this.state.ludus ? (
+                <Row>
+                  <LudusMagnus />
+                </Row>
+              ) : null}
+
+              {this.state.market ? (
+                <Row>
+                  <Market
+                    market={arena.Market}
+                    cart={this.state.shoppingCart}
+                    addToCart={this.addToCart}
+                    removeFromCart={this.removeFromCart}
+                    warrior={this.state.activeWarrior}
+                    openShop={this.openShop}
+                  />
+                </Row>
+              ) : null}
+
+              <Row>
+                <ArenaWarrior
+                  warriorKey={warriorId}
+                  setWarrior={this.setWarrior}
+                />
+              </Row>
+            </React.Fragment>
+          );
+        }}
       </Query>
     );
 

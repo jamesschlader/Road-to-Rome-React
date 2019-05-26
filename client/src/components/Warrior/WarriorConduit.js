@@ -1,6 +1,6 @@
 import React from "react";
 import { ArenaContext } from "../Base/Layout";
-import Warrior from "./WarriorTwo";
+import Warrior from "./Warrior";
 
 export default () => {
   return (

@@ -30,12 +30,14 @@ const getSingleArena = gql`
       battleIds
       MarketId
       Market {
+        id
         name
         skillsUpgradeCost
         gearCostFactor
         armorIds
         weaponIds
         weaponList {
+          id
           name
           damage
           weight
@@ -44,6 +46,7 @@ const getSingleArena = gql`
           costType
         }
         armorList {
+          id
           name
           strength
           cost

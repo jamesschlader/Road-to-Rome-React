@@ -20,7 +20,27 @@ const getWarriorsQuery = gql`
         name
         image
       }
-
+      armorIdList
+      armorList {
+        id
+        name
+        strength
+        cost
+        costType
+        weight
+        shield
+        size
+      }
+      weaponsIdList
+      weaponList {
+        id
+        name
+        damage
+        cost
+        costType
+        weight
+        size
+      }
       nextScheduledBattle {
         id
         ArenaId

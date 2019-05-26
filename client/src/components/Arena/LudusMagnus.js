@@ -4,7 +4,7 @@ export default class LudusMagnus extends Component {
   render() {
     return (
       <div>
-        <h1 className="landing-title">Ludus Magnus</h1>
+        <h5 className="landing-title">Ludus Magnus</h5>
       </div>
     );
   }

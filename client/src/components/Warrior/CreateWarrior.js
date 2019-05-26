@@ -3,8 +3,9 @@ import Button from "react-materialize/lib/Button";
 import { Row, Col } from "react-materialize";
 import maleImages from "../../utilities/maleImages";
 import femalesImages from "../../utilities/femaleImages";
-import { compose, graphql } from "react-apollo";
-import getArenasIds from "../../api/Arena/queries/getArenasIds";
+import { Mutation } from "react-apollo";
+
+import { addWarriorMutation } from "../../api/Warrior/mutations/addWarrior";
 
 class CreateWarrior extends Component {
   state = {
@@ -112,10 +113,9 @@ class CreateWarrior extends Component {
       stamina: parseInt(this.state.stamina),
       speed: parseInt(this.state.speed),
       skill: parseInt(this.state.skill),
-      wallet: parseInt(this.state.wallet),
-      ArenaId: this.state.ArenaId
+      wallet: parseInt(this.state.wallet)
     };
-    console.log(data);
+
     const result = Object.values(data).filter(item => {
       return item === undefined || item === null;
     });
@@ -131,9 +131,8 @@ class CreateWarrior extends Component {
     }
   };
 
-  createWarrior = e => {
-    e.preventDefault();
-    const data = {
+  createWarrior = () => {
+    const obj = {
       name: this.state.name,
       male: this.state.male,
       image: this.state.image,
@@ -142,11 +141,32 @@ class CreateWarrior extends Component {
       speed: parseInt(this.state.speed),
       skill: parseInt(this.state.skill),
       wallet: parseInt(this.state.wallet),
-      ArenaId: this.state.ArenaId
+      ArenaId: this.state.ArenaId,
+      living: true
     };
-    console.log(data);
+    console.log(obj);
 
-    this.props.createWarrior(data);
+    return (
+      <Mutation
+        mutation={addWarriorMutation}
+        variables={{
+          ...obj
+        }}
+      >
+        {postMutation => (
+          <Button
+            className="btn"
+            onClick={e => {
+              postMutation();
+              this.props.handleQuit(e);
+            }}
+            style={{ background: "green" }}
+          >
+            Save
+          </Button>
+        )}
+      </Mutation>
+    );
   };
 
   displayArenas = () => {
@@ -170,18 +190,6 @@ class CreateWarrior extends Component {
       <div>
         <h3>Start making your warrior </h3>
         <form>
-          <div className="row">
-            <label>Select an Arena </label>
-            <select
-              className="col s12 browser-default"
-              value={this.state.ArenaId}
-              name="ArenaId"
-              onChange={this.handleAbility}
-            >
-              <option value="">Select an Arena</option>
-              {this.displayArenas()}
-            </select>
-          </div>
           <div className="row">
             <input
               type="text"
@@ -320,8 +328,8 @@ class CreateWarrior extends Component {
                 className="range-field"
                 type="range"
                 name="wallet"
-                min="20"
-                max="100"
+                min="1"
+                max="30"
                 value={this.state.wallet}
                 onChange={this.handleAbility}
               />
@@ -342,20 +350,10 @@ class CreateWarrior extends Component {
         </Row>
 
         <Row>
-          {this.state.valid ? (
-            <Col s={6}>
-              <Button
-                className="btn"
-                onClick={this.createWarrior}
-                style={{ background: "green" }}
-              >
-                Save
-              </Button>
-            </Col>
-          ) : null}
+          {this.state.valid ? <Col s={6}>{this.createWarrior()}</Col> : null}
 
           <Col s={6}>
-            <Button className="btn" onClick={this.props.handleClick}>
+            <Button className="btn" onClick={this.props.handleQuit}>
               Nevermind
             </Button>
           </Col>
@@ -365,6 +363,4 @@ class CreateWarrior extends Component {
   }
 }
 
-export default compose(graphql(getArenasIds, { name: "getArenasIds" }))(
-  CreateWarrior
-);
+export default CreateWarrior;

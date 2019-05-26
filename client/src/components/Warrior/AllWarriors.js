@@ -6,7 +6,7 @@ import WarriorCard from "./WarriorCard";
 export default props => {
   return (
     <div>
-      <Query query={getWarriorsQuery}>
+      <Query query={getWarriorsQuery} pollInterval={500}>
         {({ loading, error, data }) => {
           if (error) return <h3>There was and error loading the warriors.</h3>;
           if (loading)

@@ -13,10 +13,48 @@ const getSingleWarrior = gql`
       stamina
       skill
       ArenaId
+      Arena {
+        id
+        name
+        image
+      }
+      nextScheduledBattle {
+        id
+        ArenaId
+        playerOne
+        playerTwo
+        purse
+      }
+      battlesList {
+        id
+        ArenaId
+        playerOne
+        playerTwo
+        winner
+        purse
+        scheduled
+      }
       winnings
       alive
-      Arena {
+      armorIdList
+      armorList {
+        id
         name
+        strength
+        weight
+        size
+        cost
+        costType
+      }
+      weaponsIdList
+      weaponList {
+        id
+        name
+        damage
+        weight
+        size
+        cost
+        costType
       }
     }
   }

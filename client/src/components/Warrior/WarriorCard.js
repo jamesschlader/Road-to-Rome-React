@@ -17,6 +17,7 @@ export default ({ warrior, showDetails, handleRedirect, context }) => {
           >
             <i className="material-icons">account_circle</i>
           </div>,
+
           <Link key={warrior.Arena.id} to="/arena">
             <div
               style={{ display: "inline-block", float: "right" }}
@@ -24,15 +25,20 @@ export default ({ warrior, showDetails, handleRedirect, context }) => {
                 handleRedirect(context.setArena, context.RoadAuth, warrior)
               }
             >
-              <i className="material-icons">send</i>
+              {warrior.alive ? <i className="material-icons">send</i> : null}
             </div>
           </Link>
         ]}
       >
         <img src={warrior.image} alt={warrior.name} className="card-img" />
-        <p>
-          Current Arena: <strong>{warrior.Arena.name}</strong>
-        </p>
+
+        {warrior.Arena.name ? (
+          <p>
+            Current Arena: <strong>{warrior.Arena.name}</strong>
+          </p>
+        ) : (
+          <p>No Arena Selected</p>
+        )}
       </Card>
     </React.Fragment>
   );

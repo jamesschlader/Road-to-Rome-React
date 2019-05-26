@@ -88,15 +88,46 @@ const WarriorType = new GraphQLObjectType({
     Arena: {
       type: ArenaType,
       resolve(parent, args) {
-        return Arena.findById({ _id: parent.ArenaId });
+        return !parent.ArenaId
+          ? Arena.find({ name: "Carthago" }).then(result => {
+              parent.ArenaId = result[0]._id;
+              parent.save();
+              return result[0];
+            })
+          : Arena.findById({ _id: parent.ArenaId });
       }
     },
 
     armorIdList: {
-      type: new GraphQLList(ArmorType)
+      type: new GraphQLList(GraphQLID)
+    },
+    armorList: {
+      type: new GraphQLList(ArmorType),
+      resolve(parent, args) {
+        return parent.armorIdList.length > 0
+          ? parent.armorIdList.map(id => Armor.findById({ _id: id }))
+          : Armor.find({ name: "None" }).then(result => {
+              parent.armorList = result;
+              parent.save();
+              return result;
+            });
+      }
     },
 
-    weaponsIdList: { type: new GraphQLList(WeaponType) },
+    weaponsIdList: { type: new GraphQLList(GraphQLID) },
+
+    weaponList: {
+      type: new GraphQLList(WeaponType),
+      resolve(parent, args) {
+        return parent.weaponsIdList.length > 0
+          ? parent.weaponsIdList.map(id => Weapon.findById({ _id: id }))
+          : Weapon.find({ name: "Fists" }).then(result => {
+              parent.weaponList = result;
+              parent.save();
+              return result;
+            });
+      }
+    },
 
     battlesIdList: { type: new GraphQLList(GraphQLID) },
 
@@ -240,7 +271,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Arena.findById(args.id);
+        return Arena.findById({ _id: args.id });
       }
     },
 
@@ -579,9 +610,9 @@ const Mutation = new GraphQLObjectType({
         alive: { type: GraphQLBoolean }
       },
       resolve(parent, args) {
-        return Warrior.where().update(
+        return Warrior.updateOne(
           { _id: args.id },
-          { $set: { ...args } },
+          { ...args },
           { upsert: true }
         );
       }
