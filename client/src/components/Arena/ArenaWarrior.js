@@ -5,7 +5,7 @@ import Row from "react-materialize/lib/Row";
 
 import WarriorInArena from "./WarriorInArena";
 
-export default ({ warriorKey, setWarrior }) => {
+export default ({ warriorKey, setWarrior, MONEY_CONVERTER }) => {
   const WarriorResult = warriorId => (
     <Query
       query={getSingleWarrior}
@@ -19,7 +19,11 @@ export default ({ warriorKey, setWarrior }) => {
         return (
           <React.Fragment>
             <Row>
-              <WarriorInArena warrior={data.warrior} setWarrior={setWarrior} />
+              <WarriorInArena
+                warrior={data.warrior}
+                setWarrior={setWarrior}
+                MONEY_CONVERTER={MONEY_CONVERTER}
+              />
             </Row>
           </React.Fragment>
         );

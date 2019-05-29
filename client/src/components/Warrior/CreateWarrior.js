@@ -6,6 +6,7 @@ import femalesImages from "../../utilities/femaleImages";
 import { Mutation } from "react-apollo";
 
 import { addWarriorMutation } from "../../api/Warrior/mutations/addWarrior";
+import { addWarriorToArena } from "../../api/Arena/mutations/addWarriorToArena";
 
 class CreateWarrior extends Component {
   state = {
@@ -157,7 +158,34 @@ class CreateWarrior extends Component {
           <Button
             className="btn"
             onClick={e => {
-              postMutation();
+              postMutation().then(warriorResult => {
+                const { addWarrior } = warriorResult.data;
+                console.log(addWarrior.id);
+                return (
+                  <Mutation
+                    mutation={addWarriorToArena}
+                    variables={{
+                      ArenaId: obj.ArenaId,
+                      WarriorId: addWarrior.id
+                    }}
+                  >
+                    <Button
+                      onClick={e => {
+                        postMutation().then(arenaResult => {
+                          const { addWarriorToArena } = arenaResult.data;
+                          return (
+                            <p>
+                              {addWarrior.name} added to{" "}
+                              {addWarriorToArena.name}{" "}
+                            </p>
+                          );
+                        });
+                      }}
+                    />
+                  </Mutation>
+                );
+              });
+
               this.props.handleQuit(e);
             }}
             style={{ background: "green" }}
@@ -167,22 +195,6 @@ class CreateWarrior extends Component {
         )}
       </Mutation>
     );
-  };
-
-  displayArenas = () => {
-    let { getArenasIds } = this.props;
-
-    if (getArenasIds.loading) {
-      console.log(`loading arenas...`);
-    } else {
-      if (getArenasIds.arenas) {
-        return getArenasIds.arenas.map(arena => (
-          <option key={arena.id} value={arena.id}>
-            {arena.name}
-          </option>
-        ));
-      }
-    }
   };
 
   render() {

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-
+import RtoRBtn from "../Shared/RtoRBtn";
 import { Row, Col, Button } from "react-materialize";
 import CreateWarrior from "./CreateWarrior";
-
 import AllWarriors from "./AllWarriors";
-
-import WarriorDetails from "./WarriorDetails";
+import WarriorDelete from "./WarriorDelete";
 
 export default class Warrior extends Component {
   state = {
@@ -45,6 +43,8 @@ export default class Warrior extends Component {
   };
 
   render() {
+    const { MONEY_CONVERTER } = this.props.context;
+
     return (
       <div>
         <h1 className="landing-title center-align">Warriors</h1>
@@ -62,11 +62,22 @@ export default class Warrior extends Component {
         </Row>
 
         {this.state.show && this.state.card ? (
-          <WarriorDetails
-            warrior={this.state.card}
-            showDetails={this.showDetails}
-            handleDelete={this.handleDelete}
-          />
+          <React.Fragment>
+            <WarriorDelete
+              warrior={this.state.card}
+              showDetails={this.showDetails}
+              handleDelete={this.handleDelete}
+              MONEY_CONVERTER={MONEY_CONVERTER}
+            />
+
+            <Col s={2}>
+              <RtoRBtn
+                clickAction={this.showDetails}
+                icon="keyboard_backspace"
+                data={this.state.card}
+              />
+            </Col>
+          </React.Fragment>
         ) : !this.state.show ? (
           this.state.create ? null : (
             <Row className="center-align">

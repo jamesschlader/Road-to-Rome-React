@@ -51,7 +51,8 @@ export default class Layout extends Component {
     this.state = {
       ArenaId: null,
       setArena: this.setArena,
-      RoadAuth: RoadAuth
+      RoadAuth: RoadAuth,
+      MONEY_CONVERTER: 10
     };
   }
 

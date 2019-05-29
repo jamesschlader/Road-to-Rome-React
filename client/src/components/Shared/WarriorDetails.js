@@ -1,31 +1,9 @@
 import React from "react";
-import Button from "react-materialize/lib/Button";
-import Row from "react-materialize/lib/Row";
-import Col from "react-materialize/lib/Col";
-import { Mutation } from "react-apollo";
-import { deleteWarriorMutation } from "../../api/Warrior/mutations/deleteWarrior";
+import { Row, Col } from "react-materialize";
 
-export default ({ showDetails, warrior, handleDelete }) => {
-  console.log(warrior);
-  const deleteWarrior = id => {
-    return (
-      <Mutation mutation={deleteWarriorMutation} variables={{ id }}>
-        {postMutation => (
-          <Button
-            className="btn"
-            onClick={e => {
-              postMutation();
-              handleDelete(e);
-            }}
-          >
-            <i className="material-icons">delete</i>
-          </Button>
-        )}
-      </Mutation>
-    );
-  };
+export default ({ warrior, MONEY_CONVERTER }) => {
   return (
-    <React.Fragment>
+    <div>
       <Row>
         <Col s={12}>
           <div>
@@ -52,7 +30,7 @@ export default ({ showDetails, warrior, handleDelete }) => {
               <p>Skill: {warrior.skill}</p>
               <h5>Total Winnings</h5>
               {warrior.winnings ? (
-                <p>{warrior.winnings}</p>
+                <p>{warrior.winnings * MONEY_CONVERTER}</p>
               ) : (
                 <p>No Battles Won</p>
               )}
@@ -65,19 +43,19 @@ export default ({ showDetails, warrior, handleDelete }) => {
                 <p>No Battle Scheduled</p>
               )}
               <h5> Available Cash</h5>
-              <p>{warrior.wallet * 100} s.p</p>
+              <p>{warrior.wallet * MONEY_CONVERTER} sp</p>
               <h5>Armor</h5>
               <ul>
-                {warrior.armorList.map(armor => (
-                  <li key={armor.id}>
+                {warrior.armorList.map((armor, index) => (
+                  <li key={armor.id + index}>
                     <p>{armor.name}</p>
                   </li>
                 ))}
               </ul>
               <h5>Weapons</h5>
               <ul>
-                {warrior.weaponList.map(weapon => (
-                  <li key={weapon.id}>
+                {warrior.weaponList.map((weapon, index) => (
+                  <li key={weapon.id + index}>
                     <p>{weapon.name}</p>
                   </li>
                 ))}
@@ -86,16 +64,6 @@ export default ({ showDetails, warrior, handleDelete }) => {
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col s={2}>
-          <Button onClick={e => showDetails(warrior)}>
-            <i className="material-icons">keyboard_backspace</i>
-          </Button>
-        </Col>
-        <Col s={3} offset="s7">
-          {deleteWarrior(warrior.id)}
-        </Col>
-      </Row>
-    </React.Fragment>
+    </div>
   );
 };

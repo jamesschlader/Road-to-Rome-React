@@ -29,7 +29,6 @@ export default class Arena extends Component {
     });
   };
   addToCart = obj => {
-    console.log(`${obj.name} is ${obj.cost}`);
     const item = {
       name: obj.name,
       id: obj.id,
@@ -42,7 +41,6 @@ export default class Arena extends Component {
     });
   };
   removeFromCart = obj => {
-    console.log(`${obj.name} is ${obj.cost}`);
     const targetId = this.state.shoppingCart.filter(item => {
       return item.id === obj.id;
     });
@@ -57,12 +55,14 @@ export default class Arena extends Component {
   };
   setWarrior = obj => {
     this.setState((state, props) => {
-      return { activeWarrior: obj };
+      return {
+        activeWarrior: obj
+      };
     });
   };
 
   render() {
-    const { arenaId, warriorId } = this.props;
+    const { arenaId, warriorId, MONEY_CONVERTER } = this.props;
 
     const ArenaResult = (id, warriorId) => (
       <Query query={getSingleArena} variables={{ id, warriorId }}>
@@ -110,7 +110,10 @@ export default class Arena extends Component {
 
               {this.state.ludus ? (
                 <Row>
-                  <LudusMagnus />
+                  <LudusMagnus
+                    arena={arena}
+                    warrior={this.state.activeWarrior}
+                  />
                 </Row>
               ) : null}
 
@@ -123,6 +126,7 @@ export default class Arena extends Component {
                     removeFromCart={this.removeFromCart}
                     warrior={this.state.activeWarrior}
                     openShop={this.openShop}
+                    MONEY_CONVERTER={MONEY_CONVERTER}
                   />
                 </Row>
               ) : null}
@@ -131,6 +135,7 @@ export default class Arena extends Component {
                 <ArenaWarrior
                   warriorKey={warriorId}
                   setWarrior={this.setWarrior}
+                  MONEY_CONVERTER={MONEY_CONVERTER}
                 />
               </Row>
             </React.Fragment>
