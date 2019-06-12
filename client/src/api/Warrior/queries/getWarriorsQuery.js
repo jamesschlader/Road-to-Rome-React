@@ -15,6 +15,7 @@ const getWarriorsQuery = gql`
       ArenaId
       winnings
       alive
+      show
       Arena {
         id
         name

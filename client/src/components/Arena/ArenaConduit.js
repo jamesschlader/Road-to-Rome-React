@@ -8,7 +8,7 @@ export default () => {
       {context => (
         <div className="rounded-content-box">
           <Arena
-            arenaId={context.ArenaId}
+            id={context.ArenaId}
             warriorId={context.WarriorId}
             MONEY_CONVERTER={context.MONEY_CONVERTER}
           />

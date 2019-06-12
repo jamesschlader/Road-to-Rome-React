@@ -36,6 +36,7 @@ const getSingleWarrior = gql`
       }
       winnings
       alive
+      show
       armorIdList
       armorList {
         id

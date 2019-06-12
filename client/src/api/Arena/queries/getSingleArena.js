@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 const getSingleArena = gql`
-  query($id: ID, $warriorId: ID) {
-    arena(id: $id, warriorId: $warriorId) {
+  query($id: ID) {
+    arena(id: $id) {
       id
       name
       image
@@ -20,18 +20,6 @@ const getSingleArena = gql`
         skill
         winnings
         alive
-        nextScheduledBattle {
-          id
-          ArenaId
-          Arena {
-            name
-          }
-          playerOne
-          playerTwo
-          winner
-          purse
-          scheduled
-        }
       }
       userWarrior {
         id
@@ -51,9 +39,9 @@ const getSingleArena = gql`
         id
         playerOne
         playerTwo
-        winner
         purse
         scheduled
+        date
       }
       battleArchive {
         id
@@ -62,6 +50,7 @@ const getSingleArena = gql`
         winner
         purse
         scheduled
+        date
       }
       MarketId
       Market {

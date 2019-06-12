@@ -28,7 +28,7 @@ export default class Warrior extends Component {
   };
 
   handleRedirect = (func1, obj1, obj2) => {
-    func1(obj2.Arena.id, obj2.id);
+    func1(obj2.ArenaId, obj2.id);
     obj1.authenticate();
   };
 
@@ -52,7 +52,10 @@ export default class Warrior extends Component {
         <Row>
           <Col s={8} offset="s2">
             {this.state.create ? (
-              <CreateWarrior handleQuit={this.handleQuit} />
+              <CreateWarrior
+                handleQuit={this.handleQuit}
+                ArenaId={this.props.context.ArenaId}
+              />
             ) : this.state.show ? null : (
               <Button className="btn create-btn" onClick={this.handleQuit}>
                 Create a Warrior

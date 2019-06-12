@@ -62,13 +62,14 @@ export default class Arena extends Component {
   };
 
   render() {
-    const { arenaId, warriorId, MONEY_CONVERTER } = this.props;
+    const { id, warriorId, MONEY_CONVERTER } = this.props;
 
     const ArenaResult = (id, warriorId) => (
-      <Query query={getSingleArena} variables={{ id, warriorId }}>
-        {({ loading: loadingArena, error: arenaError, data: { arena } }) => {
-          if (arenaError) return <h4>There was an error loading the Arena.</h4>;
-          if (loadingArena)
+      <Query query={getSingleArena} variables={{ id: id }}>
+        {({ loading, error, data: { arena } }) => {
+          console.log(arena);
+          if (error) return <h4>There was an error loading the Arena.</h4>;
+          if (loading)
             return <h4 className="center-align">Loading Arena...</h4>;
 
           return (
@@ -120,7 +121,7 @@ export default class Arena extends Component {
               {this.state.market ? (
                 <Row>
                   <Market
-                    market={arena.Market}
+                    market={getSingleArena.Market}
                     cart={this.state.shoppingCart}
                     addToCart={this.addToCart}
                     removeFromCart={this.removeFromCart}
@@ -144,6 +145,6 @@ export default class Arena extends Component {
       </Query>
     );
 
-    return <React.Fragment>{ArenaResult(arenaId, warriorId)}</React.Fragment>;
+    return <React.Fragment>{ArenaResult(id, warriorId)}</React.Fragment>;
   }
 }

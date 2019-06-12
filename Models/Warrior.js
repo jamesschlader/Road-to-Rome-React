@@ -15,7 +15,8 @@ const WarriorSchema = new Schema({
   armorIdList: [Schema.Types.ObjectId],
   battlesIdList: [Schema.Types.ObjectId],
   winnings: Number,
-  alive: { type: Boolean, default: true }
+  alive: { type: Boolean, default: true },
+  show: { type: Boolean, default: true }
 });
 
 const Warrior = mongoose.model("Warrior", WarriorSchema);

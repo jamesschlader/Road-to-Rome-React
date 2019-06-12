@@ -7,7 +7,8 @@ const BattleSchema = new Schema({
   playerTwo: Schema.Types.ObjectId,
   winner: Schema.Types.ObjectId,
   purse: Number,
-  scheduled: { type: Boolean, default: true }
+  scheduled: { type: Boolean, default: true },
+  date: { type: String }
 });
 
 const Battle = mongoose.model("Battle", BattleSchema);

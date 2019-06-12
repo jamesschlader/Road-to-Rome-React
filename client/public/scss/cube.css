@@ -1,0 +1,130 @@
+/* Cube starts here */
+/* Define the container div, the cube div, and a generic face */
+.cube-container {
+  width: 400px;
+  height: 300px;
+  margin: 50px;
+  border: none;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-perspective-origin: 0% 0%;
+          perspective-origin: 0% 0%;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+  transition: transform 0.5s, -webkit-transform 0.5s;
+  -webkit-animation: rotate 12s infinite;
+          animation: rotate 12s infinite;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+  position: relative;
+}
+
+.face {
+  display: block;
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border: none;
+  background: white;
+}
+
+/* Define each face based on direction */
+.front {
+  -webkit-transform: rotateY(0deg) translate3d(0, 0, 150px);
+          transform: rotateY(0deg) translate3d(0, 0, 150px);
+}
+
+.back {
+  -webkit-transform: rotateY(180deg) translate3d(0, 0, 150px);
+          transform: rotateY(180deg) translate3d(0, 0, 150px);
+}
+
+.cube-right {
+  -webkit-transform: rotateY(90deg) translate3d(0, 0, 150px);
+          transform: rotateY(90deg) translate3d(0, 0, 150px);
+}
+
+.left {
+  -webkit-transform: rotateY(-90deg) translate3d(0, 0, 150px);
+          transform: rotateY(-90deg) translate3d(0, 0, 150px);
+}
+
+.top {
+  -webkit-transform: rotateX(90deg) translate3d(0, 0, 150px);
+          transform: rotateX(90deg) translate3d(0, 0, 150px);
+}
+
+.bottom {
+  -webkit-transform: rotateX(-90deg) translate3d(0, 0, 150px);
+          transform: rotateX(-90deg) translate3d(0, 0, 150px);
+}
+
+.pers650 {
+  -webkit-perspective: 0px;
+          perspective: 0px;
+}
+
+@-webkit-keyframes rotate {
+  0% {
+    -webkit-transform: translateZ(150px) rotateY(0deg);
+            transform: translateZ(150px) rotateY(0deg);
+  }
+  12% {
+    -webkit-transform: translateZ(150px) rotateY(90deg);
+            transform: translateZ(150px) rotateY(90deg);
+  }
+  28% {
+    -webkit-transform: translateZ(150px) rotateY(180deg);
+            transform: translateZ(150px) rotateY(180deg);
+  }
+  42% {
+    -webkit-transform: translateZ(150px) rotateY(270deg);
+            transform: translateZ(150px) rotateY(270deg);
+  }
+  56% {
+    -webkit-transform: translateZ(150px) rotateX(90deg);
+            transform: translateZ(150px) rotateX(90deg);
+  }
+  70% {
+    -webkit-transform: translateZ(150px) rotateX(-90deg);
+            transform: translateZ(150px) rotateX(-90deg);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    -webkit-transform: translateZ(150px) rotateY(0deg);
+            transform: translateZ(150px) rotateY(0deg);
+  }
+  12% {
+    -webkit-transform: translateZ(150px) rotateY(90deg);
+            transform: translateZ(150px) rotateY(90deg);
+  }
+  28% {
+    -webkit-transform: translateZ(150px) rotateY(180deg);
+            transform: translateZ(150px) rotateY(180deg);
+  }
+  42% {
+    -webkit-transform: translateZ(150px) rotateY(270deg);
+            transform: translateZ(150px) rotateY(270deg);
+  }
+  56% {
+    -webkit-transform: translateZ(150px) rotateX(90deg);
+            transform: translateZ(150px) rotateX(90deg);
+  }
+  70% {
+    -webkit-transform: translateZ(150px) rotateX(-90deg);
+            transform: translateZ(150px) rotateX(-90deg);
+  }
+}
+
+/* Cube ends here*/
+/*# sourceMappingURL=cube.css.map */
