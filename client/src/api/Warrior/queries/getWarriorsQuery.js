@@ -45,15 +45,13 @@ const getWarriorsQuery = gql`
       nextScheduledBattle {
         id
         ArenaId
-        playerOne
-        playerTwo
+        players
         purse
       }
       battlesList {
         id
         ArenaId
-        playerOne
-        playerTwo
+        players
         winner
         purse
         scheduled

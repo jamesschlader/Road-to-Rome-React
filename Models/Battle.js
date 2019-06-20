@@ -3,8 +3,7 @@ const Schema = mongoose.Schema;
 
 const BattleSchema = new Schema({
   ArenaId: { type: Schema.Types.ObjectId, required: true },
-  playerOne: Schema.Types.ObjectId,
-  playerTwo: Schema.Types.ObjectId,
+  players: { type: Schema.Types.ObjectId, required: true },
   winner: Schema.Types.ObjectId,
   purse: Number,
   scheduled: { type: Boolean, default: true },

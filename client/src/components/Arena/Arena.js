@@ -65,7 +65,7 @@ export default class Arena extends Component {
     const { id, warriorId, MONEY_CONVERTER } = this.props;
 
     const ArenaResult = (id, warriorId) => (
-      <Query query={getSingleArena} variables={{ id: id }}>
+      <Query query={getSingleArena} variables={{ id: id }} pollInterval={500}>
         {({ loading, error, data: { arena } }) => {
           console.log(arena);
           if (error) return <h4>There was an error loading the Arena.</h4>;
@@ -78,7 +78,7 @@ export default class Arena extends Component {
                 <Col s={4}>
                   <Button onClick={this.goBack} style={{ height: "54px" }}>
                     <span>
-                      <i className="material-icons"> keyboard_backspace</i>
+                      <i className="material-icons">keyboard_backspace</i>
                     </span>
                   </Button>
                 </Col>
@@ -121,7 +121,7 @@ export default class Arena extends Component {
               {this.state.market ? (
                 <Row>
                   <Market
-                    market={getSingleArena.Market}
+                    market={arena.Market}
                     cart={this.state.shoppingCart}
                     addToCart={this.addToCart}
                     removeFromCart={this.removeFromCart}

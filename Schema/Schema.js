@@ -202,8 +202,19 @@ const BattleType = new GraphQLObjectType({
         return Arena.findById({ _id: parent.ArenaId });
       }
     },
-    playerOne: { type: GraphQLID },
-    playerTwo: { type: GraphQLID },
+    players: { type: new GraphQLList(GraphQLID) },
+    playerOne: {
+      type: WarriorType,
+      resolve(parent, args) {
+        return parent.players ? Warrior.findById(parent.players[0]) : [];
+      }
+    },
+    playerTwo: {
+      type: WarriorType,
+      resolve(parent, args) {
+        return parent.players ? Warrior.findById(parent.players[1]) : [];
+      }
+    },
     winner: { type: GraphQLID },
     purse: { type: GraphQLInt },
     scheduled: { type: GraphQLBoolean },
@@ -448,7 +459,6 @@ const Mutation = new GraphQLObjectType({
         MarketId: { type: GraphQLID }
       },
       resolve(parent, args) {
-        console.log(`Trying to save ${args.warriorIds[0]} to ${args.id}`);
         return Arena.update(
           { _id: args.id },
           {
@@ -528,9 +538,8 @@ const Mutation = new GraphQLObjectType({
       type: BattleType,
       args: {
         ArenaId: { type: GraphQLID },
-        playerOne: { type: GraphQLID },
-        playerTwo: { type: GraphQLID },
-        battleIds: { type: new GraphQLList(GraphQLID) },
+        playerOneId: { type: GraphQLID },
+        playerTwoId: { type: GraphQLID },
         purse: { type: GraphQLInt },
         scheduled: { type: GraphQLBoolean },
         date: { type: GraphQLString }
@@ -538,8 +547,7 @@ const Mutation = new GraphQLObjectType({
       resolve(parent, args) {
         const justBattleData = {
           ArenaId: args.ArenaId,
-          playerOne: args.playerOne,
-          playerTwo: args.playerTwo,
+          players: [playerOneId, playerTwoId],
           purse: args.purse,
           scheduled: args.scheduled,
           date: args.date
@@ -549,8 +557,8 @@ const Mutation = new GraphQLObjectType({
           ...justBattleData
         });
         const arena = Arena.findById(args.ArenaId);
-        const playerOne = Warrior.findById(args.playerOne);
-        const playerTwo = Warrior.findById(args.playerTwo);
+        const playerOne = Warrior.findById(args.players[0]);
+        const playerTwo = Warrior.findById(args.players[1]);
 
         return battle.save().then(battle => {
           arena.battleIds.push(battle._id);

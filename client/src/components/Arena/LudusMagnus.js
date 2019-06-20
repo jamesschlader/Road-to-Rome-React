@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Col, Row, Button } from "react-materialize";
 import ScheduleBattle from "./ScheduleBattle";
+import DisplayBattle from "./DisplayBattle";
 
 export default class LudusMagnus extends Component {
   state = {
@@ -16,8 +17,14 @@ export default class LudusMagnus extends Component {
 
   render() {
     const { arena, warrior } = this.props;
-    console.log(arena);
-    arena.userWarrior = [warrior.id];
+    arena.userWarrior = warrior.id;
+    console.log(`arena`, arena);
+    console.log(`warrior`, warrior);
+    const warriors = arena.warriorList.filter(item => {
+      return item != null && item.alive && item.id !== arena.userWarrior;
+    });
+    console.log(`warriors length is ${warriors.length}`, warriors);
+
     return (
       <div>
         <h5 className="landing-title">Ludus Magnus</h5>
@@ -41,45 +48,25 @@ export default class LudusMagnus extends Component {
 
         <Row>
           <Col s={6}>
-            <p>Show me all your warriors:</p>
+            <p>{arena.name}'s warriors:</p>
             <ul>
-              {arena.warriorList
-                .filter(item => {
-                  return item !== null && item.alive;
-                })
-                .map(warrior => (
-                  <li key={warrior.id}>
-                    <p>
-                      {warrior.name} is{" "}
-                      {warrior.nextScheduledBattle
-                        ? `is scheduled to battle at ${
-                            warrior.nextScheduledBattle.Arena.name
-                          } against ${
-                            warrior.nextScheduledBattle.playerOne === warrior.id
-                              ? warrior.nextScheduledBattle.playerTwo
-                              : warrior.nextScheduledBattle.playerOne
-                          }`
-                        : "not on the battle schedule."}
-                    </p>
-                  </li>
-                ))}
+              {warriors.map(item => (
+                <li key={item.id}>
+                  <p>{item.name}</p>
+                </li>
+              ))}
             </ul>
           </Col>
           <Col s={6}>
-            <p>Show me all your Scheduled Battles</p>
+            <p>{arena.name}'s Scheduled Battles</p>
             <ul>
               {arena.scheduledBattles
                 ? arena.scheduledBattles.map(battle => (
-                    <li key={battle.id}>
-                      <p>
-                        {battle.playerOne} vs {battle.playerTwo} for{" "}
-                        {battle.purse} on {battle.date}
-                      </p>
-                    </li>
+                    <DisplayBattle battle={battle} />
                   ))
                 : "No battles scheduled."}
             </ul>
-            <p>Show me all your Finished Battles</p>
+            <p>{arena.name}'s Finished Battles</p>
             <ul>
               {arena.battleArchive
                 ? arena.battleArchive.map(battle => (

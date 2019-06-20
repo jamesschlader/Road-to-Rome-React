@@ -20,6 +20,21 @@ const getSingleArena = gql`
         skill
         winnings
         alive
+        battlesList {
+          id
+          winner
+        }
+        nextScheduledBattle {
+          id
+          playerOne {
+            id
+            name
+          }
+          playerTwo {
+            id
+            name
+          }
+        }
       }
       userWarrior {
         id
@@ -37,16 +52,26 @@ const getSingleArena = gql`
       battleIds
       scheduledBattles {
         id
-        playerOne
-        playerTwo
+        players
+        playerOne {
+          name
+        }
+        playerTwo {
+          name
+        }
         purse
         scheduled
         date
       }
       battleArchive {
         id
-        playerOne
-        playerTwo
+        players
+        playerOne {
+          name
+        }
+        playerTwo {
+          name
+        }
         winner
         purse
         scheduled

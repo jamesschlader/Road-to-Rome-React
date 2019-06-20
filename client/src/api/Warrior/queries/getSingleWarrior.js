@@ -21,15 +21,23 @@ const getSingleWarrior = gql`
       nextScheduledBattle {
         id
         ArenaId
-        playerOne
-        playerTwo
+        playerOne {
+          name
+        }
+        playerTwo {
+          name
+        }
         purse
       }
       battlesList {
         id
         ArenaId
-        playerOne
-        playerTwo
+        playerOne {
+          name
+        }
+        playerTwo {
+          name
+        }
         winner
         purse
         scheduled

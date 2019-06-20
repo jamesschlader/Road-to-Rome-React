@@ -2,7 +2,6 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import { Button } from "react-materialize";
 import { addBattleMutation } from "../../api/Battle/mutations/addBattleMutation";
-import { addBattleToArena } from "../../api/Arena/mutations/addBattleToArena";
 
 export default ({ playerOne, playerTwo, purse, arena }) => {
   console.log(`arena = `, arena);
@@ -26,7 +25,6 @@ export default ({ playerOne, playerTwo, purse, arena }) => {
               postMutation().then(battle => {
                 const { addBattle } = battle.data;
                 console.log(addBattle);
-                return <p>All done</p>;
               });
             }}
           >
