@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Row, Col, Button } from "react-materialize";
 import LudusMagnus from "./LudusMagnus";
 import Market from "./Market";
-
 import WarriorDetails from "../Shared/WarriorDetails";
 
 export default class Arena extends Component {

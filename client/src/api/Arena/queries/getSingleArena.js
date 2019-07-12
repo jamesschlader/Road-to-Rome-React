@@ -9,7 +9,7 @@ const getSingleArena = gql`
       gamesFrequency
       battleQuantity
       warriorIds
-      warriorList {
+      livingWarriors {
         id
         name
         image
@@ -26,19 +26,7 @@ const getSingleArena = gql`
           date
         }
       }
-      userWarrior {
-        id
-        name
-        image
-        male
-        wallet
-        strength
-        speed
-        stamina
-        skill
-        winnings
-        alive
-      }
+
       battleIds
       scheduledBattles {
         id

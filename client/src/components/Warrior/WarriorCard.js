@@ -12,7 +12,9 @@ export default ({ warrior, showDetails, handleRedirect, context }) => {
         actions={[
           <div
             key={warrior.id}
-            onClick={e => showDetails(warrior)}
+            onClick={e => {
+              showDetails(warrior);
+            }}
             style={{ display: "inline-block" }}
           >
             <i className="material-icons">account_circle</i>

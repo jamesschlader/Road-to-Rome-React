@@ -11,6 +11,8 @@ export default () => {
             arena={context.Arena}
             warrior={context.Warrior}
             MONEY_CONVERTER={context.MONEY_CONVERTER}
+            setArena={context.setArena}
+            RoadAuth={context.RoadAuth}
           />
         </div>
       )}

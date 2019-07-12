@@ -25,10 +25,10 @@ export default ({ playerOne, playerTwo, purse, arena, date, close }) => {
           <Button
             className="btn selection-button"
             onClick={e => {
+              close();
               postMutation().then(battle => {
                 const { addBattle } = battle.data;
                 console.log(addBattle);
-                close();
               });
             }}
           >

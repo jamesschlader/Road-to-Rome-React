@@ -71,7 +71,7 @@ export default class LudusMagnus extends Component {
               <tbody>
                 {arena.scheduledBattles
                   ? arena.scheduledBattles.map(battle => (
-                      <DisplayBattle battle={battle} />
+                      <DisplayBattle key={battle.id} battle={battle} />
                     ))
                   : "No battles scheduled."}
               </tbody>

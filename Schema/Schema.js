@@ -57,7 +57,6 @@ const ArenaType = new GraphQLObjectType({
       resolve(parent, args) {
         return parent.battleIds.map(id => {
           return Battle.findById(id).then(result => {
-            console.log(result);
             return result.scheduled && result;
           });
         });

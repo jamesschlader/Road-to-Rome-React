@@ -476,6 +476,31 @@ footer {
   height: auto;
 }
 
+.spinner-container {
+  position: relative;
+  left: 0;
+  top: 0;
+  transform: translate(45%, 50%);
+}
+
+.spinner-primary {
+  border: 6px solid #ccc;
+  border-radius: 50%;
+  border-top-color: color(primary);
+  border-left-color: color(primary);
+  height: 60px;
+  width: 60px;
+  animation: spin 1s infinite;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
 .time-box {
   display: inline-block;
   height: auto;

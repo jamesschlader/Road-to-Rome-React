@@ -2,6 +2,7 @@ import React from "react";
 import { Query } from "react-apollo";
 import getWarriorsQuery from "../../api/Warrior/queries/getWarriorsQuery";
 import WarriorCard from "./WarriorCard";
+import Spinner from "../Shared/Spinner";
 
 export default props => {
   return (
@@ -10,7 +11,13 @@ export default props => {
         {({ loading, error, data }) => {
           if (error) return <h3>There was and error loading the warriors.</h3>;
           if (loading)
-            return <h3 className="center-align">Loading warriors...</h3>;
+            return (
+              <div>
+                {" "}
+                <h3 className="center-align">Loading warriors...</h3>
+                <Spinner />
+              </div>
+            );
           const showWarriors = data.warriors.filter(item => {
             return item.show;
           });

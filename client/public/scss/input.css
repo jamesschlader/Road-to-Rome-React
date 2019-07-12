@@ -701,6 +701,47 @@ footer {
   height: auto;
 }
 
+.spinner-container {
+  position: relative;
+  left: 0;
+  top: 0;
+  -webkit-transform: translate(45%, 50%);
+          transform: translate(45%, 50%);
+}
+
+.spinner-primary {
+  border: 6px solid #ccc;
+  border-radius: 50%;
+  border-top-color: #b71c1c;
+  border-left-color: #b71c1c;
+  height: 60px;
+  width: 60px;
+  -webkit-animation: spin 1s infinite;
+          animation: spin 1s infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
 .time-box {
   display: inline-block;
   height: auto;
