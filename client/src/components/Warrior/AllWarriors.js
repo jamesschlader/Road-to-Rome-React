@@ -10,7 +10,7 @@ export default props => {
       <Query query={getWarriorsQuery} pollInterval={500}>
         {({ loading, error, data }) => {
           if (error) return <h3>There was and error loading the warriors.</h3>;
-          if (loading)
+          if (loading) {
             return (
               <div>
                 {" "}
@@ -18,6 +18,8 @@ export default props => {
                 <Spinner />
               </div>
             );
+          }
+
           const showWarriors = data.warriors.filter(item => {
             return item.show;
           });

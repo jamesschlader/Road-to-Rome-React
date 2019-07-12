@@ -314,7 +314,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Arena.findById({ _id: args.id });
+        return Arena.findById(args.id);
       }
     },
 
@@ -340,7 +340,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Warrior.findById({ _id: args.id });
+        return Warrior.findById(args.id);
       }
     },
 

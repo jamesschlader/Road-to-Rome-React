@@ -665,6 +665,11 @@ footer {
   cursor: pointer;
 }
 
+.inline-content {
+  display: inline-block;
+  padding: 2vw;
+}
+
 .page-padding {
   padding: 3vw;
 }
@@ -740,6 +745,15 @@ footer {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
   }
+}
+
+.warrior-card {
+  max-width: 25vw;
+  margin: 0 auto;
+}
+
+.expand-content {
+  width: 100%;
 }
 
 .time-box {

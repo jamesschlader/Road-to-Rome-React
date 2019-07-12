@@ -8,6 +8,9 @@ const getSingleWarrior = gql`
       image
       male
       wallet
+      alive
+      show
+      winnings
       strength
       speed
       stamina
@@ -44,13 +47,12 @@ const getSingleWarrior = gql`
         playerTwo {
           name
         }
-        winner
+        winner {
+          name
+        }
         purse
         scheduled
       }
-      winnings
-      alive
-      show
       armorIdList
       armorList {
         id
