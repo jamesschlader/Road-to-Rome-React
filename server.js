@@ -17,7 +17,7 @@ const MONGODB_URI =
 mongoose.connect(MONGODB_URI);
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", () => {
-  console.log(`Connected succesfully to local mongo db.`);
+  console.log(`Connected successfully to local mongo db.`);
 });
 
 // Define middleware here
@@ -46,5 +46,5 @@ jasmine.configureDefaultReporter({
 
 app.listen(PORT, () => {
   //jasmine.execute();
-  console.log(`🌎 ==> Server now on port ${PORT}!`);
+  console.log(`🌎 ==> A GraphQL Server is now running on port ${PORT}!`);
 });

@@ -12,6 +12,7 @@ const getSingleArena = gql`
       warriorList {
         id
         name
+        image
         male
         wallet
         strength
@@ -20,20 +21,9 @@ const getSingleArena = gql`
         skill
         winnings
         alive
-        battlesList {
-          id
-          winner
-        }
         nextScheduledBattle {
           id
-          playerOne {
-            id
-            name
-          }
-          playerTwo {
-            id
-            name
-          }
+          date
         }
       }
       userWarrior {
@@ -52,30 +42,13 @@ const getSingleArena = gql`
       battleIds
       scheduledBattles {
         id
-        players
+        date
         playerOne {
           name
         }
         playerTwo {
           name
         }
-        purse
-        scheduled
-        date
-      }
-      battleArchive {
-        id
-        players
-        playerOne {
-          name
-        }
-        playerTwo {
-          name
-        }
-        winner
-        purse
-        scheduled
-        date
       }
       MarketId
       Market {

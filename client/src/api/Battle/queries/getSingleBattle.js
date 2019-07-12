@@ -13,7 +13,7 @@ const getSingleBattle = gql`
       purse
       date
       winner
-      arena
+      ArenaId
     }
   }
 `;

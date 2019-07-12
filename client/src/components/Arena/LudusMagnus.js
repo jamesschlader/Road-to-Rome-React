@@ -16,14 +16,13 @@ export default class LudusMagnus extends Component {
   };
 
   render() {
-    const { arena, warrior } = this.props;
-    arena.userWarrior = warrior.id;
+    const { arena, warrior, close } = this.props;
+
     console.log(`arena`, arena);
     console.log(`warrior`, warrior);
-    const warriors = arena.warriorList.filter(item => {
-      return item != null && item.alive && item.id !== arena.userWarrior;
+    const warriors = arena.livingWarriors.filter(item => {
+      return item != null && item.id !== arena.userWarrior;
     });
-    console.log(`warriors length is ${warriors.length}`, warriors);
 
     return (
       <div>
@@ -43,6 +42,7 @@ export default class LudusMagnus extends Component {
             openSchedule={this.openSchedule}
             warrior={warrior}
             arena={arena}
+            close={close}
           />
         ) : null}
 
@@ -59,13 +59,23 @@ export default class LudusMagnus extends Component {
           </Col>
           <Col s={6}>
             <p>{arena.name}'s Scheduled Battles</p>
-            <ul>
-              {arena.scheduledBattles
-                ? arena.scheduledBattles.map(battle => (
-                    <DisplayBattle battle={battle} />
-                  ))
-                : "No battles scheduled."}
-            </ul>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Player One</th>
+                  <th>Player Two</th>
+                  <th>Purse</th>
+                </tr>
+              </thead>
+              <tbody>
+                {arena.scheduledBattles
+                  ? arena.scheduledBattles.map(battle => (
+                      <DisplayBattle battle={battle} />
+                    ))
+                  : "No battles scheduled."}
+              </tbody>
+            </table>
             <p>{arena.name}'s Finished Battles</p>
             <ul>
               {arena.battleArchive

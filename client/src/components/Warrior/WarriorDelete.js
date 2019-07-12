@@ -7,6 +7,7 @@ import { deleteWarriorMutation } from "../../api/Warrior/mutations/deleteWarrior
 import WarriorDetails from "../Shared/WarriorDetails";
 
 export default ({ warrior, handleDelete, MONEY_CONVERTER }) => {
+  console.log(warrior);
   const deleteWarrior = id => {
     return (
       <Mutation mutation={deleteWarriorMutation} variables={{ id }}>

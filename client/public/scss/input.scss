@@ -283,6 +283,10 @@ footer {
   bottom: 10%;
 }
 
+.selection-button {
+  background-color: green !important;
+}
+
 %action-btn {
   width: 100%;
   line-height: 1.2;
@@ -470,6 +474,20 @@ footer {
   color: color(secondary);
   width: auto;
   height: auto;
+}
+
+.time-box {
+  display: inline-block;
+  height: auto;
+  width: auto;
+  margin: 0 5px;
+  background-color: #fff;
+  border-radius: 25%;
+  padding: 5px;
+  &:hover {
+    cursor: pointer;
+    background-color: green;
+  }
 }
 .footer {
   position: absolute;

@@ -20,6 +20,97 @@ const getWarriorsQuery = gql`
         id
         name
         image
+        gamesFrequency
+        battleQuantity
+        warriorIds
+        livingWarriors {
+          id
+          name
+          image
+          male
+          wallet
+          strength
+          speed
+          stamina
+          skill
+          winnings
+          alive
+          show
+          armorIdList
+          armorList {
+            id
+            name
+            strength
+            cost
+            costType
+            weight
+            shield
+            size
+          }
+          weaponsIdList
+          weaponList {
+            id
+            name
+            damage
+            cost
+            costType
+            weight
+            size
+          }
+          battlesIdList
+          battlesList {
+            date
+            purse
+            winner {
+              id
+              name
+            }
+            playerOne {
+              id
+              name
+            }
+            playerTwo {
+              id
+              name
+            }
+          }
+          nextScheduledBattle {
+            id
+            date
+            purse
+            playerOne {
+              id
+              name
+            }
+            playerTwo {
+              id
+              name
+            }
+          }
+        }
+        battleIds
+        scheduledBattles {
+          id
+          date
+          purse
+          playerOne {
+            id
+            name
+          }
+          playerTwo {
+            id
+            name
+          }
+        }
+        battleArchive {
+          id
+          date
+          purse
+          winner {
+            id
+            name
+          }
+        }
       }
       armorIdList
       armorList {
@@ -45,16 +136,39 @@ const getWarriorsQuery = gql`
       nextScheduledBattle {
         id
         ArenaId
-        players
+        Arena {
+          id
+          name
+        }
+        date
         purse
+        playerOne {
+          id
+          name
+        }
+        playerTwo {
+          id
+          name
+        }
       }
       battlesList {
         id
         ArenaId
-        players
-        winner
+        date
+        winner {
+          id
+          name
+        }
         purse
         scheduled
+        playerOne {
+          id
+          name
+        }
+        playerTwo {
+          id
+          name
+        }
       }
     }
   }

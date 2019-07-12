@@ -34,13 +34,21 @@ const ArenaType = new GraphQLObjectType({
         return parent.warriorIds.map(id => Warrior.findById({ _id: id }));
       }
     },
+    livingWarriors: {
+      type: new GraphQLList(WarriorType),
+      resolve(parent, args) {
+        return Warrior.find({ alive: true, show: true, ArenaId: parent.id });
+      }
+    },
     userWarrior: {
       type: new GraphQLList(WarriorType),
       resolve(parent, args) {
-        const result = parent.warriorIds.filter(id => {
-          if (id === args.warriorId) return Warrior.findById({ _id: id });
+        return parent.warriorIds.filter(id => {
+          if (id === args.warriorId)
+            return Warrior.findById(id).then(result => {
+              return result;
+            });
         });
-        return result;
       }
     },
     battleIds: { type: new GraphQLList(GraphQLID) },
@@ -48,8 +56,8 @@ const ArenaType = new GraphQLObjectType({
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
         return parent.battleIds.map(id => {
-          return Battle.find({ _id: id, scheduled: true }).then(result => {
-            return result[0];
+          return Battle.findById(id, { scheduled: true }).then(result => {
+            return result;
           });
         });
       }
@@ -58,9 +66,8 @@ const ArenaType = new GraphQLObjectType({
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
         return parent.battleIds.map(id =>
-          Battle.find(id).then(battle => {
-            console.log(battle);
-            return battle[0];
+          Battle.findById(id).then(battle => {
+            return battle;
           })
         );
       }
@@ -139,26 +146,21 @@ const WarriorType = new GraphQLObjectType({
     battlesList: {
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
-        return parent.battlesIdList.map(id =>
-          Battles.findById(id).then(battle => {
-            console.log(`from battleList of warrior ${parent.name}`, battle);
-            return battle[0];
-          })
-        );
+        return parent.battlesIdList.map(id => {
+          return Battle.findById(id).then(battle => {
+            return battle;
+          });
+        });
       }
     },
     nextScheduledBattle: {
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
-        return parent.battlesIdList.map(id =>
-          Battle.find({ _id: id }, { scheduled: true }).then(battle => {
-            console.log(
-              `from nextScheduledBattle of warrior ${parent.name}`,
-              battle
-            );
+        return parent.battlesIdList.map(id => {
+          return Battle.find({ _id: id, scheduled: true }).then(battle => {
             return battle[0];
-          })
-        );
+          });
+        });
       }
     },
     winnings: { type: GraphQLInt },
@@ -202,20 +204,30 @@ const BattleType = new GraphQLObjectType({
         return Arena.findById({ _id: parent.ArenaId });
       }
     },
-    players: { type: new GraphQLList(GraphQLID) },
+    playerOneId: { type: GraphQLID },
+    playerTwoId: { type: GraphQLID },
+
     playerOne: {
       type: WarriorType,
       resolve(parent, args) {
-        return parent.players ? Warrior.findById(parent.players[0]) : [];
+        return parent.playerOneId ? Warrior.findById(parent.playerOneId) : [];
       }
     },
     playerTwo: {
       type: WarriorType,
       resolve(parent, args) {
-        return parent.players ? Warrior.findById(parent.players[1]) : [];
+        return parent.playerTwoId ? Warrior.findById(parent.playerTwoId) : [];
       }
     },
-    winner: { type: GraphQLID },
+    winnerId: { type: GraphQLID },
+    winner: {
+      type: WarriorType,
+      resolve(parent, args) {
+        return Warrior.findById(parent.winnerId).then(warrior => {
+          return warrior;
+        });
+      }
+    },
     purse: { type: GraphQLInt },
     scheduled: { type: GraphQLBoolean },
     date: { type: GraphQLString }
@@ -538,35 +550,72 @@ const Mutation = new GraphQLObjectType({
       type: BattleType,
       args: {
         ArenaId: { type: GraphQLID },
+        purse: { type: GraphQLInt },
         playerOneId: { type: GraphQLID },
         playerTwoId: { type: GraphQLID },
-        purse: { type: GraphQLInt },
         scheduled: { type: GraphQLBoolean },
         date: { type: GraphQLString }
       },
       resolve(parent, args) {
-        const justBattleData = {
-          ArenaId: args.ArenaId,
-          players: [playerOneId, playerTwoId],
-          purse: args.purse,
-          scheduled: args.scheduled,
-          date: args.date
-        };
-        console.log(`justBattleData = `, justBattleData);
         let battle = new Battle({
-          ...justBattleData
+          ...args
         });
-        const arena = Arena.findById(args.ArenaId);
-        const playerOne = Warrior.findById(args.players[0]);
-        const playerTwo = Warrior.findById(args.players[1]);
 
         return battle.save().then(battle => {
-          arena.battleIds.push(battle._id);
-          playerOne.battlesIdList.push(battle._id);
-          playerTwo.battlesIdList.push(battle._id);
-          arena.save();
-          playerOne.save();
-          playerTwo.save();
+          Arena.findById(args.ArenaId, (err, arena) => {
+            if (err) console.log(err);
+            if (arena.battleIds) {
+              arena.battleIds = [...arena.battleIds, battle._id];
+              arena.save().then(result => {
+                console.log("saved arena with battle id");
+              });
+            } else {
+              arena.battleIds = [battle._id];
+              arena.save().then(result => {
+                console.log("saved arena with battle id");
+              });
+            }
+          });
+          Warrior.findById(args.playerOneId, (err, warrior) => {
+            if (err) console.log(err);
+            if (warrior.battlesIdList) {
+              warrior.battlesIdList = [...warrior.battlesIdList, battle._id];
+              warrior.save().then(result => {
+                console.log(
+                  "Saved warrior with battle id",
+                  result.battlesIdList
+                );
+              });
+            } else {
+              warrior.battlesIdList = [battle._id];
+              warrior.save().then(result => {
+                console.log(
+                  "Saved warrior with battle id",
+                  result.battlesIdList
+                );
+              });
+            }
+          });
+          Warrior.findById(args.playerTwoId, (err, warrior) => {
+            if (err) console.log(err);
+            if (warrior.battlesIdList) {
+              warrior.battlesIdList = [...warrior.battlesIdList, battle._id];
+              warrior.save().then(result => {
+                console.log(
+                  "Saved warrior with battle id",
+                  result.battlesIdList
+                );
+              });
+            } else {
+              warrior.battlesIdList = [battle._id];
+              warrior.save().then(result => {
+                console.log(
+                  "Saved warrior with battle id",
+                  result.battlesIdList
+                );
+              });
+            }
+          });
         });
       }
     },
@@ -638,7 +687,7 @@ const Mutation = new GraphQLObjectType({
           obj = warrior.save();
           return obj.then(warrior => {
             result.warriorIds.push(warrior._id);
-            result.save();
+            return result.save();
           });
         });
       }

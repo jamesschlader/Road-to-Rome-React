@@ -20,7 +20,12 @@ const getSingleWarrior = gql`
       }
       nextScheduledBattle {
         id
+        date
         ArenaId
+        Arena {
+          id
+          name
+        }
         playerOne {
           name
         }
@@ -31,6 +36,7 @@ const getSingleWarrior = gql`
       }
       battlesList {
         id
+        date
         ArenaId
         playerOne {
           name
@@ -54,6 +60,7 @@ const getSingleWarrior = gql`
         size
         cost
         costType
+        shield
       }
       weaponsIdList
       weaponList {

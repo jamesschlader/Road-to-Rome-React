@@ -25,7 +25,6 @@ export default props => {
                   warrior={warrior}
                   selectCard={props.selectCard}
                   showDetails={props.showDetails}
-                  card={props.card}
                   context={props.context}
                   handleRedirect={props.handleRedirect}
                 />

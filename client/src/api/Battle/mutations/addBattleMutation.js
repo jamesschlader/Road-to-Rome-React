@@ -3,24 +3,28 @@ import { gql } from "apollo-boost";
 const addBattleMutation = gql`
   mutation(
     $ArenaId: ID
-    $playerOne: ID
-    $playerTwo: ID
+    $playerOneId: ID
+    $playerTwoId: ID
     $purse: Int
-    $battleIds: [ID]
     $date: String
+    $scheduled: Boolean
   ) {
     addBattle(
       ArenaId: $ArenaId
-      playerOne: $playerOne
-      playerTwo: $playerTwo
+      playerOneId: $playerOneId
+      playerTwoId: $playerTwoId
       purse: $purse
-      battleIds: $battleIds
       date: $date
+      scheduled: $scheduled
     ) {
       id
       ArenaId
-      playerOne
-      playerTwo
+      playerOne {
+        name
+      }
+      playerTwo {
+        name
+      }
       purse
       scheduled
       date

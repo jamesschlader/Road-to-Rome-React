@@ -28,7 +28,7 @@ export default class Warrior extends Component {
   };
 
   handleRedirect = (func1, obj1, obj2) => {
-    func1(obj2.ArenaId, obj2.id);
+    func1(obj2.Arena, obj2);
     obj1.authenticate();
   };
 
@@ -43,7 +43,7 @@ export default class Warrior extends Component {
   };
 
   render() {
-    const { MONEY_CONVERTER } = this.props.context;
+    const { MONEY_CONVERTER, Arena, Warrior } = this.props.context;
 
     return (
       <div>
@@ -52,10 +52,7 @@ export default class Warrior extends Component {
         <Row>
           <Col s={8} offset="s2">
             {this.state.create ? (
-              <CreateWarrior
-                handleQuit={this.handleQuit}
-                ArenaId={this.props.context.ArenaId}
-              />
+              <CreateWarrior handleQuit={this.handleQuit} ArenaId={Arena.id} />
             ) : this.state.show ? null : (
               <Button className="btn create-btn" onClick={this.handleQuit}>
                 Create a Warrior
@@ -67,7 +64,7 @@ export default class Warrior extends Component {
         {this.state.show && this.state.card ? (
           <React.Fragment>
             <WarriorDelete
-              warrior={this.state.card}
+              warrior={Warrior}
               showDetails={this.showDetails}
               handleDelete={this.handleDelete}
               MONEY_CONVERTER={MONEY_CONVERTER}

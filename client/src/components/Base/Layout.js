@@ -41,15 +41,16 @@ const WarriorHome = ({ component: Component, ...rest }) => (
 export default class Layout extends Component {
   constructor(props) {
     super(props);
-    this.setArena = (ArenaId, id) => {
+    this.setArena = (Arena, Warrior) => {
       this.setState({
-        ArenaId: ArenaId,
-        WarriorId: id
+        Arena,
+        Warrior
       });
     };
 
     this.state = {
-      ArenaId: null,
+      Arena: null,
+      Warrior: null,
       setArena: this.setArena,
       RoadAuth: RoadAuth,
       MONEY_CONVERTER: 10
