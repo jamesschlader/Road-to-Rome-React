@@ -2,7 +2,6 @@ import React from "react";
 import { Row, Col } from "react-materialize";
 
 export default ({ warrior, MONEY_CONVERTER }) => {
-  console.log(warrior);
   return (
     <div>
       <Row>
@@ -38,7 +37,7 @@ export default ({ warrior, MONEY_CONVERTER }) => {
             </div>
             <div style={{ display: "inline-block", padding: "2vw" }}>
               <h5>Next Battle</h5>
-              {warrior.nextScheduledBattle &&
+              {warrior.nextScheduledBattle.length > 0 &&
               warrior.nextScheduledBattle[0].date ? (
                 <div>
                   <p>
@@ -47,7 +46,13 @@ export default ({ warrior, MONEY_CONVERTER }) => {
                       warrior.nextScheduledBattle[0].date.search("2019")
                     )}
                   </p>
-                  <p>against {warrior.nextScheduledBattle[0].playerTwo.name}</p>
+                  <p>
+                    against{" "}
+                    {warrior.nextScheduledBattle[0].playerOne.name ===
+                    warrior.name
+                      ? warrior.nextScheduledBattle[0].playerTwo.name
+                      : warrior.nextScheduledBattle[0].playerOne.name}
+                  </p>
                   <p>at {warrior.nextScheduledBattle[0].Arena.name}</p>
                 </div>
               ) : (

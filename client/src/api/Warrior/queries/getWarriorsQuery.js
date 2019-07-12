@@ -22,6 +22,35 @@ const getWarriorsQuery = gql`
         image
         gamesFrequency
         battleQuantity
+        Market {
+          id
+          name
+          weaponIds
+          weaponList {
+            id
+            name
+            damage
+            cost
+            costType
+            weight
+            image
+            size
+          }
+          armorIds
+          armorList {
+            id
+            name
+            strength
+            cost
+            costType
+            weight
+            image
+            shield
+            size
+          }
+          skillsUpgradeCost
+          gearCostFactor
+        }
         warriorIds
         livingWarriors {
           id

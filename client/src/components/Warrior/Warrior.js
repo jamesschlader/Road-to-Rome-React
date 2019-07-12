@@ -36,7 +36,6 @@ export default class Warrior extends Component {
     this.setState({
       card: obj
     });
-
     this.setState((state, props) => {
       return { show: !state.show };
     });
@@ -44,7 +43,7 @@ export default class Warrior extends Component {
 
   render() {
     const { MONEY_CONVERTER, Arena, Warrior } = this.props.context;
-
+    console.log(Warrior);
     return (
       <div>
         <h1 className="landing-title center-align">Warriors</h1>
@@ -64,7 +63,7 @@ export default class Warrior extends Component {
         {this.state.show && this.state.card ? (
           <React.Fragment>
             <WarriorDelete
-              warrior={Warrior}
+              warrior={this.state.card}
               showDetails={this.showDetails}
               handleDelete={this.handleDelete}
               MONEY_CONVERTER={MONEY_CONVERTER}

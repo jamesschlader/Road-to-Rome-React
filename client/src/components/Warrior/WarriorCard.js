@@ -3,8 +3,6 @@ import { Card } from "react-materialize";
 import { Link } from "react-router-dom";
 
 export default ({ warrior, showDetails, handleRedirect, context }) => {
-  console.log(context);
-  console.log(warrior);
   return (
     <React.Fragment>
       <Card

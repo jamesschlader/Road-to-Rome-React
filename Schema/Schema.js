@@ -56,8 +56,9 @@ const ArenaType = new GraphQLObjectType({
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
         return parent.battleIds.map(id => {
-          return Battle.findById(id, { scheduled: true }).then(result => {
-            return result;
+          return Battle.findById(id).then(result => {
+            console.log(result);
+            return result.scheduled && result;
           });
         });
       }
@@ -156,11 +157,14 @@ const WarriorType = new GraphQLObjectType({
     nextScheduledBattle: {
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
-        return parent.battlesIdList.map(id => {
-          return Battle.find({ _id: id, scheduled: true }).then(battle => {
-            return battle[0];
-          });
-        });
+        return Battle.find(
+          {
+            $or: [{ playerOneId: parent.id }, { playerTwoId: parent.id }],
+            scheduled: true
+          },
+          null,
+          { sort: { date: "desc" } }
+        );
       }
     },
     winnings: { type: GraphQLInt },
