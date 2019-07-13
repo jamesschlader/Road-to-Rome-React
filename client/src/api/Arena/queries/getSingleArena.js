@@ -31,6 +31,7 @@ const getSingleArena = gql`
       scheduledBattles {
         id
         date
+        purse
         playerOne {
           name
         }

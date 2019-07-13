@@ -48,12 +48,18 @@ export default class Layout extends Component {
       });
     };
 
+    this.handleRedirect = (func1, obj1, obj2) => {
+      func1(obj2.Arena, obj2);
+      obj1.authenticate();
+    };
+
     this.state = {
       Arena: null,
       Warrior: null,
       setArena: this.setArena,
       RoadAuth: RoadAuth,
-      MONEY_CONVERTER: 10
+      MONEY_CONVERTER: 10,
+      handleRedirect: this.handleRedirect
     };
   }
 

@@ -1,36 +1,47 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Button } from "react-materialize";
 import LudusMagnus from "./LudusMagnus";
 import Market from "./Market";
 import WarriorDetails from "../Shared/WarriorDetails";
+import GetArena from "./GetArena";
+import WarriorCard from "../Warrior/WarriorCard";
 
-export default class Arena extends Component {
-  state = {
-    ludus: false,
-    market: false,
-    shoppingCart: []
-  };
+export default ({
+  arena,
+  warrior,
+  MONEY_CONVERTER,
+  handleRedirect,
+  RoadAuth,
+  setArena
+}) => {
+  const [ludus, setLudus] = useState(false);
+  const [market, setMarket] = useState(false);
+  const [shoppingCart, setShoppingCart] = useState([]);
+  const [activeArena, setActiveArena] = useState();
+  const [show, setShow] = useState(false);
 
-  componentDidMount() {
-    console.log(this.props);
-  }
+  const context = { RoadAuth, setArena };
 
-  goBack = e => {
+  useEffect(() => {
+    setActiveArena(arena);
+  }, [arena]);
+
+  const goBack = e => {
     e.preventDefault();
     window.history.back();
   };
 
-  openShop = e => {
-    this.setState({
-      market: !this.state.market
-    });
+  const openShop = () => {
+    setShow(false);
+    setMarket(!market);
   };
-  openLudus = e => {
-    this.setState({
-      ludus: !this.state.ludus
-    });
+
+  const openLudus = () => {
+    setShow(false);
+    setLudus(!ludus);
   };
-  addToCart = obj => {
+
+  const addToCart = obj => {
     const item = {
       name: obj.name,
       id: obj.id,
@@ -38,11 +49,10 @@ export default class Arena extends Component {
       costType: obj.costType,
       armor: obj.strength ? true : false
     };
-    this.setState((state, props) => {
-      return { shoppingCart: [...this.state.shoppingCart, item] };
-    });
+    setShoppingCart([...shoppingCart, item]);
   };
-  removeFromCart = obj => {
+
+  const removeFromCart = obj => {
     const targetId = this.state.shoppingCart.filter(item => {
       return item.id === obj.id;
     });
@@ -51,79 +61,92 @@ export default class Arena extends Component {
       return item.id !== obj.id;
     });
     const updatedArray = [...theRest, ...targetId];
-    this.setState((state, props) => {
-      return { shoppingCart: updatedArray };
-    });
+    setShoppingCart(updatedArray);
   };
 
-  render() {
-    const { arena, warrior, MONEY_CONVERTER } = this.props;
+  const showDetails = obj => {
+    setShow(!show);
+  };
 
-    return (
-      <React.Fragment>
-        <Row className="page-padding ">
-          <Col s={4}>
-            <Button onClick={this.goBack} style={{ height: "54px" }}>
-              <span>
-                <i className="material-icons">keyboard_backspace</i>
-              </span>
-            </Button>
-          </Col>
-          <Col s={4}>
-            <Button
-              name="market"
-              onClick={this.openShop}
-              style={{ height: "54px" }}
-            >
-              <i className="material-icons">shopping_cart</i>
-            </Button>
-          </Col>
-          <Col s={4}>
-            <Button
-              name="ludus"
-              onClick={this.openLudus}
-              style={{ padding: "0 auto", height: "54px" }}
-            >
-              <img
-                src="./img/erics-images/ludus-home.png"
-                alt="ludus-magnus"
-                className="card-img center-align"
-              />
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <h1 className="landing-title center-align"> {arena.name}</h1>
-        </Row>
-
-        {this.state.ludus ? (
-          <Row>
-            <LudusMagnus
-              arena={arena}
-              warrior={warrior}
-              close={this.openLudus}
+  return (
+    <React.Fragment>
+      <GetArena arena={arena} setActiveArena={setActiveArena} />
+      <Row className="page-padding ">
+        <Col s={4}>
+          <Button
+            onClick={goBack}
+            style={{ position: "relative", left: "40%", height: "54px" }}
+          >
+            <span>
+              <i className="material-icons">keyboard_backspace</i>
+            </span>
+          </Button>
+        </Col>
+        <Col s={4}>
+          <Button
+            name="market"
+            onClick={openShop}
+            style={{ position: "relative", left: "40%", height: "54px" }}
+          >
+            <i className="material-icons">shopping_cart</i>
+          </Button>
+        </Col>
+        <Col s={4}>
+          <Button
+            name="ludus"
+            onClick={openLudus}
+            style={{ position: "relative", left: "40%", height: "54px" }}
+          >
+            <img
+              src="./img/erics-images/ludus-home.png"
+              alt="ludus-magnus"
+              className="card-img center-align"
             />
-          </Row>
-        ) : null}
+          </Button>
+        </Col>
+      </Row>
+      <Row>
+        <h1 className="landing-title center-align"> {arena.name}</h1>
+      </Row>
 
-        {this.state.market ? (
-          <Row>
-            <Market
-              market={arena.Market}
-              cart={this.state.shoppingCart}
-              addToCart={this.addToCart}
-              removeFromCart={this.removeFromCart}
-              warrior={warrior}
-              openShop={this.openShop}
-              MONEY_CONVERTER={MONEY_CONVERTER}
-            />
-          </Row>
-        ) : null}
+      <Row>
+        {!show ? (
+          <WarriorCard warrior={warrior} showDetails={showDetails} />
+        ) : (
+          <WarriorDetails
+            warrior={warrior}
+            MONEY_CONVERTER={MONEY_CONVERTER}
+            handleRedirect={handleRedirect}
+            context={context}
+            showDetails={showDetails}
+            show={show}
+          />
+        )}
+      </Row>
 
+      {ludus ? (
         <Row>
-          <WarriorDetails warrior={warrior} MONEY_CONVERTER={MONEY_CONVERTER} />
+          <LudusMagnus
+            arena={activeArena}
+            warrior={warrior}
+            close={openLudus}
+          />
         </Row>
-      </React.Fragment>
-    );
-  }
-}
+      ) : null}
+
+      {market ? (
+        <Row>
+          <Market
+            market={activeArena.Market}
+            cart={shoppingCart}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+            warrior={warrior}
+            openShop={openShop}
+            MONEY_CONVERTER={MONEY_CONVERTER}
+          />
+        </Row>
+      ) : null}
+    </React.Fragment>
+  );
+};

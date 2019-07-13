@@ -11,7 +11,7 @@ export default ({ battle }) => {
       <td>{event.toDateString()}</td>
       <td>{showName(battle.playerOne.name)}</td>
       <td>{showName(battle.playerTwo.name)}</td>
-      <td>{battle.purse}</td>
+      <td>{battle.purse} sp</td>
     </tr>
   );
 };

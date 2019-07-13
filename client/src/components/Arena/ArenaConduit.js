@@ -13,6 +13,7 @@ export default () => {
             MONEY_CONVERTER={context.MONEY_CONVERTER}
             setArena={context.setArena}
             RoadAuth={context.RoadAuth}
+            handleRedirect={context.handleRedirect}
           />
         </div>
       )}

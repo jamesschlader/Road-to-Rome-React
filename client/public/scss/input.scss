@@ -422,6 +422,7 @@ footer {
 }
 
 .card-layout {
+  min-width: 165px;
   width: 12vw;
   height: auto;
 }
@@ -429,6 +430,34 @@ footer {
 .card-layout:hover {
   cursor: pointer;
   box-shadow: 1vw 1vw 5px color(primary-light);
+}
+
+.tiny-card-layout {
+  min-width: 60px;
+  width: auto;
+  height: 50px;
+  background-color: color(primary);
+  color: color(secondary);
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+
+  div {
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  img {
+    height: 100%;
+    display: inline-block;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: color(primary);
+    background-color: color(secondary);
+  }
 }
 
 .layout-img {
@@ -452,7 +481,30 @@ footer {
 
 .inline-content {
   display: inline-block;
-  padding: 2vw;
+  padding: 0 2vw;
+}
+
+.scrolling-event {
+  animation: scroll 50s infinite reverse linear;
+  width: 5000px;
+  overflow: hidden;
+  padding: 0 auto;
+
+  li {
+    display: inline-block;
+    margin: 5px;
+    // animation: scroll 30s infinite reverse linear;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
 
 .page-padding {

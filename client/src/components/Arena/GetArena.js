@@ -1,37 +1,29 @@
 import { Query } from "react-apollo";
 import getSingleArena from "../../api/Arena/queries/getSingleArena";
 import React from "react";
+import Spinner from "../Shared/Spinner";
 
-export default ({ arena }) => {
+export default ({ arena, setActiveArena }) => {
   const id = arena.id;
   return (
-    <div>
-      <Query query={getSingleArena} variables={{ id }} errorPolicy="all">
-        {({ loading, error, data }) => {
-          if (error) {
-            console.log(error.message);
-            return <h3>Fucking error</h3>;
-          }
-          if (loading) {
-            return (
-              <div>
-                <h3 className="center-align">Loading warriors...</h3>
-                <div className="spinner-container">
-                  <div className="spinner-primary" />
-                </div>
-              </div>
-            );
-          }
-
-          console.log(data.arena);
-
+    <Query query={getSingleArena} variables={{ id }} errorPolicy="all">
+      {({ loading, error, data }) => {
+        if (error) {
+          return <h3>Fucking error</h3>;
+        }
+        if (loading) {
           return (
             <div>
-              <p>Got your arena</p>
+              <h3>Loading Arena...</h3>
+              <Spinner />
             </div>
           );
-        }}
-      </Query>
-    </div>
+        }
+
+        setActiveArena(data.arena);
+
+        return <div />;
+      }}
+    </Query>
   );
 };

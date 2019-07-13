@@ -633,6 +633,7 @@ footer {
 }
 
 .card-layout {
+  min-width: 165px;
   width: 12vw;
   height: auto;
 }
@@ -641,6 +642,34 @@ footer {
   cursor: pointer;
   -webkit-box-shadow: 1vw 1vw 5px #de2828;
           box-shadow: 1vw 1vw 5px #de2828;
+}
+
+.tiny-card-layout {
+  min-width: 60px;
+  width: auto;
+  height: 50px;
+  background-color: #b71c1c;
+  color: white;
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.tiny-card-layout div {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.tiny-card-layout img {
+  height: 100%;
+  display: inline-block;
+}
+
+.tiny-card-layout:hover {
+  cursor: pointer;
+  color: #b71c1c;
+  background-color: white;
 }
 
 .layout-img {
@@ -667,7 +696,41 @@ footer {
 
 .inline-content {
   display: inline-block;
-  padding: 2vw;
+  padding: 0 2vw;
+}
+
+.scrolling-event {
+  animation: scroll 50s infinite reverse linear;
+  width: 5000px;
+  overflow: hidden;
+  padding: 0 auto;
+}
+
+.scrolling-event li {
+  display: inline-block;
+  margin: 5px;
+}
+
+@-webkit-keyframes scroll {
+  0% {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+  }
+  100% {
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+  }
+  100% {
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+  }
 }
 
 .page-padding {

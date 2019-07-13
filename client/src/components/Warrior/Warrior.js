@@ -27,11 +27,6 @@ export default class Warrior extends Component {
     });
   };
 
-  handleRedirect = (func1, obj1, obj2) => {
-    func1(obj2.Arena, obj2);
-    obj1.authenticate();
-  };
-
   showDetails = obj => {
     this.setState({
       card: obj
@@ -42,8 +37,14 @@ export default class Warrior extends Component {
   };
 
   render() {
-    const { MONEY_CONVERTER, Arena, Warrior } = this.props.context;
-    console.log(Warrior);
+    const {
+      MONEY_CONVERTER,
+      Arena,
+      handleRedirect,
+      setArena,
+      RoadAuth
+    } = this.props.context;
+
     return (
       <div>
         <h1 className="landing-title center-align">Warriors</h1>
@@ -65,8 +66,11 @@ export default class Warrior extends Component {
             <WarriorDelete
               warrior={this.state.card}
               showDetails={this.showDetails}
+              show={this.state.show}
               handleDelete={this.handleDelete}
               MONEY_CONVERTER={MONEY_CONVERTER}
+              context={this.props.context}
+              handleRedirect={handleRedirect}
             />
 
             <Col s={2}>
@@ -82,9 +86,10 @@ export default class Warrior extends Component {
             <Row className="center-align">
               <ul>
                 <AllWarriors
-                  handleRedirect={this.handleRedirect}
                   showDetails={this.showDetails}
-                  context={this.props.context}
+                  setArena={setArena}
+                  handleRedirect={handleRedirect}
+                  RoadAuth={RoadAuth}
                 />
               </ul>
             </Row>
