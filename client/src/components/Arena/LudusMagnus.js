@@ -5,10 +5,13 @@ import ScheduleBattle from "./ScheduleBattle";
 import ScrollingBattles from "../Shared/ScrollingBattles";
 import DisplayBattle from "./DisplayBattle";
 import futureBattles from "../../utilities/futureBattles";
+import DeleteBattleMutation from "./DeleteBattleMutation";
 
 export default class LudusMagnus extends Component {
   state = {
-    schedule: false
+    schedule: false,
+    details: false,
+    selectedToDelete: []
   };
 
   openSchedule = e => {
@@ -18,11 +21,33 @@ export default class LudusMagnus extends Component {
     });
   };
 
+  openDetails = e => {
+    e.preventDefault();
+    this.setState({
+      details: !this.state.details
+    });
+  };
+
+  handleSelectedToDelete = id => {
+    this.setState({
+      selectedToDelete: [...this.state.selectedToDelete, id]
+    });
+  };
+
+  removeSelectedToDelete = id => {
+    const newSelections = this.state.selectedToDelete.filter(item => {
+      return item !== id;
+    });
+    this.setState({
+      selectedToDelete: newSelections
+    });
+  };
+
   render() {
     const { arena, warrior, close } = this.props;
 
     return (
-      <div>
+      <div className="ludus">
         <h5 className="landing-title">Ludus Magnus</h5>
         {this.state.schedule ? null : (
           <Row>
@@ -35,12 +60,16 @@ export default class LudusMagnus extends Component {
         )}
 
         {this.state.schedule ? (
-          <ScheduleBattle
-            openSchedule={this.openSchedule}
-            warrior={warrior}
-            arena={arena}
-            close={close}
-          />
+          <Row>
+            <Col s={10} offset="s1">
+              <ScheduleBattle
+                openSchedule={this.openSchedule}
+                warrior={warrior}
+                arena={arena}
+                close={close}
+              />
+            </Col>
+          </Row>
         ) : null}
 
         <Row style={{ overflow: "hidden" }}>
@@ -59,27 +88,57 @@ export default class LudusMagnus extends Component {
         </Row>
 
         <Row>
-          {arena.scheduledBattles ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Player One</th>
-                  <th>Player Two</th>
-                  <th>Purse</th>
-                </tr>
-              </thead>
-              <tbody>
-                {futureBattles(arena.scheduledBattles).map(battle => (
-                  <DisplayBattle key={battle.id} battle={battle} />
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div>
-              <p>No battles scheduled</p>
-            </div>
-          )}
+          <Col s={8} offset="s2">
+            <Button className="btn create-btn" onClick={this.openDetails}>
+              {this.state.details
+                ? "Close Battle Details"
+                : "Show Battle Details"}
+            </Button>
+          </Col>
+
+          {arena.scheduledBattles && this.state.details ? (
+            <Col s={10} offset="s1">
+              <table>
+                <thead>
+                  <tr>
+                    <DeleteBattleMutation
+                      ids={this.state.selectedToDelete}
+                      removeSelectedToDelete={this.removeSelectedToDelete}
+                    >
+                      {this.state.selectedToDelete.length > 0 ? (
+                        <i
+                          className="material-icons hovered"
+                          style={{
+                            backgroundColor:
+                              this.state.selectedToDelete.length > 0
+                                ? "red"
+                                : "",
+                            borderRadius: "3px"
+                          }}
+                        >
+                          clear
+                        </i>
+                      ) : null}
+                    </DeleteBattleMutation>
+                    <th>Date</th>
+                    <th>Player One</th>
+                    <th>Player Two</th>
+                    <th>Purse</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {futureBattles(arena.scheduledBattles).map(battle => (
+                    <DisplayBattle
+                      key={battle.id}
+                      battle={battle}
+                      handleSelectedToDelete={this.handleSelectedToDelete}
+                      removeSelectedToDelete={this.removeSelectedToDelete}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </Col>
+          ) : null}
         </Row>
       </div>
     );

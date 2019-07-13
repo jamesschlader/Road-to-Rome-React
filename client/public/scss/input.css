@@ -733,6 +733,10 @@ footer {
   }
 }
 
+.hovered {
+  cursor: pointer;
+}
+
 .page-padding {
   padding: 3vw;
 }

@@ -39,7 +39,7 @@ export default class Warrior extends Component {
   render() {
     const {
       MONEY_CONVERTER,
-      Arena,
+
       handleRedirect,
       setArena,
       RoadAuth
@@ -52,7 +52,7 @@ export default class Warrior extends Component {
         <Row>
           <Col s={8} offset="s2">
             {this.state.create ? (
-              <CreateWarrior handleQuit={this.handleQuit} ArenaId={Arena.id} />
+              <CreateWarrior handleQuit={this.handleQuit} />
             ) : this.state.show ? null : (
               <Button className="btn create-btn" onClick={this.handleQuit}>
                 Create a Warrior

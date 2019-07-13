@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default ({ battle }) => {
+export default ({ battle, handleSelectedToDelete, removeSelectedToDelete }) => {
+  const [selected, setSelected] = useState(false);
+  const handleSelection = () => {
+    selected
+      ? removeSelectedToDelete(battle.id)
+      : handleSelectedToDelete(battle.id);
+  };
+
   const showName = name => {
     return name || "No name available";
   };
@@ -8,9 +15,30 @@ export default ({ battle }) => {
 
   return (
     <tr>
+      <td
+        onClick={e => {
+          setSelected(!selected);
+          handleSelection();
+        }}
+      >
+        {selected ? (
+          <i className="material-icons hovered">check_box</i>
+        ) : (
+          <i className="material-icons hovered">check_box_outline_blank</i>
+        )}
+      </td>
       <td>{event.toDateString()}</td>
-      <td>{showName(battle.playerOne.name)}</td>
-      <td>{showName(battle.playerTwo.name)}</td>
+      {battle.playerOne ? (
+        <td>{showName(battle.playerOne.name)}</td>
+      ) : (
+        <td>No warrior!</td>
+      )}
+      {battle.playerTwo ? (
+        <td>{showName(battle.playerTwo.name)}</td>
+      ) : (
+        <td>No warrior!</td>
+      )}
+
       <td>{battle.purse} sp</td>
     </tr>
   );

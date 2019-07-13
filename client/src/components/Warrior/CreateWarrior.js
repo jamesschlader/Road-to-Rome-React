@@ -141,7 +141,7 @@ class CreateWarrior extends Component {
       speed: parseInt(this.state.speed),
       skill: parseInt(this.state.skill),
       wallet: parseInt(this.state.wallet),
-      ArenaId: this.state.ArenaId,
+
       living: true
     };
     console.log(obj);

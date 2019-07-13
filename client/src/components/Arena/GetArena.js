@@ -1,23 +1,22 @@
 import { Query } from "react-apollo";
 import getSingleArena from "../../api/Arena/queries/getSingleArena";
 import React from "react";
-import Spinner from "../Shared/Spinner";
 
 export default ({ arena, setActiveArena }) => {
   const id = arena.id;
   return (
-    <Query query={getSingleArena} variables={{ id }} errorPolicy="all">
+    <Query
+      query={getSingleArena}
+      variables={{ id }}
+      errorPolicy="all"
+      pollInterval={500}
+    >
       {({ loading, error, data }) => {
         if (error) {
           return <h3>Fucking error</h3>;
         }
         if (loading) {
-          return (
-            <div>
-              <h3>Loading Arena...</h3>
-              <Spinner />
-            </div>
-          );
+          return null;
         }
 
         setActiveArena(data.arena);

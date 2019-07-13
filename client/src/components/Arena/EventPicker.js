@@ -3,14 +3,35 @@ import eventDays from "../../utilities/eventDays";
 import { Button } from "react-materialize";
 
 function EventPicker({ arena, setEvent }) {
+  const results = arena.scheduledBattles.map(battle => {
+    console.log(battle.date);
+    const battleDate = new Date(battle.date);
+
+    return battleDate;
+  });
+
+  results.map(item =>
+    console.log(
+      `scheduled battle at ${item.getDate()} date and ${item.getHours()} time`
+    )
+  );
+
   const [chosenDate, setChosenDate] = useState();
 
   const cleanDate = chosenDate
     ? chosenDate.toDateString().replace(/2019/g, "") +
       ` at ${chosenDate.getHours()}:00`
     : "";
+
   const today = new Date().getDay();
   const dayOfMonth = new Date().getDate();
+  const times = quantity => {
+    let times = [];
+    for (let i = 0; i < quantity; i++) {
+      times.push(i + 1);
+    }
+    return times;
+  };
 
   const selectedEvent = (time, day, week) => {
     const date = () => {
@@ -29,12 +50,9 @@ function EventPicker({ arena, setEvent }) {
     setEvent(event);
   };
 
-  const showEventTimes = (quantity, day, week) => {
-    let times = [];
-    for (let i = 0; i < quantity; i++) {
-      times.push(i + 1);
-    }
-    return times.map(time => {
+  const showEventTimes = (day, week) => {
+    return times(arena.battleQuantity).map(time => {
+      console.log(`${(time + 12).toString()}:00`);
       return (
         <li
           key={time}
@@ -50,6 +68,7 @@ function EventPicker({ arena, setEvent }) {
 
   const showEventDayOptions = (week, frequency, quantity) => {
     const availableDays = eventDays(frequency).filter(day => {
+      console.log(day);
       return day.id > today;
     });
 
@@ -64,7 +83,7 @@ function EventPicker({ arena, setEvent }) {
             <p>
               {day.name} the {dayOfMonth + (day.id - today)}
             </p>
-            <ul>{showEventTimes(quantity, day, week)}</ul>
+            <ul>{showEventTimes(day, week)}</ul>
           </li>
         ))
       : eventDays(frequency).map(day => (
@@ -77,7 +96,7 @@ function EventPicker({ arena, setEvent }) {
             <p>
               {day.name} the {7 + dayOfMonth + (day.id - today)}
             </p>
-            <ul>{showEventTimes(quantity, day, week)}</ul>
+            <ul>{showEventTimes(day, week)}</ul>
           </li>
         ));
   };

@@ -7,6 +7,7 @@ import GetArena from "./GetArena";
 import WarriorCard from "../Warrior/WarriorCard";
 import WarriorTinyCard from "../Shared/WarriorTinyCard";
 import opponentWarriors from "../../utilities/opponentWarriors";
+import scrollFunction from "../../utilities/scrollFunction";
 
 export default ({
   arena,
@@ -41,6 +42,7 @@ export default ({
   const openLudus = () => {
     setShow(false);
     setLudus(!ludus);
+    scrollFunction("landing-title");
   };
 
   const addToCart = obj => {
@@ -73,7 +75,6 @@ export default ({
 
   return (
     <React.Fragment>
-      <GetArena arena={arena} setActiveArena={setActiveArena} />
       <Row className="page-padding ">
         <Col s={4}>
           <Button
@@ -104,16 +105,39 @@ export default ({
       <Row>
         <h1 className="landing-title center-align"> {arena.name}</h1>
       </Row>
+      <GetArena arena={arena} setActiveArena={setActiveArena} />
+
+      {market ? (
+        <Row>
+          <Market
+            market={activeArena.Market}
+            cart={shoppingCart}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+            warrior={warrior}
+            openShop={openShop}
+            MONEY_CONVERTER={MONEY_CONVERTER}
+          />
+        </Row>
+      ) : null}
 
       <Row>
         {!show ? (
           <>
-            <h5>{arena.name}'s warriors:</h5>
+            {ludus ? (
+              <Row>
+                <LudusMagnus
+                  arena={activeArena}
+                  warrior={warrior}
+                  close={openLudus}
+                />
+              </Row>
+            ) : null}
+
+            <h5>Research {arena.name}'s warriors:</h5>
             <Col s={3}>
               <WarriorCard warrior={warrior} showDetails={showDetails} />
             </Col>
-
-            {console.log(activeArena)}
             {activeArena !== undefined && activeArena.livingWarriors ? (
               <ul>
                 {opponentWarriors(activeArena, warrior).map(item => (
@@ -139,30 +163,6 @@ export default ({
           />
         )}
       </Row>
-
-      {ludus ? (
-        <Row>
-          <LudusMagnus
-            arena={activeArena}
-            warrior={warrior}
-            close={openLudus}
-          />
-        </Row>
-      ) : null}
-
-      {market ? (
-        <Row>
-          <Market
-            market={activeArena.Market}
-            cart={shoppingCart}
-            addToCart={addToCart}
-            removeFromCart={removeFromCart}
-            warrior={warrior}
-            openShop={openShop}
-            MONEY_CONVERTER={MONEY_CONVERTER}
-          />
-        </Row>
-      ) : null}
     </React.Fragment>
   );
 };
