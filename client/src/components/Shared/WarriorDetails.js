@@ -28,7 +28,6 @@ export default ({
     <Fragment>
       <GetWarrior id={warrior.id} setWarrior={setActiveWarrior} />
       <Row>
-        {console.log(show)}
         {show ? <Button onClick={showDetails}>Done</Button> : null}
 
         <div className="warrior-card">
@@ -53,7 +52,7 @@ export default ({
             to="/arena"
             style={{ color: "green" }}
           >
-            <p
+            <h2
               onClick={e => {
                 handleRedirect(
                   context.setArena,
@@ -63,7 +62,7 @@ export default ({
               }}
             >
               {activeWarrior.Arena.name}
-            </p>
+            </h2>
           </Link>
         </div>
         <ShowCash warrior={activeWarrior} MONEY_CONVERTER={MONEY_CONVERTER} />

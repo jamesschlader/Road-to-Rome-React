@@ -436,8 +436,8 @@ footer {
   min-width: 60px;
   width: auto;
   height: 50px;
-  background-color: color(primary);
-  color: color(secondary);
+  background-color: color(secondary);
+  color: black;
   display: inline-block;
   margin: 5px;
   padding: 5px;
@@ -455,8 +455,8 @@ footer {
 
   &:hover {
     cursor: pointer;
-    color: color(primary);
-    background-color: color(secondary);
+    color: color(secondary);
+    background-color: color(primary);
   }
 }
 

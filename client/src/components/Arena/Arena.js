@@ -5,6 +5,8 @@ import Market from "./Market";
 import WarriorDetails from "../Shared/WarriorDetails";
 import GetArena from "./GetArena";
 import WarriorCard from "../Warrior/WarriorCard";
+import WarriorTinyCard from "../Shared/WarriorTinyCard";
+import opponentWarriors from "../../utilities/opponentWarriors";
 
 export default ({
   arena,
@@ -19,7 +21,7 @@ export default ({
   const [shoppingCart, setShoppingCart] = useState([]);
   const [activeArena, setActiveArena] = useState();
   const [show, setShow] = useState(false);
-
+  const [detailWarrior, setDetailWarrior] = useState();
   const context = { RoadAuth, setArena };
 
   useEffect(() => {
@@ -65,6 +67,7 @@ export default ({
   };
 
   const showDetails = obj => {
+    setDetailWarrior(obj);
     setShow(!show);
   };
 
@@ -75,7 +78,8 @@ export default ({
         <Col s={4}>
           <Button
             onClick={goBack}
-            style={{ position: "relative", left: "40%", height: "54px" }}
+            className="create-btn"
+            // style={{ position: "relative", left: "40%", height: "54px" }}
           >
             <span>
               <i className="material-icons">keyboard_backspace</i>
@@ -83,24 +87,16 @@ export default ({
           </Button>
         </Col>
         <Col s={4}>
-          <Button
-            name="market"
-            onClick={openShop}
-            style={{ position: "relative", left: "40%", height: "54px" }}
-          >
+          <Button name="market" onClick={openShop} className="create-btn">
             <i className="material-icons">shopping_cart</i>
           </Button>
         </Col>
         <Col s={4}>
-          <Button
-            name="ludus"
-            onClick={openLudus}
-            style={{ position: "relative", left: "40%", height: "54px" }}
-          >
+          <Button name="ludus" onClick={openLudus} className="create-btn">
             <img
+              height="100%"
               src="./img/erics-images/ludus-home.png"
               alt="ludus-magnus"
-              className="card-img center-align"
             />
           </Button>
         </Col>
@@ -111,10 +107,30 @@ export default ({
 
       <Row>
         {!show ? (
-          <WarriorCard warrior={warrior} showDetails={showDetails} />
+          <>
+            <h5>{arena.name}'s warriors:</h5>
+            <Col s={3}>
+              <WarriorCard warrior={warrior} showDetails={showDetails} />
+            </Col>
+
+            {console.log(activeArena)}
+            {activeArena !== undefined && activeArena.livingWarriors ? (
+              <ul>
+                {opponentWarriors(activeArena, warrior).map(item => (
+                  <WarriorTinyCard
+                    key={item.id}
+                    warrior={item}
+                    showDetails={showDetails}
+                  />
+                ))}
+              </ul>
+            ) : null}
+
+            <Col s={9} />
+          </>
         ) : (
           <WarriorDetails
-            warrior={warrior}
+            warrior={detailWarrior}
             MONEY_CONVERTER={MONEY_CONVERTER}
             handleRedirect={handleRedirect}
             context={context}

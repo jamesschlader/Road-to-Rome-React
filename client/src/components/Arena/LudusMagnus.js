@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Col, Row, Button } from "react-materialize";
 import ScheduleBattle from "./ScheduleBattle";
-import WarriorTinyCard from "../Shared/WarriorTinyCard";
+
 import ScrollingBattles from "../Shared/ScrollingBattles";
 import DisplayBattle from "./DisplayBattle";
 import futureBattles from "../../utilities/futureBattles";
@@ -20,9 +20,6 @@ export default class LudusMagnus extends Component {
 
   render() {
     const { arena, warrior, close } = this.props;
-    const warriors = arena.livingWarriors.filter(item => {
-      return item != null && item.id !== warrior.id ? item : null;
-    });
 
     return (
       <div>
@@ -74,7 +71,7 @@ export default class LudusMagnus extends Component {
               </thead>
               <tbody>
                 {futureBattles(arena.scheduledBattles).map(battle => (
-                  <DisplayBattle battle={battle} />
+                  <DisplayBattle key={battle.id} battle={battle} />
                 ))}
               </tbody>
             </table>
@@ -83,15 +80,6 @@ export default class LudusMagnus extends Component {
               <p>No battles scheduled</p>
             </div>
           )}
-        </Row>
-
-        <Row>
-          <h5>{arena.name}'s warriors:</h5>
-          <ul>
-            {warriors.map(item => (
-              <WarriorTinyCard key={item.id} warrior={item} />
-            ))}
-          </ul>
         </Row>
       </div>
     );

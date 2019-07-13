@@ -8,17 +8,9 @@ export default ({ warrior, showDetails }) => {
         key={warrior.id}
         className="card-layout"
         title={warrior.name}
-        actions={[
-          <div
-            key={warrior.id}
-            onClick={e => {
-              showDetails(warrior);
-            }}
-            style={{ display: "inline-block" }}
-          >
-            <i className="material-icons">account_circle</i>
-          </div>
-        ]}
+        onClick={e => {
+          showDetails(warrior);
+        }}
       >
         <img src={warrior.image} alt={warrior.name} className="card-img" />
 
