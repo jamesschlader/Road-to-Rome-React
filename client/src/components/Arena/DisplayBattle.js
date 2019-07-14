@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import cleanDate from "../../utilities/cleanDate";
 
 export default ({ battle, handleSelectedToDelete, removeSelectedToDelete }) => {
   const [selected, setSelected] = useState(false);
@@ -27,7 +28,7 @@ export default ({ battle, handleSelectedToDelete, removeSelectedToDelete }) => {
           <i className="material-icons hovered">check_box_outline_blank</i>
         )}
       </td>
-      <td>{event.toDateString()}</td>
+      <td>{cleanDate(event)}</td>
       {battle.playerOne ? (
         <td>{showName(battle.playerOne.name)}</td>
       ) : (

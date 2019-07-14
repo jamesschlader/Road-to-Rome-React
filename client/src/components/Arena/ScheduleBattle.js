@@ -9,6 +9,7 @@ export default ({ openSchedule, warrior, arena, close }) => {
 
   const [opponent, setOpponent] = useState(defaultMessage);
   const [event, setEvent] = useState(new Date());
+  const [week, setWeek] = useState(false);
 
   const opponents = arena.livingWarriors.filter(item => {
     if (opponent.id) {
@@ -18,15 +19,22 @@ export default ({ openSchedule, warrior, arena, close }) => {
     }
   });
 
+  const toggleWeek = () => {
+    setWeek(!week);
+  };
+
   return (
     <div>
       <h3>Schedule a Battle</h3>
-      <Button className="btn" onClick={openSchedule}>
+      <Button className="btn inline-content" onClick={openSchedule}>
         Close
+      </Button>
+      <Button className="btn inline-content" onClick={toggleWeek}>
+        {week ? "Show current week" : "Show following week"}
       </Button>
       <Row className="small-padding">
         <Row s={6}>
-          <EventPicker arena={arena} setEvent={setEvent} />
+          <EventPicker arena={arena} setEvent={setEvent} week={week} />
         </Row>
         <h4 className="inline-content">{warrior.name}</h4>
         <h5 className="inline-content">vs</h5>
