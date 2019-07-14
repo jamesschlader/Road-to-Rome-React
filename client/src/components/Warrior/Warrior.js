@@ -1,101 +1,75 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import RtoRBtn from "../Shared/RtoRBtn";
 import { Row, Col, Button } from "react-materialize";
 import CreateWarrior from "./CreateWarrior";
 import AllWarriors from "./AllWarriors";
 import WarriorDelete from "./WarriorDelete";
 
-export default class Warrior extends Component {
-  state = {
-    create: false,
-    show: false
-  };
+export default ({ location, context }) => {
+  const [create, setCreate] = useState(false);
+  const [show, setShow] = useState(false);
+  const [card, setCard] = useState();
 
-  handleQuit = e => {
+  const handleQuit = e => {
     e.preventDefault();
-
-    this.setState({
-      create: !this.state.create
-    });
+    setCreate(!create);
   };
 
-  handleDelete = e => {
+  const handleDelete = e => {
     e.preventDefault();
-    this.setState({
-      card: null,
-      show: false
-    });
+    setCard(null);
+    setShow(false);
   };
 
-  showDetails = obj => {
-    this.setState({
-      card: obj
-    });
-    this.setState((state, props) => {
-      return { show: !state.show };
-    });
+  const showDetails = obj => {
+    setCard(obj);
+    setShow(!show);
   };
 
-  render() {
-    const {
-      MONEY_CONVERTER,
+  return (
+    <div>
+      <h1 className="landing-title center-align">Warriors</h1>
 
-      handleRedirect,
-      setArena,
-      RoadAuth
-    } = this.props.context;
+      <Row>
+        <Col s={8} offset="s2">
+          {create ? (
+            <CreateWarrior handleQuit={handleQuit} />
+          ) : show ? null : (
+            <Button className="btn create-btn" onClick={handleQuit}>
+              Create a Warrior
+            </Button>
+          )}
+        </Col>
+      </Row>
 
-    return (
-      <div>
-        <h1 className="landing-title center-align">Warriors</h1>
+      {show && card ? (
+        <React.Fragment>
+          <WarriorDelete
+            warrior={card}
+            showDetails={showDetails}
+            show={show}
+            handleDelete={handleDelete}
+            context={context}
+            location={location}
+          />
 
-        <Row>
-          <Col s={8} offset="s2">
-            {this.state.create ? (
-              <CreateWarrior handleQuit={this.handleQuit} />
-            ) : this.state.show ? null : (
-              <Button className="btn create-btn" onClick={this.handleQuit}>
-                Create a Warrior
-              </Button>
-            )}
-          </Col>
-        </Row>
-
-        {this.state.show && this.state.card ? (
-          <React.Fragment>
-            <WarriorDelete
-              warrior={this.state.card}
-              showDetails={this.showDetails}
-              show={this.state.show}
-              handleDelete={this.handleDelete}
-              MONEY_CONVERTER={MONEY_CONVERTER}
-              context={this.props.context}
-              handleRedirect={handleRedirect}
+          <Col s={2}>
+            <RtoRBtn
+              clickAction={showDetails}
+              icon="keyboard_backspace"
+              data={card}
             />
-
-            <Col s={2}>
-              <RtoRBtn
-                clickAction={this.showDetails}
-                icon="keyboard_backspace"
-                data={this.state.card}
-              />
-            </Col>
-          </React.Fragment>
-        ) : !this.state.show ? (
-          this.state.create ? null : (
-            <Row className="center-align">
-              <ul>
-                <AllWarriors
-                  showDetails={this.showDetails}
-                  setArena={setArena}
-                  handleRedirect={handleRedirect}
-                  RoadAuth={RoadAuth}
-                />
-              </ul>
-            </Row>
-          )
-        ) : null}
-      </div>
-    );
-  }
-}
+          </Col>
+        </React.Fragment>
+      ) : !show ? (
+        create ? null : (
+          <Row className="center-align">
+            <ul>
+              <AllWarriors showDetails={showDetails} />
+            </ul>
+          </Row>
+        )
+      ) : null}
+    </div>
+  );
+};

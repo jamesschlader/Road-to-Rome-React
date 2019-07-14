@@ -9,11 +9,10 @@ import WarriorDetails from "../Shared/WarriorDetails";
 export default ({
   warrior,
   handleDelete,
-  MONEY_CONVERTER,
-  handleRedirect,
   showDetails,
   show,
-  context
+  context,
+  location
 }) => {
   const deleteWarrior = id => {
     return (
@@ -36,11 +35,10 @@ export default ({
     <React.Fragment>
       <WarriorDetails
         warrior={warrior}
-        MONEY_CONVERTER={MONEY_CONVERTER}
         context={context}
-        handleRedirect={handleRedirect}
         showDetails={showDetails}
         show={show}
+        location={location}
       />
 
       <Col s={3} offset="s5">

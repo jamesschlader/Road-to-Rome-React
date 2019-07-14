@@ -157,15 +157,14 @@ const WarriorType = new GraphQLObjectType({
     nextScheduledBattle: {
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
-        return Battle.find(
-          {
-            $or: [{ playerOneId: parent.id }, { playerTwoId: parent.id }],
-            scheduled: true
-          },
-          null,
-          { sort: { date: "desc" } }
-        ).then(result => {
-          return result;
+        return parent.battlesIdList.map(id => {
+          return Battle.findById(id).then(battle => {
+            if (battle !== null) {
+              return battle;
+            } else {
+              return new Battle({ ArenaId: parent.ArenaId });
+            }
+          });
         });
       }
     },

@@ -9,21 +9,13 @@ import WarriorTinyCard from "../Shared/WarriorTinyCard";
 import opponentWarriors from "../../utilities/opponentWarriors";
 import scrollFunction from "../../utilities/scrollFunction";
 
-export default ({
-  arena,
-  warrior,
-  MONEY_CONVERTER,
-  handleRedirect,
-  RoadAuth,
-  setArena
-}) => {
+export default ({ arena, context, warrior, location }) => {
   const [ludus, setLudus] = useState(false);
   const [market, setMarket] = useState(false);
   const [shoppingCart, setShoppingCart] = useState([]);
   const [activeArena, setActiveArena] = useState();
   const [show, setShow] = useState(false);
   const [detailWarrior, setDetailWarrior] = useState();
-  const context = { RoadAuth, setArena };
 
   useEffect(() => {
     setActiveArena(arena);
@@ -77,11 +69,7 @@ export default ({
     <React.Fragment>
       <Row className="page-padding ">
         <Col s={4}>
-          <Button
-            onClick={goBack}
-            className="create-btn"
-            // style={{ position: "relative", left: "40%", height: "54px" }}
-          >
+          <Button onClick={goBack} className="create-btn">
             <span>
               <i className="material-icons">keyboard_backspace</i>
             </span>
@@ -116,7 +104,7 @@ export default ({
             removeFromCart={removeFromCart}
             warrior={warrior}
             openShop={openShop}
-            MONEY_CONVERTER={MONEY_CONVERTER}
+            MONEY_CONVERTER={context.MONEY_CONVERTER}
           />
         </Row>
       ) : null}
@@ -155,11 +143,10 @@ export default ({
         ) : (
           <WarriorDetails
             warrior={detailWarrior}
-            MONEY_CONVERTER={MONEY_CONVERTER}
-            handleRedirect={handleRedirect}
             context={context}
             showDetails={showDetails}
             show={show}
+            location={location}
           />
         )}
       </Row>

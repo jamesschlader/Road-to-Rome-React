@@ -118,7 +118,9 @@ export default class LudusMagnus extends Component {
                         >
                           clear
                         </i>
-                      ) : null}
+                      ) : (
+                        "Delete?"
+                      )}
                     </DeleteBattleMutation>
                     <th>Date</th>
                     <th>Player One</th>

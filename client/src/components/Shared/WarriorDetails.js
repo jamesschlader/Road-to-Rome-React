@@ -10,14 +10,7 @@ import ShowWeapons from "./ShowWeapons";
 import { Link } from "react-router-dom";
 import Button from "react-materialize/lib/Button";
 
-export default ({
-  warrior,
-  MONEY_CONVERTER,
-  handleRedirect,
-  context,
-  showDetails,
-  show
-}) => {
+export default ({ warrior, context, showDetails, show, location }) => {
   const [activeWarrior, setActiveWarrior] = useState(warrior);
 
   useEffect(() => {
@@ -26,7 +19,10 @@ export default ({
 
   return (
     <Fragment>
-      <GetWarrior id={warrior.id} setWarrior={setActiveWarrior} />
+      {!warrior.strength ? (
+        <GetWarrior id={warrior.id} setWarrior={setActiveWarrior} />
+      ) : null}
+
       <Row>
         {show ? <Button onClick={showDetails}>Done</Button> : null}
 
@@ -46,47 +42,67 @@ export default ({
       </Row>
       <Row>
         <div className="inline-content">
-          <h5>Current Arena</h5>
-          <Link
-            key={activeWarrior.Arena.id}
-            to="/arena"
-            style={{ color: "green" }}
-          >
-            <h2
-              onClick={e => {
-                handleRedirect(
-                  context.setArena,
-                  context.RoadAuth,
-                  activeWarrior
-                );
-              }}
-            >
-              {activeWarrior.Arena.name}
-            </h2>
-          </Link>
+          {location.pathname === "/arena" ? null : (
+            <>
+              <h5>Current Arena</h5>
+              <Link
+                key={warrior.Arena.id}
+                to="/arena"
+                style={{ color: "green" }}
+              >
+                <h2
+                  onClick={e => {
+                    context.handleRedirect(
+                      context.setArena,
+                      context.RoadAuth,
+                      activeWarrior
+                    );
+                  }}
+                >
+                  {warrior.Arena.name}
+                </h2>
+              </Link>
+            </>
+          )}
         </div>
-        <ShowCash warrior={activeWarrior} MONEY_CONVERTER={MONEY_CONVERTER} />
-        <ShowWinnings
-          warrior={activeWarrior}
-          MONEY_CONVERTER={MONEY_CONVERTER}
-        />
+
+        {activeWarrior ? (
+          <>
+            <ShowCash
+              warrior={activeWarrior}
+              MONEY_CONVERTER={context.MONEY_CONVERTER}
+            />
+            <ShowWinnings
+              warrior={activeWarrior}
+              MONEY_CONVERTER={context.MONEY_CONVERTER}
+            />
+          </>
+        ) : (
+          <p>Waiting for warrior details...</p>
+        )}
       </Row>
-      <Row>
-        <Col s={6}>
-          <ShowAbilities warrior={activeWarrior} />
-        </Col>
-        <Col s={6}>
-          <ShowNextBattle warrior={activeWarrior} />
-        </Col>
-      </Row>
-      <Row>
-        <Col s={6}>
-          <ShowArmor warrior={activeWarrior} />
-        </Col>
-        <Col s={6}>
-          <ShowWeapons warrior={activeWarrior} />
-        </Col>
-      </Row>
+      {activeWarrior ? (
+        <>
+          <Row>
+            <Col s={6}>
+              <ShowAbilities warrior={activeWarrior} />
+            </Col>
+            <Col s={6}>
+              <ShowNextBattle warrior={activeWarrior} />
+            </Col>
+          </Row>
+          <Row>
+            <Col s={6}>
+              <ShowArmor warrior={activeWarrior} />
+            </Col>
+            <Col s={6}>
+              <ShowWeapons warrior={activeWarrior} />
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <p>Waiting for warrior details...</p>
+      )}
     </Fragment>
   );
 };
