@@ -1,37 +1,60 @@
 import React, { useState } from "react";
 import eventDays from "../../utilities/eventDays";
 import { Button } from "react-materialize";
+import futureBattles from "../../utilities/futureBattles";
 
 function EventPicker({ arena, setEvent }) {
-  const results = arena.scheduledBattles.map(battle => {
-    console.log(battle.date);
-    const battleDate = new Date(battle.date);
-
-    return battleDate;
-  });
-
-  results.map(item =>
-    console.log(
-      `scheduled battle at ${item.getDate()} date and ${item.getHours()} time`
-    )
-  );
-
   const [chosenDate, setChosenDate] = useState();
 
-  const cleanDate = chosenDate
-    ? chosenDate.toDateString().replace(/2019/g, "") +
-      ` at ${chosenDate.getHours()}:00`
-    : "";
+  const cleanDate = chosenDate => {
+    return chosenDate
+      ? chosenDate.toDateString().replace(/2019/g, "") +
+          ` at ${chosenDate.getHours()}:${
+            chosenDate.getMinutes() === 0 ? "00" : chosenDate.getMinutes()
+          }`
+      : "";
+  };
 
   const today = new Date().getDay();
   const dayOfMonth = new Date().getDate();
-  const times = quantity => {
-    let times = [];
+
+  const hours = quantity => {
+    let hours = [0];
+
     for (let i = 0; i < quantity; i++) {
-      times.push(i + 1);
+      hours.push(
+        i % 2 === 0 ? hours[hours.length - 1] : hours[hours.length - 1] + 1
+      );
+    }
+    hours.pop();
+    return hours;
+  };
+  const times = hours => {
+    let times = [];
+    for (let i = 0; i < hours.length; i++) {
+      times.push(i % 2 === 0 ? 0 : 30);
     }
     return times;
   };
+
+  const days = eventDays(arena.gamesFrequency);
+  const hourTimes = hours(arena.battleQuantity);
+  const timeMinutes = times(hourTimes);
+  console.log(`hours is `, hourTimes);
+  console.log(`days is `, days);
+  console.log(`times are `, timeMinutes);
+
+  const hourAndTime = hourTimes.map((hour, index) => {
+    const event = new Date();
+    const validDays = eventDays(arena.gamesFrequency);
+    console.log(validDays);
+    event.setHours(hour + 11);
+    event.setMinutes(timeMinutes[index]);
+    event.setSeconds(0);
+    return cleanDate(event);
+  });
+
+  console.log(hourAndTime);
 
   const selectedEvent = (time, day, week) => {
     const date = () => {
@@ -42,7 +65,7 @@ function EventPicker({ arena, setEvent }) {
 
     const event = new Date();
     event.setDate(date());
-    event.setHours(time + 12);
+    event.setHours(time);
     event.setMinutes(0);
     event.setSeconds(0);
     console.log(event);
@@ -51,8 +74,7 @@ function EventPicker({ arena, setEvent }) {
   };
 
   const showEventTimes = (day, week) => {
-    return times(arena.battleQuantity).map(time => {
-      console.log(`${(time + 12).toString()}:00`);
+    return hourAndTime.map(time => {
       return (
         <li
           key={time}
@@ -60,7 +82,7 @@ function EventPicker({ arena, setEvent }) {
           className="time-box"
           onClick={e => selectedEvent(time, day, week)}
         >
-          {(time + 12).toString()}:00
+          {time.toString()}
         </li>
       );
     });
@@ -68,7 +90,6 @@ function EventPicker({ arena, setEvent }) {
 
   const showEventDayOptions = (week, frequency, quantity) => {
     const availableDays = eventDays(frequency).filter(day => {
-      console.log(day);
       return day.id > today;
     });
 

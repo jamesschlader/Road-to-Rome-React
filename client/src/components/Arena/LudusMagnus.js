@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Col, Row, Button } from "react-materialize";
 import ScheduleBattle from "./ScheduleBattle";
-
 import ScrollingBattles from "../Shared/ScrollingBattles";
 import DisplayBattle from "./DisplayBattle";
 import futureBattles from "../../utilities/futureBattles";

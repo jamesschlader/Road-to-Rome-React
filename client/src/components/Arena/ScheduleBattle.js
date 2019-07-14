@@ -54,6 +54,7 @@ export default ({ openSchedule, warrior, arena, close }) => {
         <ul style={{ display: "inline-block" }}>
           {opponents.map(candidate => (
             <BattleCard
+              key={candidate.id}
               candidate={candidate}
               opponent={opponent}
               setOpponent={setOpponent}
