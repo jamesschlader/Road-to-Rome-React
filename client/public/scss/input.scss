@@ -285,6 +285,11 @@ footer {
 
 .selection-button {
   background-color: green !important;
+  line-height: 2;
+}
+
+.btn.fancy {
+  font-family: font(decorative-secondary);
 }
 
 %action-btn {
@@ -403,14 +408,14 @@ footer {
   padding: 5px;
   h2 {
     color: green;
-    &:hover {
-      color: color(secondary);
-    }
   }
 
   &:hover {
     background-color: color(primary);
     color: color(secondary);
+    h2 {
+      color: color(secondary);
+    }
   }
 }
 
@@ -618,7 +623,7 @@ footer {
   right: 2vw;
 }
 .warrior-card {
-  max-width: 25vw;
+  max-width: 15vw;
   margin: 0 auto;
 }
 

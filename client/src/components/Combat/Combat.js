@@ -4,23 +4,20 @@ import { Link } from "react-router-dom";
 import GetCurrentBattle from "./GetCurrentBattle";
 import DisplayPlayer from "./DisplayPlayer";
 import PlayerVitals from "./PlayerVitals";
-import cardContent from "../../utilities/cardContent";
+
 import Button from "react-materialize/lib/Button";
-import ActionCard from "./ActionCard";
+import CombatLoop from "./CombatLoop";
 
 export default ({ context }) => {
-  console.log(context);
   const { Battle, Arena, Warrior, MONEY_CONVERTER } = context;
+  const [currentBattle, setCurrentBattle] = useState(Battle);
   const [showPlayerOneStats, setShowPlayerOneStats] = useState(false);
   const [showPlayerTwoStats, setShowPlayerTwoStats] = useState(false);
-  const [currentBattle, setCurrentBattle] = useState(Battle);
-  const [turn, setTurn] = useState(true);
+  const [turn, setTurn] = useState(null);
+  const [start, setStart] = useState(false);
   const { playerOne, playerTwo } = currentBattle;
-
-  const switchTurns = e => {
-    e.preventDefault();
-    setTurn(!turn);
-  };
+  const [oneVitals, setOneVitals] = useState(playerOne);
+  const [twoVitals, setTwoVitals] = useState(playerTwo);
 
   return (
     <Fragment>
@@ -45,37 +42,51 @@ export default ({ context }) => {
               {Battle.playerOne.name} vs {Battle.playerTwo.name}
             </h3>
             <Link className="center-align" to="/arena">
-              <Button>The battle is over</Button>
+              <Button>Exit</Button>
             </Link>
-            <Button className="btn" onClick={e => switchTurns(e)}>
-              Switch Turns
-            </Button>
+
+            <Row>
+              {start ? (
+                <>
+                  <Button className="btn" onClick={e => setTurn(!turn)}>
+                    Switch Turns
+                  </Button>
+                  <Button className="btn" onClick={e => setStart(!start)}>
+                    Finish Battle
+                  </Button>
+                </>
+              ) : (
+                <Col s={4} offset="s4">
+                  <Button
+                    className="btn expand-content selection-button create-btn fancy"
+                    onClick={e => setStart(!start)}
+                  >
+                    start battle
+                  </Button>
+                </Col>
+              )}
+            </Row>
           </>
         ) : null}
-      </Row>
-      <Row className="battlefield">
-        <Row>
-          <PlayerVitals
-            playerOne={playerOne}
-            playerTwo={playerTwo}
-            turn={turn}
-          />
-        </Row>
-        <Row>
-          <ul className="center-align">
-            {cardContent.map((card, index) => (
-              <li key={index} className="inline-content tight">
-                <ActionCard content={card} />
-              </li>
-            ))}
-          </ul>
-        </Row>
       </Row>
 
       <GetCurrentBattle
         setCurrentBattle={setCurrentBattle}
         battle={context.Battle}
       />
+      <Row className="battlefield">
+        <Row>
+          <PlayerVitals
+            playerOne={playerOne}
+            playerTwo={playerTwo}
+            turn={turn}
+            setOneVitals={setOneVitals}
+            setTwoVitals={setTwoVitals}
+          />
+        </Row>
+        {start ? <CombatLoop /> : null}
+      </Row>
+
       <Row className="side-content side-left rounded-content-box btn-row">
         <DisplayPlayer
           show={showPlayerOneStats}

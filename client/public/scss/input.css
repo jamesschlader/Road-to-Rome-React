@@ -478,6 +478,11 @@ footer {
 
 .selection-button {
   background-color: green !important;
+  line-height: 2;
+}
+
+.btn.fancy {
+  font-family: "Cinzel";
 }
 
 .landing-btn, .create-btn {
@@ -618,12 +623,12 @@ footer {
   color: green;
 }
 
-.highlight-header h2:hover {
+.highlight-header:hover {
+  background-color: #b71c1c;
   color: white;
 }
 
-.highlight-header:hover {
-  background-color: #b71c1c;
+.highlight-header:hover h2 {
   color: white;
 }
 
@@ -880,7 +885,7 @@ footer {
 }
 
 .warrior-card {
-  max-width: 25vw;
+  max-width: 15vw;
   margin: 0 auto;
 }
 

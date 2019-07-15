@@ -42,6 +42,7 @@ const WarriorHome = ({ component: Component, ...rest }) => (
 export default class Layout extends Component {
   constructor(props) {
     super(props);
+
     this.setArena = (Arena, Warrior) => {
       this.setState({
         Arena,
@@ -71,6 +72,10 @@ export default class Layout extends Component {
       handleRedirect: this.handleRedirect,
       startCombat: this.startCombat
     };
+  }
+
+  componentDidMount() {
+    localStorage.setItem("whereWasI", "/arena");
   }
 
   render() {
