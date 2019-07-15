@@ -609,6 +609,24 @@ footer {
   margin-bottom: 80px;
 }
 
+.highlight-header {
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.highlight-header h2 {
+  color: green;
+}
+
+.highlight-header h2:hover {
+  color: white;
+}
+
+.highlight-header:hover {
+  background-color: #b71c1c;
+  color: white;
+}
+
 .btn-row {
   margin-bottom: 100px;
 }
@@ -632,10 +650,24 @@ footer {
   height: auto;
 }
 
+.card-img.lock {
+  height: 75px;
+}
+
 .card-layout {
   min-width: 165px;
+  max-height: 220px;
   width: 12vw;
   height: auto;
+  border-radius: 5px;
+}
+
+.card-layout.tight {
+  max-width: 120px !important;
+}
+
+.buffer {
+  margin: 0 10px;
 }
 
 .card-layout:hover {
@@ -697,6 +729,11 @@ footer {
 .inline-content {
   display: inline-block;
   padding: 0 2vw;
+}
+
+.inline-content.tight {
+  margin: 0 3px;
+  padding: 0;
 }
 
 .scrolling-event {
@@ -814,9 +851,41 @@ footer {
   }
 }
 
+.table-heading {
+  text-align: left;
+  font-weight: bold;
+}
+
+.side-content {
+  position: absolute;
+  height: 100%;
+  min-width: 3vw;
+  top: 0;
+  margin: 140px 5px;
+  max-height: 1200px;
+}
+
+@media (max-width: 680px) {
+  .side-content {
+    display: hidden;
+  }
+}
+
+.side-left {
+  left: 2vw;
+}
+
+.side-right {
+  right: 2vw;
+}
+
 .warrior-card {
   max-width: 25vw;
   margin: 0 auto;
+}
+
+.battlefield {
+  min-height: 800px;
 }
 
 .expand-content {

@@ -33,9 +33,11 @@ const getSingleArena = gql`
             name
           }
           playerOne {
+            id
             name
           }
           playerTwo {
+            id
             name
           }
           purse
@@ -67,9 +69,11 @@ const getSingleArena = gql`
         date
         purse
         playerOne {
+          id
           name
         }
         playerTwo {
+          id
           name
         }
       }

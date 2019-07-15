@@ -43,26 +43,24 @@ export default ({ warrior, context, showDetails, show, location }) => {
       <Row>
         <div className="inline-content">
           {location.pathname === "/arena" ? null : (
-            <>
+            <div>
               <h5>Current Arena</h5>
-              <Link
-                key={warrior.Arena.id}
-                to="/arena"
-                style={{ color: "green" }}
-              >
-                <h2
-                  onClick={e => {
-                    context.handleRedirect(
-                      context.setArena,
-                      context.RoadAuth,
-                      activeWarrior
-                    );
-                  }}
-                >
-                  {warrior.Arena.name}
-                </h2>
-              </Link>
-            </>
+              <div className="highlight-header">
+                <Link key={warrior.Arena.id} to="/arena">
+                  <h2
+                    onClick={e => {
+                      context.handleRedirect(
+                        context.setArena,
+                        context.RoadAuth,
+                        activeWarrior
+                      );
+                    }}
+                  >
+                    {warrior.Arena.name}
+                  </h2>
+                </Link>
+              </div>
+            </div>
           )}
         </div>
 

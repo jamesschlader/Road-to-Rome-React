@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import cleanDate from "../../utilities/cleanDate";
 
-export default ({ battle, handleSelectedToDelete, removeSelectedToDelete }) => {
+export default ({
+  battle,
+  handleSelectedToDelete,
+  removeSelectedToDelete,
+  fight,
+  setFight,
+  selectForFight
+}) => {
   const [selected, setSelected] = useState(false);
+
   const handleSelection = () => {
     selected
       ? removeSelectedToDelete(battle.id)
@@ -23,6 +31,18 @@ export default ({ battle, handleSelectedToDelete, removeSelectedToDelete }) => {
         }}
       >
         {selected ? (
+          <i className="material-icons hovered">check_box</i>
+        ) : (
+          <i className="material-icons hovered">check_box_outline_blank</i>
+        )}
+      </td>
+      <td
+        onClick={e => {
+          setFight();
+          selectForFight(battle.id);
+        }}
+      >
+        {fight ? (
           <i className="material-icons hovered">check_box</i>
         ) : (
           <i className="material-icons hovered">check_box_outline_blank</i>

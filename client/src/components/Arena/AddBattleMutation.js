@@ -4,11 +4,7 @@ import { Button } from "react-materialize";
 import { addBattleMutation } from "../../api/Battle/mutations/addBattleMutation";
 
 export default ({ playerOne, playerTwo, purse, arena, date, close }) => {
-  console.log(`arena = `, arena);
-
   function createBattle() {
-    console.log(`playerOne is `, playerOne);
-
     const battleData = {
       ArenaId: arena.id,
       playerOneId: playerOne,
@@ -17,7 +13,6 @@ export default ({ playerOne, playerTwo, purse, arena, date, close }) => {
       date,
       scheduled: true
     };
-    console.log(`battleData = `, battleData);
 
     return (
       <Mutation mutation={addBattleMutation} variables={{ ...battleData }}>
@@ -26,10 +21,7 @@ export default ({ playerOne, playerTwo, purse, arena, date, close }) => {
             className="btn selection-button"
             onClick={e => {
               close();
-              postMutation().then(battle => {
-                const { addBattle } = battle.data;
-                console.log(addBattle);
-              });
+              postMutation();
             }}
           >
             Confirm

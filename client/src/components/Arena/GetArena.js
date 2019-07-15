@@ -9,7 +9,7 @@ export default ({ arena, setActiveArena }) => {
       query={getSingleArena}
       variables={{ id }}
       errorPolicy="all"
-      // pollInterval={500}
+      pollInterval={500}
     >
       {({ loading, error, data }) => {
         if (error) {

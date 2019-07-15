@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import { Col, Row, Button } from "react-materialize";
 import ScheduleBattle from "./ScheduleBattle";
-import ScrollingBattles from "../Shared/ScrollingBattles";
+// import ScrollingBattles from "../Shared/ScrollingBattles";
 import DisplayBattle from "./DisplayBattle";
 import futureBattles from "../../utilities/futureBattles";
 import DeleteBattleMutation from "./DeleteBattleMutation";
+import BattlePrep from "./BattlePrep";
 
 export default class LudusMagnus extends Component {
   state = {
     schedule: false,
     details: false,
-    selectedToDelete: []
+    selectedToDelete: [],
+    fight: false
   };
 
   openSchedule = e => {
@@ -42,8 +44,20 @@ export default class LudusMagnus extends Component {
     });
   };
 
+  setFight = () => {
+    this.setState({
+      fight: !this.state.fight
+    });
+  };
+
+  selectForFight = id => {
+    this.setState({
+      selectedForFight: id
+    });
+  };
+
   render() {
-    const { arena, warrior, close } = this.props;
+    const { arena, warrior, close, context } = this.props;
 
     return (
       <div className="ludus">
@@ -71,7 +85,7 @@ export default class LudusMagnus extends Component {
           </Row>
         ) : null}
 
-        <Row style={{ overflow: "hidden" }}>
+        {/* <Row style={{ overflow: "hidden" }}>
           <h5>{arena.name} Scheduled Battles</h5>
           <ul className="scrolling-event">
             {arena.scheduledBattles ? (
@@ -84,7 +98,7 @@ export default class LudusMagnus extends Component {
               </div>
             )}
           </ul>
-        </Row>
+        </Row> */}
 
         <Row>
           <Col s={8} offset="s2">
@@ -121,6 +135,7 @@ export default class LudusMagnus extends Component {
                         "Delete?"
                       )}
                     </DeleteBattleMutation>
+                    <th>Fight!</th>
                     <th>Date</th>
                     <th>Player One</th>
                     <th>Player Two</th>
@@ -128,14 +143,29 @@ export default class LudusMagnus extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {futureBattles(arena.scheduledBattles).map(battle => (
-                    <DisplayBattle
-                      key={battle.id}
-                      battle={battle}
-                      handleSelectedToDelete={this.handleSelectedToDelete}
-                      removeSelectedToDelete={this.removeSelectedToDelete}
+                  {this.state.fight ? (
+                    <BattlePrep
+                      battle={
+                        futureBattles(arena.scheduledBattles).filter(battle => {
+                          return battle.id === this.state.selectedForFight;
+                        })[0]
+                      }
+                      setFight={this.setFight}
+                      context={context}
                     />
-                  ))}
+                  ) : (
+                    futureBattles(arena.scheduledBattles).map(battle => (
+                      <DisplayBattle
+                        key={battle.id}
+                        battle={battle}
+                        handleSelectedToDelete={this.handleSelectedToDelete}
+                        removeSelectedToDelete={this.removeSelectedToDelete}
+                        fight={this.state.fight}
+                        setFight={this.setFight}
+                        selectForFight={this.selectForFight}
+                      />
+                    ))
+                  )}
                 </tbody>
               </table>
             </Col>

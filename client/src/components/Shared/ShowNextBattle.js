@@ -1,6 +1,6 @@
 import React from "react";
-import parseDate from "../../utilities/parseDate";
 import nextBattle from "../../utilities/nextBattle";
+import parseDate from "../../utilities/parseDate";
 
 export default ({ warrior }) => {
   return (

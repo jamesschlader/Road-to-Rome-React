@@ -118,7 +118,7 @@ const WarriorType = new GraphQLObjectType({
       type: new GraphQLList(ArmorType),
       resolve(parent, args) {
         return parent.armorIdList.length > 0
-          ? parent.armorIdList.map(id => Armor.findById({ _id: id }))
+          ? parent.armorIdList.map(id => Armor.findById(id))
           : Armor.find({ name: "None" }).then(result => {
               parent.armorList = result;
               parent.save();
@@ -133,7 +133,7 @@ const WarriorType = new GraphQLObjectType({
       type: new GraphQLList(WeaponType),
       resolve(parent, args) {
         return parent.weaponsIdList.length > 0
-          ? parent.weaponsIdList.map(id => Weapon.findById({ _id: id }))
+          ? parent.weaponsIdList.map(id => Weapon.findById(id))
           : Weapon.find({ name: "Fists" }).then(result => {
               parent.weaponList = result;
               parent.save();

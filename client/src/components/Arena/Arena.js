@@ -118,6 +118,7 @@ export default ({ arena, context, warrior, location }) => {
                   arena={activeArena}
                   warrior={warrior}
                   close={openLudus}
+                  context={context}
                 />
               </Row>
             ) : null}

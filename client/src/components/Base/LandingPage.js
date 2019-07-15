@@ -14,7 +14,7 @@ const pics = [
 export default () => {
   return (
     <div>
-      <h1 id="landing-title" className="center-align">
+      <h1 id="landing-title" className="center-align rounded-content-box">
         Road to Rome
       </h1>
 

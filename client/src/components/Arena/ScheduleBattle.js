@@ -57,7 +57,7 @@ export default ({ openSchedule, warrior, arena, close }) => {
           </div>
         ) : null}
       </Row>
-      <Row>
+      <Row className="center-align">
         {opponent.id && <Button>Change Opponent</Button>}
         <ul style={{ display: "inline-block" }}>
           {opponents.map(candidate => (
