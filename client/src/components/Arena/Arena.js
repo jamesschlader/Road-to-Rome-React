@@ -7,7 +7,6 @@ import GetArena from "./GetArena";
 import WarriorCard from "../Warrior/WarriorCard";
 import WarriorTinyCard from "../Shared/WarriorTinyCard";
 import opponentWarriors from "../../utilities/opponentWarriors";
-import scrollFunction from "../../utilities/scrollFunction";
 
 export default ({ arena, context, warrior, location }) => {
   const [ludus, setLudus] = useState(false);
@@ -34,7 +33,6 @@ export default ({ arena, context, warrior, location }) => {
   const openLudus = () => {
     setShow(false);
     setLudus(!ludus);
-    scrollFunction("landing-title");
   };
 
   const addToCart = obj => {

@@ -607,27 +607,33 @@ footer {
 
 .side-content {
   box-sizing: border-box;
-  position: relative;
-  top: -150%;
+  position: absolute;
+  top: 60px;
   height: auto;
   min-width: 210px;
   width: auto;
-  transition: height 2s;
+  z-index: 20;
+  transition: all 2s ease-in;
+  &.side-left {
+    visibility: hidden;
+    left: -100%;
 
-  @include tab {
-    display: hidden;
+    &.show {
+      visibility: visible;
+      left: 0;
+    }
+  }
+  &.side-right {
+    visibility: hidden;
+    right: -100%;
+
+    &.show {
+      visibility: visible;
+      right: 0;
+    }
   }
 }
-.side-content.side-left {
-  top: 0;
-  display: block;
-  left: 0;
-}
-.side-content.side-right {
-  top: 0;
-  display: block;
-  right: 0;
-}
+
 .warrior-card {
   max-width: 15vw;
   margin: 0 auto;

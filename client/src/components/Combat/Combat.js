@@ -43,8 +43,6 @@ export default ({ context }) => {
         battle={context.Battle}
       />
       <Row className="page-padding battlefield">
-        {console.log(Arena)}
-        {console.log(Battle)}
         {Arena && Battle ? (
           <>
             <StaticElements staticProps={staticProps} />

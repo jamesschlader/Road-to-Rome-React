@@ -1,106 +1,102 @@
-import React, { useState, useEffect } from "react";
-import cardContent from "../../utilities/cardContent";
-import ActionCard from "./ActionCard";
-import { Row, Button } from "react-materialize";
-import PlayerVitals from "./PlayerVitals";
+import React, { useState } from "react";
+import Recovery from "./Recovery";
+import Tactics from "./Tactics";
+import Initiative from "./Initiative";
+import PlaceActions from "./PlaceActions";
+import ResolveActions from "./ResolveActions";
+import Fatigue from "./Fatigue";
+import phases from "../../utilities/battlePhases";
 
 export default ({ playerOne, playerTwo, setStep }) => {
-  const [total, setTotal] = useState(0);
-  const [currentTurn, setCurrentTurn] = useState();
-  const [maxStaminaOne, setMaxStaminaOne] = useState();
-  const [maxStaminaTwo, setMaxStaminaTwo] = useState();
-  const [round, setRound] = useState(0);
-  const [turn, setTurn] = useState(true);
-  const [oneVitals, setOneVitals] = useState(playerOne);
-  const [twoVitals, setTwoVitals] = useState(playerTwo);
+  const [players, setPlayers] = useState([playerOne, playerTwo]);
 
-  useEffect(() => {
-    const newRound = round + 1;
+  const [phase, setPhase] = useState(phases.recovery);
+  const [ready, setReady] = useState(false);
+  const [actions, setActions] = useState([]);
 
-    setRound(newRound);
-  }, [turn]);
-
-  useEffect(() => {
-    return setMaxStaminaTwo(twoVitals.stamina);
-  }, []);
-
-  useEffect(() => {
-    return setMaxStaminaOne(oneVitals.stamina);
-  }, []);
-
-  useEffect(() => {
-    if (round !== 1) {
-      const obj = currentTurn ? oneVitals : twoVitals;
-
-      const max = currentTurn ? maxStaminaOne : maxStaminaTwo;
-
-      const recovery = Math.floor((max - 10) / 2) + 1;
-      const postRecovery = obj.stamina + recovery - total;
-      obj.stamina = postRecovery > max ? max : postRecovery;
-
-      if (round !== 1) {
-        if (turn) {
-          setOneVitals(obj);
-        } else {
-          setTwoVitals(obj);
-        }
-      }
+  const decideReady = () => {
+    if (ready) {
+      const newPhase = phase + 1;
+      setReady(!ready);
+      setPhase(newPhase);
+    } else {
+      setReady(!ready);
     }
-    setTotal(0);
-    setCurrentTurn(turn);
-  }, [turn]);
+  };
 
-  const processCard = (name, value, speed = 3) => {
-    const obj = currentTurn ? oneVitals : twoVitals;
-    const amount = Math.floor(speed * parseInt(value));
-    setTotal(total + amount);
-    obj[name] = obj[name] + amount;
+  const addAction = newAction => {
+    const newActions = [...actions, newAction];
+    setActions(newActions);
+  };
 
-    return currentTurn ? setOneVitals(obj) : setTwoVitals(obj);
+  const removeAction = exit => {
+    const newActions = actions.filter(action => {
+      return action.id !== exit.id;
+    });
+    setActions(newActions);
   };
 
   return (
     <>
-      <Row>
-        <Button className="btn" onClick={e => setTurn(!turn)}>
-          Switch Turns
-        </Button>
-        <Button className="btn" onClick={e => setStep(4)}>
-          Finish Battle
-        </Button>
-      </Row>
-      <Row>
-        <PlayerVitals
-          playerOne={playerOne}
-          playerTwo={playerTwo}
-          turn={turn}
-          setOneVitals={setOneVitals}
-          setTwoVitals={setTwoVitals}
-          oneVitals={oneVitals}
-          twoVitals={twoVitals}
-          round={round}
-        />
-      </Row>
-      <Row>
-        <ul className="center-align">
-          {cardContent.map((card, index) => (
-            <li key={index} className="inline-content tight">
-              <ActionCard
-                content={card}
-                processCard={processCard}
-                turn={turn}
-              />
-            </li>
+      {phase === phases.recovery && (
+        <ul>
+          {" "}
+          {players.map(player => (
+            <Recovery
+              key={player.id}
+              player={player}
+              decideReady={decideReady}
+            />
           ))}
         </ul>
-        <div>
-          <h5>Accumulated total fatigue this turn: {total}</h5>
-          <h5>
-            Player's fatigue after this turn's actions:{" "}
-            {currentTurn ? oneVitals.fatigue : twoVitals.fatigue}
-          </h5>
-        </div>
-      </Row>
+      )}
+
+      {phase === phases.tactics && (
+        <ul>
+          {players.map(player => (
+            <Tactics
+              key={player.id}
+              player={player}
+              decideReady={decideReady}
+              actions={actions}
+              addAction={addAction}
+              removeAction={removeAction}
+            />
+          ))}
+        </ul>
+      )}
+
+      {phase === phases.initiative && (
+        <Initiative
+          players={players}
+          setPhase={setPhase}
+          setPlayers={setPlayers}
+        />
+      )}
+
+      {phase === phases.place && (
+        <ul>
+          {players.map(player => (
+            <PlaceActions player={player} decideReady={decideReady} />
+          ))}
+        </ul>
+      )}
+
+      {phase === phases.resolve && (
+        <ul>
+          {actions.map(action => (
+            <ResolveActions
+              players={players}
+              decideReady={decideReady}
+              action={action}
+              removeAction={removeAction}
+            />
+          ))}
+        </ul>
+      )}
+      {phase === phases.fatigue && (
+        <Fatigue players={players} setPhase={setPhase} />
+      )}
     </>
   );
 };

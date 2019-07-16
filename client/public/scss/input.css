@@ -864,30 +864,33 @@ footer {
 .side-content {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  position: relative;
-  top: -150%;
+  position: absolute;
+  top: 60px;
   height: auto;
   min-width: 210px;
   width: auto;
-  -webkit-transition: height 2s;
-  transition: height 2s;
-}
-
-@media (max-width: 680px) {
-  .side-content {
-    display: hidden;
-  }
+  z-index: 20;
+  -webkit-transition: all 2s ease-in;
+  transition: all 2s ease-in;
 }
 
 .side-content.side-left {
-  top: 0;
-  display: block;
+  visibility: hidden;
+  left: -100%;
+}
+
+.side-content.side-left.show {
+  visibility: visible;
   left: 0;
 }
 
 .side-content.side-right {
-  top: 0;
-  display: block;
+  visibility: hidden;
+  right: -100%;
+}
+
+.side-content.side-right.show {
+  visibility: visible;
   right: 0;
 }
 

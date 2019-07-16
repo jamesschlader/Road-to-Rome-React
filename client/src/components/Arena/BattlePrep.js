@@ -3,7 +3,6 @@ import { Button } from "react-materialize";
 import { Link } from "react-router-dom";
 
 export default ({ battle, setFight, context }) => {
-  console.log(context);
   return (
     <tr>
       <td>
