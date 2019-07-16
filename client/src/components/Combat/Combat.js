@@ -1,106 +1,88 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Row, Col } from "react-materialize";
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import GetCurrentBattle from "./GetCurrentBattle";
-import DisplayPlayer from "./DisplayPlayer";
-import PlayerVitals from "./PlayerVitals";
-
+import steps from "../../utilities/combatSteps";
 import Button from "react-materialize/lib/Button";
 import CombatLoop from "./CombatLoop";
+import StaticElements from "./StaticElements";
+import SetArms from "./SetArms";
+import GameOverModal from "./GameOverModal";
+import SaveBattleResults from "./SaveBattleResults";
 
 export default ({ context }) => {
+  const [location, setLocation] = useState(null);
   const { Battle, Arena, Warrior, MONEY_CONVERTER } = context;
   const [currentBattle, setCurrentBattle] = useState(Battle);
   const [showPlayerOneStats, setShowPlayerOneStats] = useState(false);
   const [showPlayerTwoStats, setShowPlayerTwoStats] = useState(false);
-  const [turn, setTurn] = useState(null);
-  const [start, setStart] = useState(false);
   const { playerOne, playerTwo } = currentBattle;
-  const [oneVitals, setOneVitals] = useState(playerOne);
-  const [twoVitals, setTwoVitals] = useState(playerTwo);
+  const [step, setStep] = useState(steps.arms);
+  const staticProps = {
+    Battle,
+    Arena,
+    Warrior,
+    MONEY_CONVERTER,
+    showPlayerOneStats,
+    showPlayerTwoStats,
+    setShowPlayerOneStats,
+    setShowPlayerTwoStats,
+    playerOne,
+    playerTwo
+  };
+
+  useEffect(() => {
+    const whereIWas = localStorage.getItem("whereWasI");
+    setLocation(whereIWas);
+  }, []);
 
   return (
     <Fragment>
-      <Row className="page-padding ">
-        {Arena && Battle ? (
-          <>
-            <h3 className="landing-title center-align">Combat</h3>
-            <Row>
-              <Col s={6} className="left-align">
-                <h5>{Arena.name} Arena</h5>
-                <p>User player: {Warrior.name}</p>
-              </Col>
-              <Col s={6} className="right-align">
-                <h5 className="inline-content">Purse: </h5>
-                <h4 className="inline-content" style={{ color: "green" }}>
-                  {Battle.purse * MONEY_CONVERTER}
-                </h4>
-                <h5 className="inline-content">sp</h5>
-              </Col>
-            </Row>
-            <h3 className="center-align">
-              {Battle.playerOne.name} vs {Battle.playerTwo.name}
-            </h3>
-            <Link className="center-align" to="/arena">
-              <Button>Exit</Button>
-            </Link>
-
-            <Row>
-              {start ? (
-                <>
-                  <Button className="btn" onClick={e => setTurn(!turn)}>
-                    Switch Turns
-                  </Button>
-                  <Button className="btn" onClick={e => setStart(!start)}>
-                    Finish Battle
-                  </Button>
-                </>
-              ) : (
-                <Col s={4} offset="s4">
-                  <Button
-                    className="btn expand-content selection-button create-btn fancy"
-                    onClick={e => setStart(!start)}
-                  >
-                    start battle
-                  </Button>
-                </Col>
-              )}
-            </Row>
-          </>
-        ) : null}
-      </Row>
-
       <GetCurrentBattle
         setCurrentBattle={setCurrentBattle}
         battle={context.Battle}
       />
-      <Row className="battlefield">
-        <Row>
-          <PlayerVitals
-            playerOne={playerOne}
-            playerTwo={playerTwo}
-            turn={turn}
-            setOneVitals={setOneVitals}
-            setTwoVitals={setTwoVitals}
-          />
-        </Row>
-        {start ? <CombatLoop /> : null}
-      </Row>
+      <Row className="page-padding battlefield">
+        {console.log(Arena)}
+        {console.log(Battle)}
+        {Arena && Battle ? (
+          <>
+            <StaticElements staticProps={staticProps} />
 
-      <Row className="side-content side-left rounded-content-box btn-row">
-        <DisplayPlayer
-          show={showPlayerOneStats}
-          toggleShow={setShowPlayerOneStats}
-          player={playerOne}
-        />
-      </Row>
+            {step === steps.arms && <SetArms setStep={setStep} />}
 
-      <Row className="side-content side-right rounded-content-box btn-row">
-        <DisplayPlayer
-          show={showPlayerTwoStats}
-          toggleShow={setShowPlayerTwoStats}
-          player={playerTwo}
-        />
+            {step === steps.start && (
+              <Col s={4} offset="s4">
+                <Button
+                  className="btn expand-content selection-button create-btn fancy"
+                  onClick={e => setStep(3)}
+                >
+                  start battle
+                </Button>
+              </Col>
+            )}
+
+            {step === steps.loop && (
+              <>
+                <Row>
+                  <CombatLoop
+                    playerOne={playerOne}
+                    playerTwo={playerTwo}
+                    setStep={setStep}
+                  />
+                </Row>
+              </>
+            )}
+
+            {step === steps.done && <GameOverModal setStep={setStep} />}
+
+            {step === steps.recap && (
+              <SaveBattleResults setStep={setStep} setLocation={setLocation} />
+            )}
+
+            {step === steps.exit && <Redirect to={location} />}
+          </>
+        ) : null}
       </Row>
     </Fragment>
   );

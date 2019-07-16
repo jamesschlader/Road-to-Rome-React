@@ -1,23 +1,29 @@
 import React from "react";
 import ShowStats from "./ShowStats";
-import { Row } from "react-materialize";
 import WarriorTinyCard from "../Shared/WarriorTinyCard";
 
-export default ({ player, show, toggleShow }) => {
+export default ({ player, show, toggleShow, left }) => {
   const showDetails = warrior => {
     toggleShow(!show);
   };
-
+  const classes = () => {
+    return `side-content rounded-content-box ${
+      left ? "side-left" : "side-right"
+    }`;
+  };
   return (
     <>
-      <Row>
-        <WarriorTinyCard
-          warrior={player}
-          showDetails={showDetails}
-          className="expand-content"
-        />
-      </Row>
-      {show ? <ShowStats warrior={player} /> : null}
+      <WarriorTinyCard
+        warrior={player}
+        showDetails={showDetails}
+        className="expand-content"
+      />
+
+      {show ? (
+        <div className={classes()}>
+          <ShowStats warrior={player} />{" "}
+        </div>
+      ) : null}
     </>
   );
 };

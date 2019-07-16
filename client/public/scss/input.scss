@@ -606,21 +606,27 @@ footer {
 }
 
 .side-content {
-  position: absolute;
-  height: 100%;
-  min-width: 3vw;
-  top: 0;
-  margin: 140px 5px;
-  max-height: 1200px;
+  box-sizing: border-box;
+  position: relative;
+  top: -150%;
+  height: auto;
+  min-width: 210px;
+  width: auto;
+  transition: height 2s;
+
   @include tab {
     display: hidden;
   }
 }
-.side-left {
-  left: 2vw;
+.side-content.side-left {
+  top: 0;
+  display: block;
+  left: 0;
 }
-.side-right {
-  right: 2vw;
+.side-content.side-right {
+  top: 0;
+  display: block;
+  right: 0;
 }
 .warrior-card {
   max-width: 15vw;
@@ -628,6 +634,7 @@ footer {
 }
 
 .battlefield {
+  position: relative;
   min-height: 800px;
 }
 

@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row } from "react-materialize";
 import CombatCard from "./CombatCard";
 import ShowCombatState from "./ShowCombatState";
 
-export default ({ playerOne, playerTwo, turn, setOneVitals, setTwoVitals }) => {
-  console.log(`playerOne = `, playerOne);
+export default ({
+  playerOne,
+  playerTwo,
+  turn,
+  setOneVitals,
+  setTwoVitals,
+  oneVitals,
+  twoVitals,
+  round
+}) => {
+  useEffect(() => {
+    const newVitals = {
+      stamina: playerOne.stamina,
+      speed: playerOne.speed,
+      fatigue: 0,
+      wounds: 0
+    };
+
+    setOneVitals(newVitals);
+  }, [playerOne]);
+
+  useEffect(() => {
+    const newVitals = {
+      stamina: playerTwo.stamina,
+      speed: playerTwo.speed,
+      fatigue: 0,
+      wounds: 0
+    };
+
+    setTwoVitals(newVitals);
+  }, [playerTwo]);
+
   return (
     <>
       <Row>
@@ -21,15 +51,25 @@ export default ({ playerOne, playerTwo, turn, setOneVitals, setTwoVitals }) => {
               style={{ backgroundColor: turn ? "green" : "#ccc" }}
             />
           </div>
-          <ShowCombatState vitals={playerOne} />
+          <ShowCombatState
+            vitals={oneVitals}
+            player={playerOne}
+            round={round}
+          />
         </Col>
         <Col s={6}>
-          <ShowCombatState vitals={playerTwo} />
+          <ShowCombatState
+            vitals={twoVitals}
+            player={playerTwo}
+            round={round}
+          />
           <div className="inline-content">
             <CombatCard
               player={playerTwo}
               turn={!turn}
-              style={{ backgroundColor: turn ? "green" : "#ccc" }}
+              style={{
+                backgroundColor: turn ? "green" : "#ccc"
+              }}
             />
           </div>
         </Col>
