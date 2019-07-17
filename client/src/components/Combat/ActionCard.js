@@ -17,7 +17,7 @@ export default ({
   const withId = obj => {
     const newObj = { ...obj };
 
-    newObj.id = Date.now() * Math.random();
+    newObj.id = Date.now();
     return newObj;
   };
   const withPlayer = obj => {
@@ -72,49 +72,38 @@ export default ({
         className="card-layout tight"
         onClick={e => (!action ? setPicked(!picked) : handleClick())}
         header={<Header title={title} />}
-        style={{ backgroundColor: selected && "green" }}
+        style={{ backgroundColor: selected && "green", position: "relative" }}
       >
         <img src={src} alt={title} className="card-img lock" />
-      </Card>
-
-      {speed > 0 && picked && (
-        <>
-          <p>Choose a speed for this action</p>
-          <ul>
-            {title === "Full Defense" ? (
-              <li key={1}>
-                <Button
-                  className="btn"
-                  style={{
-                    backgroundColor: "transparent",
-                    color: "#b71c1c",
-                    border: "1px solid green"
-                  }}
-                  onClick={e => handleClick(speed)}
-                >
-                  Always max speed = {speed}
-                </Button>
-              </li>
-            ) : (
-              speedOptions(speed).map(item => (
-                <li key={item} className="inline-content">
+        {speed > 0 && picked && (
+          <div className="basic-modal-fill">
+            <p>Choose a speed for this action</p>
+            <ul>
+              {title === "Full Defense" ? (
+                <li key={1} className="inline-content tight">
                   <Button
-                    className="btn"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "#b71c1c",
-                      border: "1px solid green"
-                    }}
-                    onClick={e => handleClick(item)}
+                    className="btn btn-clear"
+                    onClick={e => handleClick(speed)}
                   >
-                    {item}
+                    Max Speed = {speed}
                   </Button>
                 </li>
-              ))
-            )}
-          </ul>
-        </>
-      )}
+              ) : (
+                speedOptions(speed).map(item => (
+                  <li key={item} className="inline-content tight">
+                    <Button
+                      className="btn btn-clear "
+                      onClick={e => handleClick(item)}
+                    >
+                      {item}
+                    </Button>
+                  </li>
+                ))
+              )}
+            </ul>
+          </div>
+        )}
+      </Card>
     </>
   );
 };

@@ -36,6 +36,9 @@ export default ({ playerOne, playerTwo, setStep }) => {
     setActions(newActions);
   };
 
+  console.log(`inside CombatLoop, playerOne = `, playerOne);
+  console.log(`inside CombatLoop, playerTwo = `, playerTwo);
+
   return (
     <>
       {phase === phases.recovery && (
@@ -95,7 +98,11 @@ export default ({ playerOne, playerTwo, setStep }) => {
         </ul>
       )}
       {phase === phases.fatigue && (
-        <Fatigue players={players} setPhase={setPhase} />
+        <ul>
+          {players.map(player => (
+            <Fatigue player={player} setPhase={setPhase} />
+          ))}
+        </ul>
       )}
     </>
   );

@@ -9,7 +9,7 @@ const cardContent = [
     title: "Full Defense",
     src: "/img/game-weapon-images/battle-shield.svg",
     name: "fatigue",
-    value: 1
+    value: 0.5
   },
   {
     title: "Basic Attack",

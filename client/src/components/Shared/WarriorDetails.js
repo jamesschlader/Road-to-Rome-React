@@ -19,35 +19,19 @@ export default ({ warrior, context, showDetails, show, location }) => {
 
   return (
     <Fragment>
-      {!warrior.strength ? (
+      {!warrior.strength && (
         <GetWarrior id={warrior.id} setWarrior={setActiveWarrior} />
-      ) : null}
-
+      )}
+      <Row>{show && <Button onClick={showDetails}>Done</Button>}</Row>
       <Row>
-        {show ? <Button onClick={showDetails}>Done</Button> : null}
-
-        <div className="warrior-card">
-          <img
-            src={warrior.image}
-            alt={warrior.name}
-            className="card-img"
-            style={{
-              background: `${warrior.alive ? "green" : "#b71c1c"}`,
-              borderRadius: "50%",
-              padding: "2vw"
-            }}
-          />
-          <h4>{warrior.name}</h4>
-        </div>
-      </Row>
-      <Row>
-        <div className="inline-content">
-          {location.pathname === "/arena" ? null : (
+        <Col s={6} className="inline-content">
+          {location.pathname !== "/arena" && (
             <div>
               <h5>Current Arena</h5>
               <div className="highlight-header">
                 <Link key={warrior.Arena.id} to="/arena">
                   <h2
+                    className="center-align"
                     onClick={e => {
                       context.handleRedirect(
                         context.setArena,
@@ -62,8 +46,22 @@ export default ({ warrior, context, showDetails, show, location }) => {
               </div>
             </div>
           )}
-        </div>
-
+        </Col>
+        <Col s={6} className="warrior-card">
+          <img
+            src={warrior.image}
+            alt={warrior.name}
+            className="card-img"
+            style={{
+              background: `${warrior.alive ? "green" : "#b71c1c"}`,
+              borderRadius: "50%",
+              padding: "2vw"
+            }}
+          />
+          <h4>{warrior.name}</h4>
+        </Col>
+      </Row>
+      <Row>
         {activeWarrior ? (
           <>
             <ShowCash

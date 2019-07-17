@@ -8,6 +8,7 @@ export default ({ player, decideReady }) => {
     decideReady();
   };
 
+  console.log(`inside Place actions, player is `, player);
   return (
     <div>
       <h5>Place actions for {player.name}</h5>

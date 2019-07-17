@@ -485,6 +485,18 @@ footer {
   font-family: "Cinzel";
 }
 
+.btn-clear {
+  background-color: transparent;
+  color: #b71c1c;
+  border: 1px solid #b71c1c;
+  margin: 2px;
+  padding: 0 5px;
+}
+
+.btn-clear:hover {
+  color: #b71c1c;
+}
+
 .landing-btn, .create-btn {
   width: 100%;
   line-height: 1.2;
@@ -865,9 +877,10 @@ footer {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   position: absolute;
+  padding: 15px;
   top: 60px;
   height: auto;
-  min-width: 210px;
+  min-width: 250px;
   width: auto;
   z-index: 20;
   -webkit-transition: all 2s ease-in;
@@ -894,6 +907,15 @@ footer {
   right: 0;
 }
 
+.basic-modal-fill {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: white;
+}
+
 .warrior-card {
   max-width: 15vw;
   margin: 0 auto;
@@ -901,7 +923,7 @@ footer {
 
 .battlefield {
   position: relative;
-  min-height: 800px;
+  min-height: 1000px;
 }
 
 .expand-content {

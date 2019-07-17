@@ -7,6 +7,13 @@ export default ({ player, decideReady, addAction, removeAction, actions }) => {
   const [done, setDone] = useState(false);
   const [speed, setSpeed] = useState(player.speed);
   const allDone = () => {
+    player.actions = player.setActions(playerActions);
+    console.log(player.actions);
+    console.log(
+      `expected fatigue for ${
+        player.name
+      }is ${player.countFatigueFromActions()}`
+    );
     setDone(!done);
     decideReady();
   };
@@ -36,6 +43,8 @@ export default ({ player, decideReady, addAction, removeAction, actions }) => {
     const newSpeed = speed - value;
     setSpeed(newSpeed);
   };
+
+  console.log(`inside Tactics, player is `, player);
   return (
     <div>
       <h5>Set Tactics for {player.name}</h5>

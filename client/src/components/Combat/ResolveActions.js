@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "react-materialize";
 
 export default ({ players, decideReady, action, removeAction }) => {
@@ -9,11 +9,13 @@ export default ({ players, decideReady, action, removeAction }) => {
     removeAction(action.id);
   };
 
+  console.log(`inside ResolveActions, players are `, players);
+
   return (
     <>
       <div>
         <h5>
-          Process {action.tile} for {action.playerId}
+          Process {action.title} for {action.playerId}
         </h5>
       </div>
       {!done && (

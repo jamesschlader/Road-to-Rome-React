@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ShowStats from "./ShowStats";
 import WarriorTinyCard from "../Shared/WarriorTinyCard";
 
-export default ({ player, toggleShow, left, show }) => {
+export default ({ player, toggleShow, left, show, opponent }) => {
   const [reveal, setReveal] = useState(false);
   const showDetails = warrior => {
     toggleShow(!show);
@@ -22,7 +22,7 @@ export default ({ player, toggleShow, left, show }) => {
       />
       {show ? (
         <div className={classes()}>
-          <ShowStats warrior={player} />{" "}
+          <ShowStats warrior={player} opponent={opponent} />{" "}
         </div>
       ) : null}
     </div>

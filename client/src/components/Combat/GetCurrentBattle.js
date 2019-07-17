@@ -3,7 +3,12 @@ import { Query } from "react-apollo";
 import getSingleBattle from "../../api/Battle/queries/getSingleBattle";
 import Spinner from "../Shared/Spinner";
 
-export default ({ battle, setCurrentBattle }) => {
+export default ({
+  battle,
+  setCurrentBattle,
+  buildPlayerOneObject,
+  buildPlayerTwoObject
+}) => {
   const id = battle.id;
   return (
     <Query query={getSingleBattle} variables={{ id }}>
@@ -13,6 +18,8 @@ export default ({ battle, setCurrentBattle }) => {
           return <Spinner />;
         }
         setCurrentBattle(data.battle);
+        buildPlayerOneObject(data.battle.playerOne);
+        buildPlayerTwoObject(data.battle.playerTwo);
         return <div />;
       }}
     </Query>

@@ -9,6 +9,7 @@ import StaticElements from "./StaticElements";
 import SetArms from "./SetArms";
 import GameOverModal from "./GameOverModal";
 import SaveBattleResults from "./SaveBattleResults";
+import Player from "../../utilities/Player";
 
 export default ({ context }) => {
   const [location, setLocation] = useState(null);
@@ -18,6 +19,9 @@ export default ({ context }) => {
   const [showPlayerTwoStats, setShowPlayerTwoStats] = useState(false);
   const { playerOne, playerTwo } = currentBattle;
   const [step, setStep] = useState(steps.arms);
+  const [playerOneObj, setPlayerOneObj] = useState(null);
+  const [playerTwoObj, setPlayerTwoObj] = useState(null);
+
   const staticProps = {
     Battle,
     Arena,
@@ -36,9 +40,93 @@ export default ({ context }) => {
     setLocation(whereIWas);
   }, []);
 
+  const buildPlayerOneObject = player => {
+    if (player && !playerOneObj) {
+      const {
+        id,
+        name,
+        image,
+        male,
+        wallet,
+        strength,
+        speed,
+        stamina,
+        skill,
+        winnings,
+        alive,
+        show,
+        armorList,
+        weaponList
+      } = player;
+      setPlayerOneObj(
+        new Player(
+          id,
+          name,
+          image,
+          male,
+          wallet,
+          strength,
+          speed,
+          stamina,
+          skill,
+          winnings,
+          alive,
+          show,
+          armorList,
+          weaponList
+        )
+      );
+    } else {
+      // console.log(`Waiting for updated battle data for playerOne..`);
+    }
+  };
+
+  const buildPlayerTwoObject = player => {
+    if (player && !playerTwoObj) {
+      const {
+        id,
+        name,
+        image,
+        male,
+        wallet,
+        strength,
+        speed,
+        stamina,
+        skill,
+        winnings,
+        alive,
+        show,
+        armorList,
+        weaponList
+      } = player;
+      setPlayerTwoObj(
+        new Player(
+          id,
+          name,
+          image,
+          male,
+          wallet,
+          strength,
+          speed,
+          stamina,
+          skill,
+          winnings,
+          alive,
+          show,
+          armorList,
+          weaponList
+        )
+      );
+    } else {
+      // console.log(`Waiting for updated battle data for playerTwo...`);
+    }
+  };
+
   return (
     <Fragment>
       <GetCurrentBattle
+        buildPlayerOneObject={buildPlayerOneObject}
+        buildPlayerTwoObject={buildPlayerTwoObject}
         setCurrentBattle={setCurrentBattle}
         battle={context.Battle}
       />
@@ -64,8 +152,8 @@ export default ({ context }) => {
               <>
                 <Row>
                   <CombatLoop
-                    playerOne={playerOne}
-                    playerTwo={playerTwo}
+                    playerOne={playerOneObj}
+                    playerTwo={playerTwoObj}
                     setStep={setStep}
                   />
                 </Row>

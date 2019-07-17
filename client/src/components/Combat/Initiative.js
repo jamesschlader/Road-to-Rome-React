@@ -38,6 +38,8 @@ export default ({ players, setPhase, setPlayers }) => {
     }
     setPhase(4);
   };
+
+  console.log(`inside Initiative, players are `, players);
   return (
     <div>
       <h5>

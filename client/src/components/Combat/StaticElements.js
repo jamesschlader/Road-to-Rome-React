@@ -41,6 +41,7 @@ export default ({ staticProps }) => {
             show={showPlayerOneStats}
             toggleShow={setShowPlayerOneStats}
             player={playerOne}
+            opponent={playerTwo}
             left={true}
           />
         </Col>
@@ -54,6 +55,7 @@ export default ({ staticProps }) => {
             show={showPlayerTwoStats}
             toggleShow={setShowPlayerTwoStats}
             player={playerTwo}
+            opponent={playerOne}
             left={false}
           />
         </Col>

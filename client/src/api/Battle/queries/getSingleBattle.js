@@ -18,6 +18,7 @@ const getSingleBattle = gql`
         alive
         show
         armorList {
+          id
           name
           strength
           weight
@@ -25,6 +26,7 @@ const getSingleBattle = gql`
           size
         }
         weaponList {
+          id
           name
           damage
           weight
