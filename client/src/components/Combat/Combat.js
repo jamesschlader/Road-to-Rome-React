@@ -122,7 +122,6 @@ export default ({ context }) => {
     }
   };
   const players = [playerOneObj, playerTwoObj];
-  console.log(players);
 
   return (
     <Fragment>

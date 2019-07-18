@@ -7,7 +7,7 @@ import { graphql, compose } from "react-apollo";
 class GetSomeData extends Component {
   displayArmors = () => {
     let { getArmorsQuery } = this.props;
-    console.log(`getArmorsQuery: `, getArmorsQuery);
+
     if (getArmorsQuery.loading) {
       return <li>Loading Armors...</li>;
     } else {
@@ -30,7 +30,7 @@ class GetSomeData extends Component {
 
   displayWeapons = () => {
     let { getWeaponsQuery } = this.props;
-    console.log(`getWeaponsQuery`, getWeaponsQuery);
+
     if (getWeaponsQuery.loading) {
       return <li>Weapons loading...</li>;
     } else {
@@ -51,7 +51,7 @@ class GetSomeData extends Component {
 
   displayArenas = () => {
     let { getArenasQuery } = this.props;
-    console.log(`getArenasQuery`, getArenasQuery);
+
     if (getArenasQuery.loading) {
       return <li>Loading Arenas...</li>;
     } else {

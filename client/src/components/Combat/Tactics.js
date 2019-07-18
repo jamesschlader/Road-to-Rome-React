@@ -3,23 +3,14 @@ import { Button } from "react-materialize";
 import ActionCard from "./ActionCard";
 import cardContent from "../../utilities/cardContent";
 
-export default ({ player, decideReady, addAction, removeAction, actions }) => {
+export default ({ player, decideReady }) => {
   const [done, setDone] = useState(false);
-  const [speed, setSpeed] = useState(player.speed);
+  const [speed, setSpeed] = useState(player.currentSpeed);
+
   const allDone = () => {
-    player.actions = player.setActions(playerActions);
-    console.log(player.actions);
-    console.log(
-      `expected fatigue for ${
-        player.name
-      }is ${player.countFatigueFromActions()}`
-    );
     setDone(!done);
     decideReady();
   };
-  const playerActions = actions.filter(action => {
-    return action.playerId === player.name;
-  });
 
   const playerOptions = value => {
     if (value === player.speed) {
@@ -44,7 +35,6 @@ export default ({ player, decideReady, addAction, removeAction, actions }) => {
     setSpeed(newSpeed);
   };
 
-  console.log(`inside Tactics, player is `, player);
   return (
     <div>
       <h5>Set Tactics for {player.name}</h5>
@@ -55,15 +45,15 @@ export default ({ player, decideReady, addAction, removeAction, actions }) => {
       </div>
       <div>
         <p>{player.name}'s Selections:</p>
-        {playerActions.length > 0 && (
+        {player.actions.length > 0 && (
           <ul>
-            {playerActions.map(action => (
+            {player.actions.map(action => (
               <li key={action.id} className="inline-content">
                 <ActionCard
                   content={action}
-                  removeAction={removeAction}
                   adjustSpeed={adjustSpeed}
                   action={true}
+                  player={player}
                 />
               </li>
             ))}
@@ -76,16 +66,15 @@ export default ({ player, decideReady, addAction, removeAction, actions }) => {
           <li key={index} className="inline-content tight">
             <ActionCard
               content={content}
-              addAction={addAction}
               action={false}
-              playerId={player.name}
+              player={player}
               adjustSpeed={adjustSpeed}
               speed={speed}
             />
           </li>
         ))}
       </ul>
-      {!done && (
+      {!done && player.actions.length > 0 && (
         <Button className="btn" onClick={e => allDone()}>
           All done setting {player.name}'s tactics
         </Button>

@@ -17,7 +17,11 @@ export default () => {
       <h1 id="landing-title" className="center-align rounded-content-box">
         Road to Rome
       </h1>
-
+      <LandingCard
+        src="/img/game-character-images/Lagertha.svg"
+        text="Your tactics count"
+        details="Defend yourself or go for a knock-out blow. Use your skills, abilities, and gear to your best advatage. But watch out! Your opponent will do the same to you!"
+      />
       <LandingCard
         src={pics}
         text="Customize your equipment"
@@ -27,11 +31,6 @@ export default () => {
         src="/img/game-character-images/Alexander.svg"
         text="Advance your warrior"
         details="Upgrade your skills with as you win to improve your chances for glory."
-      />
-      <LandingCard
-        src="/img/game-character-images/Lagertha.svg"
-        text="Your tactics count"
-        details="Defend yourself or go for a knock-out blow. Use your skills, abilities, and gear to your best advatage. But watch out! Your opponent will do the same to you!"
       />
     </div>
   );

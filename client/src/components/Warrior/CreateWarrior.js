@@ -85,7 +85,7 @@ class CreateWarrior extends Component {
 
   handleAbility = e => {
     const { name, value } = e.target;
-    console.log(`${name} is ${value}`);
+
     this.setState({
       [name]: value
     });
@@ -119,7 +119,7 @@ class CreateWarrior extends Component {
     const result = Object.values(data).filter(item => {
       return item === undefined || item === null;
     });
-    console.log(`result = `, result);
+
     if (result.length > 0) {
       this.setState({
         valid: false
@@ -144,7 +144,6 @@ class CreateWarrior extends Component {
 
       living: true
     };
-    console.log(obj);
 
     return (
       <Mutation

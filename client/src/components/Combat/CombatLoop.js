@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Recovery from "./Recovery";
 import Tactics from "./Tactics";
 import Initiative from "./Initiative";
-import PlaceActions from "./PlaceActions";
+import BattleBoard from "./BattleBoard";
 import ResolveActions from "./ResolveActions";
 import Fatigue from "./Fatigue";
 import phases from "../../utilities/battlePhases";
@@ -12,7 +12,7 @@ export default ({ playerOne, playerTwo, setStep }) => {
 
   const [phase, setPhase] = useState(phases.recovery);
   const [ready, setReady] = useState(false);
-  const [actions, setActions] = useState([]);
+  const [matchedActions, setMatchedActions] = useState([]);
 
   const decideReady = () => {
     if (ready) {
@@ -24,21 +24,6 @@ export default ({ playerOne, playerTwo, setStep }) => {
     }
   };
 
-  const addAction = newAction => {
-    const newActions = [...actions, newAction];
-    setActions(newActions);
-  };
-
-  const removeAction = exit => {
-    const newActions = actions.filter(action => {
-      return action.id !== exit.id;
-    });
-    setActions(newActions);
-  };
-
-  console.log(`inside CombatLoop, playerOne = `, playerOne);
-  console.log(`inside CombatLoop, playerTwo = `, playerTwo);
-
   return (
     <>
       {phase === phases.recovery && (
@@ -49,6 +34,7 @@ export default ({ playerOne, playerTwo, setStep }) => {
               key={player.id}
               player={player}
               decideReady={decideReady}
+              setMatchedActions={setMatchedActions}
             />
           ))}
         </ul>
@@ -61,9 +47,6 @@ export default ({ playerOne, playerTwo, setStep }) => {
               key={player.id}
               player={player}
               decideReady={decideReady}
-              actions={actions}
-              addAction={addAction}
-              removeAction={removeAction}
             />
           ))}
         </ul>
@@ -79,22 +62,22 @@ export default ({ playerOne, playerTwo, setStep }) => {
 
       {phase === phases.place && (
         <ul>
-          {players.map(player => (
-            <PlaceActions player={player} decideReady={decideReady} />
-          ))}
+          <BattleBoard
+            players={players}
+            setPhase={setPhase}
+            matchedActions={matchedActions}
+            setMatchedActions={setMatchedActions}
+          />
         </ul>
       )}
 
       {phase === phases.resolve && (
         <ul>
-          {actions.map(action => (
-            <ResolveActions
-              players={players}
-              decideReady={decideReady}
-              action={action}
-              removeAction={removeAction}
-            />
-          ))}
+          <ResolveActions
+            actions={matchedActions}
+            setMatchedActions={setMatchedActions}
+            decideReady={decideReady}
+          />
         </ul>
       )}
       {phase === phases.fatigue && (

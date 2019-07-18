@@ -1,33 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-materialize";
+import ExecuteAction from "./ExecuteAction";
 
-export default ({ players, decideReady, action, removeAction }) => {
+export default ({ actions, setMatchedActions, decideReady }) => {
   const [done, setDone] = useState(false);
+
   const allDone = () => {
     setDone(!done);
     decideReady();
-    removeAction(action.id);
   };
 
-  console.log(`inside ResolveActions, players are `, players);
+  const removeAction = item => {
+    const newArray = actions.filter(action => {
+      return action.id !== item.id;
+    });
+    setMatchedActions(newArray);
+  };
+
+  useEffect(() => {
+    actions.length < 1 && setDone(true);
+  }, [actions]);
 
   return (
-    <>
-      <div>
-        <h5>
-          Process {action.title} for {action.playerId}
-        </h5>
-      </div>
+    <div>
+      <h5>Process actions in order</h5>
+
       {!done && (
-        <Button className="btn" onClick={e => allDone()}>
-          Execute {action.title} for {action.playerId}
-        </Button>
+        <ul>
+          {actions.map((action, index) => (
+            <ExecuteAction
+              key={index}
+              action={action}
+              finishAction={removeAction}
+            />
+          ))}
+        </ul>
       )}
+
       {done && (
-        <h5>
-          Finished with {action.title} for {action.playerId}
-        </h5>
+        <>
+          <h5>Finished with actions </h5>
+          <Button className="btn" onClick={e => allDone()}>
+            Go to recovery phase
+          </Button>
+        </>
       )}
-    </>
+    </div>
   );
 };

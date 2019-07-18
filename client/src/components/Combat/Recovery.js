@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-materialize";
 
-export default ({ player, decideReady }) => {
+export default ({ player, decideReady, setMatchedActions }) => {
   const [done, setDone] = useState(false);
   const allDone = () => {
     setDone(!done);
@@ -11,17 +11,15 @@ export default ({ player, decideReady }) => {
   const [runrecovery, setrunrecovery] = useState(false);
 
   const runRecovery = player => {
-    console.log(`called runRecovery`);
+    player.setCurrentStamina(player.getRecovery());
 
-    const newStamina = player.setCurrentStamina(player.getRecovery());
-
-    player.currentStamina = newStamina;
-    player.currentSpeed = player.setCurrentSpeed();
+    player.setCurrentSpeed();
+    player.clearActions();
+    setMatchedActions([]);
     setrunrecovery(!runrecovery);
     return <p>All done running recovery</p>;
   };
 
-  console.log(`Inside Recovery, player is `, player);
   return (
     <div>
       <h5>Do the recovery actions for {player.name}</h5>
@@ -40,14 +38,12 @@ export default ({ player, decideReady }) => {
         <dd>{player.getWoundThreshold()}</dd>
         <dt>total harm</dt>
         <dd>{player.getHarm()}</dd>
-        <dt>current stamina</dt>
-        <dd>{player.currentStamina}</dd>
-        <dt>actions</dt>
-        <dd>{player.actions}</dd>
         <dt>weapon</dt>
-        <dd>{player.weapon}</dd>
+        <dd>{player.weapon.name}</dd>
         <dt>armor</dt>
-        <dd>{player.armor}</dd>
+        {player.armor.map((armor, index) => (
+          <dd key={armor.id * index}>{armor.name}</dd>
+        ))}
       </dl>
 
       <h5>Running recovery function...standby...</h5>
@@ -56,7 +52,7 @@ export default ({ player, decideReady }) => {
         runRecovery(player)
       ) : (
         <p>
-          done running recovery. newStamina is{" "}
+          done running recovery. {player.name} stamina is now{" "}
           <span>{player.currentStamina}</span>
         </p>
       )}

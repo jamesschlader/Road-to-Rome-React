@@ -1,5 +1,6 @@
 import React from "react";
 import { Row } from "react-materialize";
+import slimmedWeaponsList from "../../utilities/slimmedWeaponsList";
 
 export default ({ warrior, opponent }) => {
   const colorize = property => {
@@ -10,27 +11,6 @@ export default ({ warrior, opponent }) => {
     } else {
       return "yellow";
     }
-  };
-
-  const slimmedWeaponsList = () => {
-    const current = warrior.weaponList;
-    let list = [current[0]];
-    for (let i = 1; i < current.length; i++) {
-      const filtered = list
-        .map(item => item.id)
-        .filter(id => {
-          return id === current[i].id && id;
-        });
-      console.log(
-        `current[${i}] = ${current[i].name} id = ${current[i].id}`,
-        filtered
-      );
-      console.log(!filtered.includes(current[i].id));
-      if (!filtered.includes(current[i].id)) {
-        list.push(current[i]);
-      }
-    }
-    return list;
   };
 
   const speedRanges = size => {
@@ -117,7 +97,7 @@ export default ({ warrior, opponent }) => {
             </tr>
           </thead>
           <tbody>
-            {slimmedWeaponsList().map(weapon => (
+            {slimmedWeaponsList(warrior).map(weapon => (
               <tr key={weapon.id}>
                 <td>{weapon.name}</td>
                 <td>{weapon.damage}</td>

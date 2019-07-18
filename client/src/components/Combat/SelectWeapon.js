@@ -1,18 +1,21 @@
-import React, { useState } from "react";
-import { Button } from "react-materialize";
+import React, { useState, useEffect } from "react";
+import { Button, Row } from "react-materialize";
+import slimmedWeaponsList from "../../utilities/slimmedWeaponsList";
 
 export default ({ player, decideReady }) => {
   const [done, setDone] = useState(false);
   const [selected, setSelected] = useState();
-
+  const [tempList, setTempList] = useState(slimmedWeaponsList(player));
   const [fail, setFail] = useState(false);
 
-  let tempList = [...player.weaponList];
-
   const finished = () => {
-    player.weapon = player.setWeapon(selected);
-    setDone(!done);
-    decideReady();
+    if (!selected) {
+      setFail(true);
+    } else {
+      player.setWeapon(selected);
+      setDone(!done);
+      decideReady();
+    }
   };
 
   const addSelected = value => {
@@ -26,40 +29,54 @@ export default ({ player, decideReady }) => {
         setFail(true);
       } else {
         setSelected(value);
-        const newList = tempList.filter(item => {
+        const newList = slimmedWeaponsList(player).filter(item => {
           return item.id !== value.id ? item : null;
         });
-        tempList = [...newList];
+        setTempList(newList);
       }
     } else {
       setSelected(value);
-      const newList = tempList.filter(item => {
+      const newList = slimmedWeaponsList(player).filter(item => {
         return item.id !== value.id ? item : null;
       });
-      tempList = [...newList];
+      setTempList(newList);
     }
   };
 
   const removeSelected = item => {
+    setTempList(slimmedWeaponsList(player));
     setSelected(null);
   };
 
+  useEffect(() => {
+    setTempList(slimmedWeaponsList(player));
+  }, [player]);
+
   return (
-    <div>
-      <h5>Made it! {player.name}</h5>
+    <Row>
+      <h5>Select Weapon {player.name}</h5>
       {!done ? (
         <>
           {" "}
           <h5>Weapon choice</h5>
           {selected && (
             <Button className="btn" onClick={e => removeSelected(selected)}>
-              {selected.name}
+              Remove {selected.name}
+            </Button>
+          )}
+          {!fail && selected && (
+            <Button
+              className="btn"
+              style={{ backgroundColor: "green" }}
+              onClick={e => finished()}
+            >
+              {player.name} battle with this load-out
             </Button>
           )}
           <p>Options</p>
           <ul>
-            {tempList.map(weapon => (
-              <li key={weapon.id} onClick={addSelected}>
+            {tempList.map((weapon, index) => (
+              <li key={weapon.id}>
                 <Button
                   className="btn btn-clear"
                   onClick={e => addSelected(weapon)}
@@ -77,18 +94,10 @@ export default ({ player, decideReady }) => {
               </Button>
             </>
           )}
-          {!fail && selected && (
-            <Button className="btn" onClick={e => finished()}>
-              Go to battle with this load-out
-            </Button>
-          )}
-          <Button className="btn" onClick={e => finished()}>
-            Done picking weapons
-          </Button>
         </>
       ) : (
         <p>{player.name} all done picking a weapon</p>
       )}
-    </div>
+    </Row>
   );
 };

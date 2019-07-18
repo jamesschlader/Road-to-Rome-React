@@ -6,7 +6,7 @@ export default ({ player, setPhase }) => {
 
   const runFatigue = player => {
     const total = player.countFatigueFromActions();
-    player.fatigue = player.setFatigue(total);
+    player.setFatigue(total);
     setRun(!run);
     player.actions = player.clearActions();
     return (
@@ -16,7 +16,6 @@ export default ({ player, setPhase }) => {
     );
   };
 
-  console.log(`inside fatigue, player is `, player);
   return (
     <li key={player.id}>
       <h5>Set fatigue values for {player.name}</h5>

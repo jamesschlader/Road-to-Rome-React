@@ -33,7 +33,7 @@ function Player(
   this.wounds = 0;
   this.maxStamina = stamina;
   this.currentSpeed = speed;
-  this.actions = this.setActions;
+  this.actions = [];
   this.weapon = this.setWeapon;
   this.armor = this.setArmor;
   this.shield = this.setShield;
@@ -51,40 +51,52 @@ function Player(
   this.setCurrentStamina = function(value) {
     const staminaCalc =
       this.currentStamina - this.fatigue - this.wounds + value;
-    return staminaCalc > this.maxStamina ? this.maxStamina : staminaCalc;
+    this.currentStamina =
+      staminaCalc > this.maxStamina ? this.maxStamina : staminaCalc;
+    return this.currentStamina;
   };
 
   this.setFatigue = function(value = 0) {
-    return this.fatigue + value < 0 ? 0 : this.fatigue + value;
+    this.fatigue = this.fatigue + value < 0 ? 0 : this.fatigue + value;
+    return this.fatigue;
   };
 
   this.setCurrentSpeed = function() {
     if (this.currentStamina < 0) {
-      return 0;
+      this.currentSpeed = 0;
     } else {
-      return this.currentStamina < this.currentSpeed
-        ? this.currentStamina
-        : this.currentSpeed;
+      this.currentSpeed =
+        this.currentStamina < this.currentSpeed
+          ? this.currentStamina
+          : this.currentSpeed;
     }
+    return this.currentSpeed;
   };
 
   this.getHarm = function() {
     return this.fatigue + this.wounds;
   };
 
+  this.getActions = function() {
+    return this.actions;
+  };
+
   this.setActions = function(actions) {
-    return actions;
+    this.actions = actions;
+    return this.actions;
   };
 
   this.addAction = function(action) {
-    return this.actions ? [...this.actions, action] : [];
+    this.actions = [...this.actions, action];
+    return this.actions;
   };
 
   this.removeAction = function(action) {
     const newActions = this.actions.filter(item => {
       return item.id !== action.id;
     });
-    return this.setActions(newActions);
+    this.setActions(newActions);
+    return this.actions;
   };
   this.countFatigueFromActions = function() {
     return this.actions
@@ -94,15 +106,18 @@ function Player(
       });
   };
   this.clearActions = function() {
-    return [];
+    this.actions = [];
+    return this.actions;
   };
 
   this.setArmor = function(array) {
-    return array;
+    this.armor = array;
+    return this.armor;
   };
 
-  this.setWeapon = function(array) {
-    return array;
+  this.setWeapon = function(item) {
+    this.weapon = item;
+    return this.weapon;
   };
 }
 

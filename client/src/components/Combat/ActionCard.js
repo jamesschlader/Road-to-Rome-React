@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-materialize";
 
-export default ({
-  content,
-  addAction,
-  removeAction,
-  action,
-  playerId,
-  adjustSpeed,
-  speed
-}) => {
+export default ({ content, action, player, adjustSpeed, speed }) => {
   const { title, src, name, value } = content;
   const [selected, setSelected] = useState(action);
   const [picked, setPicked] = useState(false);
@@ -17,13 +9,10 @@ export default ({
   const withId = obj => {
     const newObj = { ...obj };
 
-    newObj.id = Date.now();
+    newObj.id = player.id + Date.now().toString();
     return newObj;
   };
-  const withPlayer = obj => {
-    obj.playerId = playerId;
-    return obj;
-  };
+
   const withValue = (obj, value) => {
     obj.speed = value;
     return obj;
@@ -31,15 +20,15 @@ export default ({
 
   const handleClick = (value = 0) => {
     if (!selected) {
-      const newAction = withValue(withPlayer(withId(content)), value);
+      const newAction = withValue(withId(content), value);
 
       adjustSpeed(value);
       setPicked(false);
-      addAction(newAction);
-      return setSelected(false);
+      player.addAction(newAction);
+      setSelected(false);
     } else if (content.playerId) {
       adjustSpeed(content.speed * -1);
-      removeAction(content);
+      player.removeAction(content);
     }
     setSelected(!selected);
   };
@@ -75,6 +64,7 @@ export default ({
         style={{ backgroundColor: selected && "green", position: "relative" }}
       >
         <img src={src} alt={title} className="card-img lock" />
+
         {speed > 0 && picked && (
           <div className="basic-modal-fill">
             <p>Choose a speed for this action</p>

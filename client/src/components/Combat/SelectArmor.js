@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import { Button } from "react-materialize";
+import { Button, Row } from "react-materialize";
 
 export default ({ player, decideReady }) => {
   const [done, setDone] = useState(false);
   const [selected, setSelected] = useState([]);
   const [fail, setFail] = useState(false);
-  let tempList = [...player.armorList];
+  const [tempList, setTempList] = useState(player.armorList);
 
   const finished = () => {
-    player.armor = player.setArmor(selected);
-    setDone(!done);
-    decideReady();
+    if (selected.length < 1) {
+      setFail(true);
+    } else {
+      player.setArmor(selected);
+      setDone(!done);
+      decideReady();
+    }
   };
 
   const addSelected = value => {
@@ -24,10 +28,11 @@ export default ({ player, decideReady }) => {
       }
     } else {
       setSelected(newSelections);
+
       const newList = tempList.filter(item => {
         return item.id !== value.id ? item : null;
       });
-      tempList = [...newList];
+      setTempList(newList);
     }
   };
 
@@ -36,25 +41,36 @@ export default ({ player, decideReady }) => {
       return armor.id !== item.id;
     });
     setSelected(newSelected);
+    const newTempList = [...tempList, item];
+    setTempList(newTempList);
   };
 
   return (
-    <div>
-      <h5>Made it! {player.name}</h5>
+    <Row>
+      <h5>Select Armor {player.name}</h5>
       {!done ? (
         <>
           <h5>Armor Load Out</h5>
           <ul>
-            {selected.map(item => (
+            {selected.map((item, index) => (
               <li key={item.id}>
                 <Button className="btn" onClick={e => removeSelected(item)}>
-                  {item.name}
+                  Remove {item.name}
                 </Button>
               </li>
             ))}
           </ul>
+          {!fail && selected.length > 0 && (
+            <Button
+              className="btn"
+              style={{ backgroundColor: "green" }}
+              onClick={e => finished()}
+            >
+              {player.name} use this armor load-out
+            </Button>
+          )}
           <ul>
-            {player.armorList.map(armor => (
+            {tempList.map((armor, index) => (
               <li key={armor.id}>
                 <Button
                   className="btn btn-clear"
@@ -73,23 +89,18 @@ export default ({ player, decideReady }) => {
               </>
             )}
           </ul>
-          {!fail && selected.length > 0 && (
-            <Button className="btn" onClick={e => finished()}>
-              Select this armor load-out
-            </Button>
-          )}
         </>
       ) : (
         <>
           {" "}
           <p>{player.name} all done picking armor. Armor load-out is...</p>
           <ul>
-            {player.armor.map(armor => (
-              <li key={armor.id}>{armor.name}</li>
+            {player.armor.map((armor, index) => (
+              <li key={armor.id * (index + 1)}>{armor.name}</li>
             ))}
           </ul>
         </>
       )}
-    </div>
+    </Row>
   );
 };

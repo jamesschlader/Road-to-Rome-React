@@ -1,8 +1,6 @@
 import React from "react";
 
 export default ({ vitals, player, round }) => {
-  console.log(round);
-
   const recovery = Math.floor((player.stamina - 10) / 2) + 1;
   const currentSpeed =
     player.speed > vitals.stamina ? vitals.stamina : player.speed;
