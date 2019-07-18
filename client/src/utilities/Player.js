@@ -35,7 +35,7 @@ function Player(
   this.currentSpeed = speed;
   this.actions = this.setActions;
   this.weapon = this.setWeapon;
-  this.armor = this.setWeapon;
+  this.armor = this.setArmor;
   this.shield = this.setShield;
 
   this.getRecovery = function() {
@@ -95,6 +95,14 @@ function Player(
   };
   this.clearActions = function() {
     return [];
+  };
+
+  this.setArmor = function(array) {
+    return array;
+  };
+
+  this.setWeapon = function(array) {
+    return array;
   };
 }
 

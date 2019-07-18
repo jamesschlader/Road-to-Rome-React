@@ -121,6 +121,8 @@ export default ({ context }) => {
       // console.log(`Waiting for updated battle data for playerTwo...`);
     }
   };
+  const players = [playerOneObj, playerTwoObj];
+  console.log(players);
 
   return (
     <Fragment>
@@ -135,7 +137,9 @@ export default ({ context }) => {
           <>
             <StaticElements staticProps={staticProps} />
 
-            {step === steps.arms && <SetArms setStep={setStep} />}
+            {step === steps.arms && (
+              <SetArms players={players} setStep={setStep} />
+            )}
 
             {step === steps.start && (
               <Col s={4} offset="s4">
