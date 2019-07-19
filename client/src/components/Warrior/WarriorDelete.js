@@ -6,8 +6,14 @@ import { Mutation } from "react-apollo";
 import { deleteWarriorMutation } from "../../api/Warrior/mutations/deleteWarrior";
 import WarriorDetails from "../Shared/WarriorDetails";
 
-export default ({ warrior, handleDelete, MONEY_CONVERTER }) => {
-  console.log(warrior);
+export default ({
+  warrior,
+  handleDelete,
+  showDetails,
+  show,
+  context,
+  location
+}) => {
   const deleteWarrior = id => {
     return (
       <Mutation mutation={deleteWarriorMutation} variables={{ id }}>
@@ -27,7 +33,13 @@ export default ({ warrior, handleDelete, MONEY_CONVERTER }) => {
   };
   return (
     <React.Fragment>
-      <WarriorDetails warrior={warrior} MONEY_CONVERTER={MONEY_CONVERTER} />
+      <WarriorDetails
+        warrior={warrior}
+        context={context}
+        showDetails={showDetails}
+        show={show}
+        location={location}
+      />
 
       <Col s={3} offset="s5">
         {deleteWarrior(warrior.id)}

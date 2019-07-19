@@ -1,115 +1,108 @@
 import React, { useState } from "react";
-import eventDays from "../../utilities/eventDays";
 import { Button } from "react-materialize";
+import futureBattles from "../../utilities/futureBattles";
+import cleanDate from "../../utilities/cleanDate";
+import hours from "../../utilities/hours";
+import times from "../../utilities/times";
+import daysUntil from "../../utilities/daysUntil";
 
-function EventPicker({ arena, setEvent }) {
+function EventPicker({ arena, setEvent, week }) {
   const [chosenDate, setChosenDate] = useState();
 
-  const cleanDate = chosenDate
-    ? chosenDate.toDateString().replace(/2019/g, "") +
-      ` at ${chosenDate.getHours()}:00`
-    : "";
-  const today = new Date().getDay();
-  const dayOfMonth = new Date().getDate();
+  const futureEvents = (week = 0) => {
+    const timeSlots = times(hours(arena.battleQuantity));
 
-  const selectedEvent = (time, day, week) => {
-    const date = () => {
-      return week === "this"
-        ? dayOfMonth + (day.id - today)
-        : 7 + dayOfMonth + (day.id - today);
-    };
+    const nextDates = daysUntil(arena.gamesFrequency, week);
 
-    const event = new Date();
-    event.setDate(date());
-    event.setHours(time + 12);
-    event.setMinutes(0);
-    event.setSeconds(0);
-    console.log(event);
+    const events = nextDates.map(date => {
+      return timeSlots.map(slot => {
+        const event = new Date(2019, 6, date, slot.hour, slot.minutes);
+        return event;
+      });
+    });
+
+    return events;
+  };
+
+  const selectedEvent = event => {
     setChosenDate(event);
     setEvent(event);
   };
 
-  const showEventTimes = (quantity, day, week) => {
-    let times = [];
-    for (let i = 0; i < quantity; i++) {
-      times.push(i + 1);
-    }
-    return times.map(time => {
-      return (
-        <li
-          key={time}
-          value={time}
-          className="time-box"
-          onClick={e => selectedEvent(time, day, week)}
-        >
-          {(time + 12).toString()}:00
-        </li>
-      );
-    });
+  const showEventTimes = time => {
+    return (
+      <li
+        key={time.getTime()}
+        value={time}
+        className="time-box"
+        onClick={e => selectedEvent(time)}
+      >
+        {cleanDate(time)}
+      </li>
+    );
   };
 
-  const showEventDayOptions = (week, frequency, quantity) => {
-    const availableDays = eventDays(frequency).filter(day => {
-      return day.id > today;
+  const matches = (week = 0) => {
+    let matches = [];
+    futureBattles(arena.scheduledBattles).map(battle => {
+      return futureEvents(week).map(event => {
+        return event.map(item => {
+          const itemTime = item.getTime();
+          const battleTime = new Date(battle.date).getTime();
+          if (itemTime === battleTime) {
+            matches.push(item);
+          }
+          return itemTime === battleTime ? item : null;
+        });
+      });
     });
 
-    return week === "this"
-      ? availableDays.map(day => (
-          <li
-            key={day.id}
-            value={day.id}
-            label={day.name}
-            style={{ display: "inline-block", margin: "5px" }}
-          >
-            <p>
-              {day.name} the {dayOfMonth + (day.id - today)}
-            </p>
-            <ul>{showEventTimes(quantity, day, week)}</ul>
-          </li>
-        ))
-      : eventDays(frequency).map(day => (
-          <li
-            key={day.id}
-            value={day.id}
-            label={day.name}
-            style={{ display: "inline-block", margin: "5px" }}
-          >
-            <p>
-              {day.name} the {7 + dayOfMonth + (day.id - today)}
-            </p>
-            <ul>{showEventTimes(quantity, day, week)}</ul>
-          </li>
-        ));
+    return matches;
+  };
+
+  const scheduleFilter = (week = 0) => {
+    const schedule = futureEvents(week);
+    const matched = matches(week);
+    const matchedTimes = matched.map(item => item.getTime());
+    let unmatchedEventsTime = [];
+    let unmatchedEvents = [];
+
+    for (let i = 0; i < schedule.length; i++) {
+      schedule[i].forEach(time => {
+        if (
+          !matchedTimes.includes(time.getTime()) &&
+          !unmatchedEventsTime.includes(time.getTime())
+        ) {
+          unmatchedEvents.push(time);
+        }
+      });
+    }
+
+    return unmatchedEvents;
+  };
+
+  const showAvailable = (week = 0) => {
+    return scheduleFilter(week).map(event => showEventTimes(event));
   };
 
   return (
     <div>
       {chosenDate ? (
         <div>
-          <h5>Selection: {cleanDate}</h5>
+          <h5 className="inline-content">Selection: </h5>
+          <h4 className="inline-content" style={{ color: "green" }}>
+            {cleanDate(chosenDate)}
+          </h4>
 
-          <Button className="btn" onClick={e => setChosenDate(null)}>
-            Change date
-          </Button>
+          <div className="inline-content">
+            <Button className="btn " onClick={e => setChosenDate(null)}>
+              Change date
+            </Button>
+          </div>
         </div>
       ) : (
         <div>
-          <p>This week's options:</p>
-          <ul>
-            {showEventDayOptions(
-              "this",
-              arena.gamesFrequency,
-              arena.battleQuantity
-            )}
-          </ul>
-          <p>Next week:</p>
-          <ul>
-            {showEventDayOptions(
-              "next",
-              arena.gamesFrequency,
-              arena.battleQuantity
-            )}
-          </ul>
+          <ul>{showAvailable(week)}</ul>
         </div>
       )}
     </div>

@@ -1,36 +1,41 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Button } from "react-materialize";
 import LudusMagnus from "./LudusMagnus";
 import Market from "./Market";
 import WarriorDetails from "../Shared/WarriorDetails";
+import GetArena from "./GetArena";
+import WarriorCard from "../Warrior/WarriorCard";
+import WarriorTinyCard from "../Shared/WarriorTinyCard";
+import opponentWarriors from "../../utilities/opponentWarriors";
 
-export default class Arena extends Component {
-  state = {
-    ludus: false,
-    market: false,
-    shoppingCart: []
-  };
+export default ({ arena, context, warrior, location }) => {
+  const [ludus, setLudus] = useState(false);
+  const [market, setMarket] = useState(false);
+  const [shoppingCart, setShoppingCart] = useState([]);
+  const [activeArena, setActiveArena] = useState();
+  const [show, setShow] = useState(false);
+  const [detailWarrior, setDetailWarrior] = useState();
 
-  componentDidMount() {
-    console.log(this.props);
-  }
+  useEffect(() => {
+    setActiveArena(arena);
+  }, [arena]);
 
-  goBack = e => {
+  const goBack = e => {
     e.preventDefault();
     window.history.back();
   };
 
-  openShop = e => {
-    this.setState({
-      market: !this.state.market
-    });
+  const openShop = () => {
+    setShow(false);
+    setMarket(!market);
   };
-  openLudus = e => {
-    this.setState({
-      ludus: !this.state.ludus
-    });
+
+  const openLudus = () => {
+    setShow(false);
+    setLudus(!ludus);
   };
-  addToCart = obj => {
+
+  const addToCart = obj => {
     const item = {
       name: obj.name,
       id: obj.id,
@@ -38,11 +43,10 @@ export default class Arena extends Component {
       costType: obj.costType,
       armor: obj.strength ? true : false
     };
-    this.setState((state, props) => {
-      return { shoppingCart: [...this.state.shoppingCart, item] };
-    });
+    setShoppingCart([...shoppingCart, item]);
   };
-  removeFromCart = obj => {
+
+  const removeFromCart = obj => {
     const targetId = this.state.shoppingCart.filter(item => {
       return item.id === obj.id;
     });
@@ -51,79 +55,100 @@ export default class Arena extends Component {
       return item.id !== obj.id;
     });
     const updatedArray = [...theRest, ...targetId];
-    this.setState((state, props) => {
-      return { shoppingCart: updatedArray };
-    });
+    setShoppingCart(updatedArray);
   };
 
-  render() {
-    const { arena, warrior, MONEY_CONVERTER } = this.props;
+  const showDetails = obj => {
+    setDetailWarrior(obj);
+    setShow(!show);
+  };
 
-    return (
-      <React.Fragment>
-        <Row className="page-padding ">
-          <Col s={4}>
-            <Button onClick={this.goBack} style={{ height: "54px" }}>
-              <span>
-                <i className="material-icons">keyboard_backspace</i>
-              </span>
-            </Button>
-          </Col>
-          <Col s={4}>
-            <Button
-              name="market"
-              onClick={this.openShop}
-              style={{ height: "54px" }}
-            >
-              <i className="material-icons">shopping_cart</i>
-            </Button>
-          </Col>
-          <Col s={4}>
-            <Button
-              name="ludus"
-              onClick={this.openLudus}
-              style={{ padding: "0 auto", height: "54px" }}
-            >
-              <img
-                src="./img/erics-images/ludus-home.png"
-                alt="ludus-magnus"
-                className="card-img center-align"
-              />
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <h1 className="landing-title center-align"> {arena.name}</h1>
-        </Row>
-
-        {this.state.ludus ? (
-          <Row>
-            <LudusMagnus
-              arena={arena}
-              warrior={warrior}
-              close={this.openLudus}
+  return (
+    <React.Fragment>
+      <Row className="page-padding ">
+        <Col s={4}>
+          <Button onClick={goBack} className="create-btn">
+            <span>
+              <i className="material-icons">keyboard_backspace</i>
+            </span>
+          </Button>
+        </Col>
+        <Col s={4}>
+          <Button name="market" onClick={openShop} className="create-btn">
+            <i className="material-icons">shopping_cart</i>
+          </Button>
+        </Col>
+        <Col s={4}>
+          <Button name="ludus" onClick={openLudus} className="create-btn">
+            <img
+              height="100%"
+              src="./img/erics-images/ludus-home.png"
+              alt="ludus-magnus"
             />
-          </Row>
-        ) : null}
+          </Button>
+        </Col>
+      </Row>
+      <Row>
+        <h1 className="landing-title center-align"> {arena.name}</h1>
+      </Row>
+      <GetArena arena={arena} setActiveArena={setActiveArena} />
 
-        {this.state.market ? (
-          <Row>
-            <Market
-              market={arena.Market}
-              cart={this.state.shoppingCart}
-              addToCart={this.addToCart}
-              removeFromCart={this.removeFromCart}
-              warrior={warrior}
-              openShop={this.openShop}
-              MONEY_CONVERTER={MONEY_CONVERTER}
-            />
-          </Row>
-        ) : null}
-
+      {market ? (
         <Row>
-          <WarriorDetails warrior={warrior} MONEY_CONVERTER={MONEY_CONVERTER} />
+          <Market
+            market={activeArena.Market}
+            cart={shoppingCart}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+            warrior={warrior}
+            openShop={openShop}
+            MONEY_CONVERTER={context.MONEY_CONVERTER}
+          />
         </Row>
-      </React.Fragment>
-    );
-  }
-}
+      ) : null}
+
+      <Row>
+        {!show ? (
+          <>
+            {ludus ? (
+              <Row>
+                <LudusMagnus
+                  arena={activeArena}
+                  warrior={warrior}
+                  close={openLudus}
+                  context={context}
+                />
+              </Row>
+            ) : null}
+
+            <h5>Research {arena.name}'s warriors:</h5>
+            <Col s={3}>
+              <WarriorCard warrior={warrior} showDetails={showDetails} />
+            </Col>
+            {activeArena !== undefined && activeArena.livingWarriors ? (
+              <ul>
+                {opponentWarriors(activeArena, warrior).map(item => (
+                  <WarriorTinyCard
+                    key={item.id}
+                    warrior={item}
+                    showDetails={showDetails}
+                  />
+                ))}
+              </ul>
+            ) : null}
+
+            <Col s={9} />
+          </>
+        ) : (
+          <WarriorDetails
+            warrior={detailWarrior}
+            context={context}
+            showDetails={showDetails}
+            show={show}
+            location={location}
+          />
+        )}
+      </Row>
+    </React.Fragment>
+  );
+};

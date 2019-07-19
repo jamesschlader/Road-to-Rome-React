@@ -4,13 +4,13 @@ import getWarriorsQuery from "../../api/Warrior/queries/getWarriorsQuery";
 import WarriorCard from "./WarriorCard";
 import Spinner from "../Shared/Spinner";
 
-export default props => {
+export default ({ showDetails }) => {
   return (
     <div>
       <Query query={getWarriorsQuery} pollInterval={500}>
         {({ loading, error, data }) => {
           if (error) return <h3>There was and error loading the warriors.</h3>;
-          if (loading)
+          if (loading) {
             return (
               <div>
                 {" "}
@@ -18,6 +18,8 @@ export default props => {
                 <Spinner />
               </div>
             );
+          }
+
           const showWarriors = data.warriors.filter(item => {
             return item.show;
           });
@@ -28,13 +30,7 @@ export default props => {
                 key={warrior.id}
                 style={{ display: "inline-block", padding: 8 }}
               >
-                <WarriorCard
-                  warrior={warrior}
-                  selectCard={props.selectCard}
-                  showDetails={props.showDetails}
-                  context={props.context}
-                  handleRedirect={props.handleRedirect}
-                />
+                <WarriorCard warrior={warrior} showDetails={showDetails} />
               </li>
             ))
           ) : (

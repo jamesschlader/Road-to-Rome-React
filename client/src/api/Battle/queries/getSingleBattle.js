@@ -5,17 +5,70 @@ const getSingleBattle = gql`
     battle(id: $id) {
       id
       playerOne {
+        id
         name
+        image
+        male
+        wallet
+        strength
+        speed
+        skill
+        stamina
+        winnings
+        alive
+        show
+        armorList {
+          id
+          name
+          strength
+          weight
+          shield
+          size
+        }
+        weaponList {
+          id
+          name
+          damage
+          weight
+          size
+        }
       }
       playerTwo {
+        id
         name
+        image
+        male
+        wallet
+        strength
+        speed
+        skill
+        stamina
+        winnings
+        alive
+        show
+        armorList {
+          name
+          strength
+          weight
+          shield
+          size
+        }
+        weaponList {
+          name
+          damage
+          weight
+          size
+        }
       }
       purse
       date
-      winner
+      winner {
+        id
+        name
+      }
       ArenaId
     }
   }
 `;
 
-export { getSingleBattle };
+export default getSingleBattle;

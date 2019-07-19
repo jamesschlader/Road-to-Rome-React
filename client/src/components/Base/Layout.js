@@ -8,6 +8,7 @@ import LandingPage from "./LandingPage";
 import BottomSpacer from "./BottomSpacer";
 import ArenaConduit from "../Arena/ArenaConduit";
 import WarriorConduit from "../Warrior/WarriorConduit";
+import CombatConduit from "../Combat/CombatConduit";
 
 const RoadAuth = {
   isAuthenticated: false,
@@ -41,6 +42,7 @@ const WarriorHome = ({ component: Component, ...rest }) => (
 export default class Layout extends Component {
   constructor(props) {
     super(props);
+
     this.setArena = (Arena, Warrior) => {
       this.setState({
         Arena,
@@ -48,13 +50,32 @@ export default class Layout extends Component {
       });
     };
 
+    this.startCombat = (Arena, Battle) => {
+      this.setState({
+        Arena,
+        Battle
+      });
+    };
+
+    this.handleRedirect = (func1, obj1, obj2) => {
+      func1(obj2.Arena, obj2);
+      obj1.authenticate();
+    };
+
     this.state = {
       Arena: null,
       Warrior: null,
+      Battle: null,
       setArena: this.setArena,
       RoadAuth: RoadAuth,
-      MONEY_CONVERTER: 10
+      MONEY_CONVERTER: 10,
+      handleRedirect: this.handleRedirect,
+      startCombat: this.startCombat
     };
+  }
+
+  componentDidMount() {
+    localStorage.setItem("whereWasI", "/arena");
   }
 
   render() {
@@ -70,6 +91,7 @@ export default class Layout extends Component {
               <Route exact path="/" component={LandingPage} />
               <Route exact path="/getdata" component={GetSomeData} />
               <Route exact path="/warrior" component={WarriorConduit} />
+              <Route exact path="/combat" component={CombatConduit} />
 
               <WarriorHome exact path="/arena" component={ArenaConduit} />
             </Container>

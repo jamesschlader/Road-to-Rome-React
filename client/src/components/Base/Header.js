@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Navbar, NavItem } from "react-materialize";
 
 export default () => {
   return (
-    <Navbar brand={<a href="/">Road To Rome</a>} className="right">
+    <Navbar brand={<Link to="/">Road To Rome</Link>} className="right">
       <NavItem href="/arena">
         <i className="material-icons">account_balance</i>
       </NavItem>

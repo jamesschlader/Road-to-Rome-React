@@ -55,10 +55,11 @@ const ArenaType = new GraphQLObjectType({
     scheduledBattles: {
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
-        return parent.battleIds.map(id => {
-          return Battle.findById(id).then(result => {
-            return result.scheduled && result;
-          });
+        return Battle.find({
+          ArenaId: parent._id,
+          scheduled: true
+        }).then(result => {
+          return result;
         });
       }
     },
@@ -117,7 +118,7 @@ const WarriorType = new GraphQLObjectType({
       type: new GraphQLList(ArmorType),
       resolve(parent, args) {
         return parent.armorIdList.length > 0
-          ? parent.armorIdList.map(id => Armor.findById({ _id: id }))
+          ? parent.armorIdList.map(id => Armor.findById(id))
           : Armor.find({ name: "None" }).then(result => {
               parent.armorList = result;
               parent.save();
@@ -132,7 +133,7 @@ const WarriorType = new GraphQLObjectType({
       type: new GraphQLList(WeaponType),
       resolve(parent, args) {
         return parent.weaponsIdList.length > 0
-          ? parent.weaponsIdList.map(id => Weapon.findById({ _id: id }))
+          ? parent.weaponsIdList.map(id => Weapon.findById(id))
           : Weapon.find({ name: "Fists" }).then(result => {
               parent.weaponList = result;
               parent.save();
@@ -156,14 +157,15 @@ const WarriorType = new GraphQLObjectType({
     nextScheduledBattle: {
       type: new GraphQLList(BattleType),
       resolve(parent, args) {
-        return Battle.find(
-          {
-            $or: [{ playerOneId: parent.id }, { playerTwoId: parent.id }],
-            scheduled: true
-          },
-          null,
-          { sort: { date: "desc" } }
-        );
+        return parent.battlesIdList.map(id => {
+          return Battle.findById(id).then(battle => {
+            if (battle !== null) {
+              return battle;
+            } else {
+              return new Battle({ ArenaId: parent.ArenaId });
+            }
+          });
+        });
       }
     },
     winnings: { type: GraphQLInt },
@@ -314,7 +316,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Arena.findById({ _id: args.id });
+        return Arena.findById(args.id);
       }
     },
 
@@ -340,7 +342,7 @@ const RootQuery = new GraphQLObjectType({
         id: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Warrior.findById({ _id: args.id });
+        return Warrior.findById(args.id);
       }
     },
 
@@ -651,7 +653,69 @@ const Mutation = new GraphQLObjectType({
         id: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Battle.findByIdAndRemove({ _id: args.id });
+        Battle.findById(args.id).then(battle => {
+          Arena.findById(battle.ArenaId).then(arena => {
+            const refresh = arena.battleIds.filter(id => {
+              return id !== args.id;
+            });
+            arena.battleIds = refresh;
+            arena.save();
+          });
+          Warrior.findById(battle.playerOneId).then(warrior => {
+            const refresh = warrior.battlesIdList.filter(id => {
+              return id !== args.id;
+            });
+            warrior.battlesIdList = refresh;
+            warrior.save();
+          });
+          Warrior.findById(battle.playerTwoId).then(warrior => {
+            const refresh = warrior.battlesIdList.filter(id => {
+              return id !== args.id;
+            });
+            warrior.battlesIdList = refresh;
+            warrior.save();
+          });
+        });
+        return Battle.findByIdAndRemove(args.id).then(result => {
+          return result;
+        });
+      }
+    },
+
+    deleteManyBattles: {
+      type: BattleType,
+      args: {
+        ids: { type: new GraphQLList(GraphQLID) }
+      },
+      resolve(parent, args) {
+        args.ids.map(argsId => {
+          Battle.findById(argsId).then(battle => {
+            Arena.findById(battle.ArenaId).then(arena => {
+              const refresh = arena.battleIds.filter(id => {
+                return id !== argsId;
+              });
+              arena.battleIds = refresh;
+              arena.save();
+            });
+            Warrior.findById(battle.playerOneId).then(warrior => {
+              const refresh = warrior.battlesIdList.filter(id => {
+                return id !== argsId;
+              });
+              warrior.battlesIdList = refresh;
+              warrior.save();
+            });
+            Warrior.findById(battle.playerTwoId).then(warrior => {
+              const refresh = warrior.battlesIdList.filter(id => {
+                return id !== argsId;
+              });
+              warrior.battlesIdList = refresh;
+              warrior.save();
+            });
+          });
+          return Battle.findByIdAndRemove(argsId).then(result => {
+            return result;
+          });
+        });
       }
     },
 
@@ -734,13 +798,13 @@ const Mutation = new GraphQLObjectType({
       },
       resolve(parent, args) {
         let returnObj = {};
-        Warrior.findById({ _id: args.id }, (error, warrior) => {
+        Warrior.findById(args.id, (error, warrior) => {
           if (error) console.log(error);
 
           if (warrior.battlesIdList.length > 0) {
             warrior.show = false;
             warrior.save();
-            Arena.findById({ _id: warrior.ArenaId }, (error, arena) => {
+            Arena.findById(warrior.ArenaId, (error, arena) => {
               if (error) console.log(error);
 
               const list = arena.warriorIds.filter(item => {
@@ -752,7 +816,7 @@ const Mutation = new GraphQLObjectType({
               returnObj = warrior;
             });
           } else {
-            returnObj = Warrior.findByIdAndDelete({ _id: args.id });
+            returnObj = Warrior.findByIdAndDelete(args.id);
           }
         }).then(result => {
           return returnObj;

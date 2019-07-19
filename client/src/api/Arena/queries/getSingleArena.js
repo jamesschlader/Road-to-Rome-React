@@ -21,9 +21,45 @@ const getSingleArena = gql`
         skill
         winnings
         alive
+        Arena {
+          id
+          name
+        }
         nextScheduledBattle {
           id
           date
+          Arena {
+            id
+            name
+          }
+          playerOne {
+            id
+            name
+          }
+          playerTwo {
+            id
+            name
+          }
+          purse
+        }
+        armorList {
+          id
+          name
+          strength
+          weight
+          size
+          cost
+          costType
+          shield
+        }
+        weaponList {
+          id
+          name
+          damage
+          weight
+          size
+          cost
+          costType
         }
       }
 
@@ -31,10 +67,13 @@ const getSingleArena = gql`
       scheduledBattles {
         id
         date
+        purse
         playerOne {
+          id
           name
         }
         playerTwo {
+          id
           name
         }
       }
