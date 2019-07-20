@@ -20,7 +20,7 @@ export default () => {
       <LandingCard
         src="/img/game-character-images/Lagertha.svg"
         text="Your tactics count"
-        details="Defend yourself or go for a knock-out blow. Use your skills, abilities, and gear to your best advatage. But watch out! Your opponent will do the same to you!"
+        details="Defend yourself or go for a knock-out blow. Use your skills, abilities, and gear to your best advantage. But watch out! Your opponent will do the same to you!"
       />
       <LandingCard
         src={pics}

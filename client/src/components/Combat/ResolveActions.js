@@ -2,13 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button } from "react-materialize";
 import ExecuteAction from "./ExecuteAction";
 
-export default ({ actions, setMatchedActions, decideReady }) => {
+export default ({ actions, setMatchedActions, setPhase }) => {
   const [done, setDone] = useState(false);
-
-  const allDone = () => {
-    setDone(!done);
-    decideReady();
-  };
 
   const removeAction = item => {
     const newArray = actions.filter(action => {
@@ -20,6 +15,8 @@ export default ({ actions, setMatchedActions, decideReady }) => {
   useEffect(() => {
     actions.length < 1 && setDone(true);
   }, [actions]);
+
+  console.log(`done is ${done}`);
 
   return (
     <div>
@@ -40,7 +37,7 @@ export default ({ actions, setMatchedActions, decideReady }) => {
       {done && (
         <>
           <h5>Finished with actions </h5>
-          <Button className="btn" onClick={e => allDone()}>
+          <Button className="btn" onClick={e => setPhase(6)}>
             Go to recovery phase
           </Button>
         </>

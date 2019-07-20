@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 import { Button } from "react-materialize";
 
-export default ({ player, setPhase }) => {
+export default ({ player, decideReady }) => {
   const [run, setRun] = useState(false);
 
+  const allDone = () => {
+    setRun(!run);
+
+    decideReady(1);
+  };
+
   const runFatigue = player => {
+    player.clearFatigue();
+    console.log(player.fatigue);
     const total = player.countFatigueFromActions();
     player.setFatigue(total);
-    setRun(!run);
     player.actions = player.clearActions();
-    return (
-      <p>
-        Just added {total} to player fatigue. Now is {player.fatigue}
-      </p>
-    );
+
+    allDone();
   };
 
   return (
@@ -21,7 +25,7 @@ export default ({ player, setPhase }) => {
       <h5>Set fatigue values for {player.name}</h5>
 
       <p>
-        Before running fatigue, {player.name}'s fatigue is {player.fatigue}
+        Fatigue in the previous round for {player.name}'s was {player.fatigue}
       </p>
 
       {!run && (
@@ -31,13 +35,9 @@ export default ({ player, setPhase }) => {
       )}
       {run && (
         <p>
-          {player.name}'s fatigue now {player.fatigue}
+          {player.name}'s fatigue generated this round is {player.fatigue}
         </p>
       )}
-
-      <Button className="btn" onClick={e => setPhase(1)}>
-        Start the loop over
-      </Button>
     </li>
   );
 };

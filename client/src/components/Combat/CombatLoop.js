@@ -14,9 +14,9 @@ export default ({ playerOne, playerTwo, setStep }) => {
   const [ready, setReady] = useState(false);
   const [matchedActions, setMatchedActions] = useState([]);
 
-  const decideReady = () => {
+  const decideReady = newPhase => {
+    console.log(`ready inside decideReady = ${ready}`);
     if (ready) {
-      const newPhase = phase + 1;
       setReady(!ready);
       setPhase(newPhase);
     } else {
@@ -76,14 +76,14 @@ export default ({ playerOne, playerTwo, setStep }) => {
           <ResolveActions
             actions={matchedActions}
             setMatchedActions={setMatchedActions}
-            decideReady={decideReady}
+            setPhase={setPhase}
           />
         </ul>
       )}
       {phase === phases.fatigue && (
         <ul>
           {players.map(player => (
-            <Fatigue player={player} setPhase={setPhase} />
+            <Fatigue player={player} decideReady={decideReady} />
           ))}
         </ul>
       )}

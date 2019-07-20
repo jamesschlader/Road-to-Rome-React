@@ -3,18 +3,26 @@ import { Button } from "react-materialize";
 
 export default ({ player, decideReady, setMatchedActions }) => {
   const [done, setDone] = useState(false);
+  const [up, setUp] = useState(false);
+  const [down, setDown] = useState(false);
   const allDone = () => {
     setDone(!done);
-    decideReady();
+    decideReady(2);
   };
 
   const [runrecovery, setrunrecovery] = useState(false);
 
   const runRecovery = player => {
-    player.setCurrentStamina(player.getRecovery());
-
+    const before = player.currentStamina;
+    const after = player.setCurrentStamina(player.getRecovery());
+    if (before > after) {
+      setDown(!down);
+    } else if (after > before) {
+      setUp(!up);
+    }
     player.setCurrentSpeed();
     player.clearActions();
+
     setMatchedActions([]);
     setrunrecovery(!runrecovery);
     return <p>All done running recovery</p>;
@@ -23,39 +31,42 @@ export default ({ player, decideReady, setMatchedActions }) => {
   return (
     <div>
       <h5>Do the recovery actions for {player.name}</h5>
-      <dl>
-        <dt>recovery</dt>
-        <dd>{player.getRecovery()}</dd>
-        <dt>current stamina</dt>
-        <dd>{player.currentStamina}</dd>
-        <dt>current speed</dt>
-        <dd>{player.currentSpeed}</dd>
-        <dt>fatigue</dt>
-        <dd>{player.fatigue}</dd>
-        <dt>wounds</dt>
-        <dd>{player.wounds}</dd>
-        <dt>wound threshold</dt>
-        <dd>{player.getWoundThreshold()}</dd>
-        <dt>total harm</dt>
-        <dd>{player.getHarm()}</dd>
-        <dt>weapon</dt>
-        <dd>{player.weapon.name}</dd>
-        <dt>armor</dt>
-        {player.armor.map((armor, index) => (
-          <dd key={armor.id * index}>{armor.name}</dd>
-        ))}
-      </dl>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Current Stamina</th>
+            <th>Recovery</th>
+            <th>Current Speed</th>
+            <th>Total Harm</th>
+            <th>Fatigue</th>
+            <th>Wounds</th>
+            <th>Wound Threshold</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              style={{
+                fontSize: "28px",
+                color: (up && "green") || (down && "#b71c1c")
+              }}
+            >
+              {player.currentStamina}
+            </td>
+            <td>{player.getRecovery()}</td>
+            <td>{player.speed}</td>
+            <td>{player.getHarm()}</td>
+            <td>{player.fatigue}</td>
+            <td>{player.wounds}</td>
+            <td>{player.getWoundThreshold()}</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h5>Running recovery function...standby...</h5>
 
-      {!runrecovery ? (
-        runRecovery(player)
-      ) : (
-        <p>
-          done running recovery. {player.name} stamina is now{" "}
-          <span>{player.currentStamina}</span>
-        </p>
-      )}
+      {!runrecovery && runRecovery(player)}
 
       {!done && (
         <Button className="btn" onClick={e => allDone()}>

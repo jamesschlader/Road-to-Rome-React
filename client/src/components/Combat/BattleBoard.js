@@ -20,7 +20,6 @@ export default ({ players, setPhase, matchedActions, setMatchedActions }) => {
           {!done && (
             <PlaceActions
               player={players[0]}
-              opponent={players[1]}
               matchedActions={matchedActions}
               setMatchedActions={setMatchedActions}
               allDone={allDone}
@@ -29,7 +28,6 @@ export default ({ players, setPhase, matchedActions, setMatchedActions }) => {
           {done && (
             <PlaceActions
               player={players[1]}
-              opponent={players[0]}
               matchedActions={matchedActions}
               setMatchedActions={setMatchedActions}
               allDone={allDone}

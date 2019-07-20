@@ -6,10 +6,16 @@ import cardContent from "../../utilities/cardContent";
 export default ({ player, decideReady }) => {
   const [done, setDone] = useState(false);
   const [speed, setSpeed] = useState(player.currentSpeed);
+  const obj = {
+    title: "No Action",
+    name: "fatigue",
+    value: 0,
+    src: "/img/game-armor-images/magic-socks.svg"
+  };
 
   const allDone = () => {
     setDone(!done);
-    decideReady();
+    decideReady(3);
   };
 
   const playerOptions = value => {
@@ -20,12 +26,6 @@ export default ({ player, decideReady }) => {
         return item.title !== "Full Defense";
       });
     } else {
-      const obj = {
-        title: "No Available Actions",
-        name: "fatigue",
-        value: 0,
-        src: "/img/game-armor-images/magic-socks.svg"
-      };
       return [obj];
     }
   };
@@ -74,10 +74,23 @@ export default ({ player, decideReady }) => {
           </li>
         ))}
       </ul>
+      {!done && player.actions < 1 && (
+        <>
+          <p>
+            {player.name} has NO actions selected. Do you want to advance
+            anyway?
+          </p>
+          <Button className="btn" onClick={e => allDone()}>
+            Advance with NO Actions
+          </Button>
+        </>
+      )}
       {!done && player.actions.length > 0 && (
-        <Button className="btn" onClick={e => allDone()}>
-          All done setting {player.name}'s tactics
-        </Button>
+        <>
+          <Button className="btn" onClick={e => allDone()}>
+            Advance
+          </Button>
+        </>
       )}
       {done && <h5>Done setting {player.name}'s tactics</h5>}
     </div>

@@ -57,7 +57,12 @@ function Player(
   };
 
   this.setFatigue = function(value = 0) {
-    this.fatigue = this.fatigue + value < 0 ? 0 : this.fatigue + value;
+    this.fatigue = this.fatigue + value;
+    return this.fatigue;
+  };
+
+  this.clearFatigue = function() {
+    this.fatigue = 0;
     return this.fatigue;
   };
 
@@ -99,6 +104,9 @@ function Player(
     return this.actions;
   };
   this.countFatigueFromActions = function() {
+    if (this.actions.length < 1) {
+      return 0;
+    }
     return this.actions
       .map(action => Math.floor(action.speed * action.value))
       .reduce((total, current) => {

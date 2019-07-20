@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-materialize";
 
-export default ({
-  player,
-  allDone,
-  matchedActions,
-  setMatchedActions,
-  opponent
-}) => {
+export default ({ player, allDone, matchedActions, setMatchedActions }) => {
   const [done, setDone] = useState(false);
   const [placed, setPlaced] = useState([]);
 
@@ -20,14 +14,7 @@ export default ({
 
   const handleSelection = item => {
     const matchAction = { ...item };
-    if (matchAction.title.includes("fense")) {
-      matchAction.player = opponent;
-      matchAction.opponent = player;
-    } else {
-      matchAction.player = player;
-      matchAction.opponent = opponent;
-    }
-
+    matchAction.owner = player;
     const newSelections = [...placed, matchAction];
     setPlaced(newSelections);
 
@@ -37,7 +24,7 @@ export default ({
 
   useEffect(() => {
     const business = unfinishedBusiness();
-
+    console.log(matchedActions);
     business.length < 1 && setDone(!done);
   }, [matchedActions]);
 
