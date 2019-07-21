@@ -294,10 +294,19 @@ footer {
 
 .btn-clear {
   background-color: transparent;
-  color: color(primary);
-  border: 1px solid color(primary);
+  color: green;
+  border: 1px solid green;
   margin: 2px;
   padding: 0 5px;
+  &:hover {
+    background-color: color(secondary);
+    color: green;
+  }
+}
+
+.btn-clear.exerted {
+  color: color(primary);
+  border: 1px solid color(primary);
   &:hover {
     color: color(primary);
   }
@@ -469,6 +478,15 @@ footer {
   max-width: 120px !important;
 }
 
+.card-layout.inert {
+  background-color: #ccc;
+}
+
+.card-layout.blank {
+  background: transparent;
+  border-style: dashed;
+}
+
 .buffer {
   margin: 0 10px;
 }
@@ -503,6 +521,19 @@ footer {
     color: color(secondary);
     background-color: color(primary);
   }
+}
+
+.tiny-card-layout.inert {
+  background-color: gray;
+  &:hover {
+    cursor: default;
+    background-color: gray;
+    color: black;
+  }
+}
+.tiny-card-layout.active {
+  background-color: green;
+  color: color(secondary);
 }
 
 .layout-img {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, Button } from "react-materialize";
 
 export default ({ content, action, player, adjustSpeed, speed }) => {
-  const { title, src, name, value } = content;
+  const { title, image, name, value } = content;
   const [selected, setSelected] = useState(action);
   const [picked, setPicked] = useState(false);
 
@@ -21,7 +21,7 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
   const handleClick = (value = 0) => {
     if (!selected) {
       const newAction = withValue(withId(content), value);
-
+      newAction.owner = player;
       adjustSpeed(value);
       setPicked(false);
       player.addAction(newAction);
@@ -36,7 +36,8 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
   const speedOptions = number => {
     if (number > 0) {
       let options = [];
-      for (let i = 0; i < number; i++) {
+
+      for (let i = 0; i < 5; i++) {
         options.push(i + 1);
       }
 
@@ -52,6 +53,10 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
     }
   };
 
+  const speedClasses = number => {
+    return number > speed ? `btn btn-clear ${"exerted"}` : `btn btn-clear`;
+  };
+
   return (
     <>
       <Card
@@ -63,7 +68,7 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
         header={<Header title={title} />}
         style={{ backgroundColor: selected && "green", position: "relative" }}
       >
-        <img src={src} alt={title} className="card-img lock" />
+        <img src={image} alt={title} className="card-img lock" />
 
         {speed > 0 && picked && (
           <div className="basic-modal-fill">
@@ -75,14 +80,14 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
                     className="btn btn-clear"
                     onClick={e => handleClick(speed)}
                   >
-                    Max Speed = {speed}
+                    Max Speed = {5}
                   </Button>
                 </li>
               ) : (
                 speedOptions(speed).map(item => (
                   <li key={item} className="inline-content tight">
                     <Button
-                      className="btn btn-clear "
+                      className={speedClasses(item)}
                       onClick={e => handleClick(item)}
                     >
                       {item}

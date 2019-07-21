@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "react-materialize";
+import { Button, Row } from "react-materialize";
 
-export default ({ player, allDone, matchedActions, setMatchedActions }) => {
+export default ({ player, allDone, matchedActions, handlePositions }) => {
   const [done, setDone] = useState(false);
   const [placed, setPlaced] = useState([]);
 
   const unfinishedBusiness = () => {
     const placedIds = placed.map(item => item.id);
     return player.actions.filter(action => {
+      console.log(action);
       return !placedIds.includes(action.id) && action;
     });
   };
@@ -18,16 +19,21 @@ export default ({ player, allDone, matchedActions, setMatchedActions }) => {
     const newSelections = [...placed, matchAction];
     setPlaced(newSelections);
 
-    const newMatches = [...matchedActions, matchAction];
-    setMatchedActions(newMatches);
+    handlePositions(matchAction);
   };
 
   useEffect(() => {
     const business = unfinishedBusiness();
-    console.log(matchedActions);
-    business.length < 1 && setDone(!done);
-  }, [matchedActions]);
 
+    if (business.length === 1) {
+      const matchAction = player.actions[0];
+      matchAction.owner = player;
+      setPlaced(matchAction);
+      handlePositions(matchAction);
+      setDone(!done);
+    }
+  }, [player]);
+  console.log(unfinishedBusiness().map(item => console.log(item)));
   return (
     <div>
       <h5>Place actions for {player.name}</h5>
@@ -35,17 +41,14 @@ export default ({ player, allDone, matchedActions, setMatchedActions }) => {
       {!done && (
         <>
           {" "}
-          <p>set the actions here</p>
-          <ul>
-            {unfinishedBusiness().map(action => (
-              <li key={action.id + player.id}>
-                <p>{action.title}</p>
-                <Button className="btn" onClick={e => handleSelection(action)}>
-                  Place {action.title}
-                </Button>
+          <Row>
+            {unfinishedBusiness().map((card, index) => (
+              <li key={index} className="inline-content">
+                />
               </li>
             ))}
-          </ul>
+          </Row>
+          <p>set the actions here</p>
         </>
       )}
 

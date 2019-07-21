@@ -487,13 +487,23 @@ footer {
 
 .btn-clear {
   background-color: transparent;
-  color: #b71c1c;
-  border: 1px solid #b71c1c;
+  color: green;
+  border: 1px solid green;
   margin: 2px;
   padding: 0 5px;
 }
 
 .btn-clear:hover {
+  background-color: white;
+  color: green;
+}
+
+.btn-clear.exerted {
+  color: #b71c1c;
+  border: 1px solid #b71c1c;
+}
+
+.btn-clear.exerted:hover {
   color: #b71c1c;
 }
 
@@ -683,6 +693,15 @@ footer {
   max-width: 120px !important;
 }
 
+.card-layout.inert {
+  background-color: #ccc;
+}
+
+.card-layout.blank {
+  background: transparent;
+  border-style: dashed;
+}
+
 .buffer {
   margin: 0 10px;
 }
@@ -719,6 +738,21 @@ footer {
   cursor: pointer;
   color: white;
   background-color: #b71c1c;
+}
+
+.tiny-card-layout.inert {
+  background-color: gray;
+}
+
+.tiny-card-layout.inert:hover {
+  cursor: default;
+  background-color: gray;
+  color: black;
+}
+
+.tiny-card-layout.active {
+  background-color: green;
+  color: white;
 }
 
 .layout-img {

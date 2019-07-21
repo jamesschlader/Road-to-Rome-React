@@ -6,13 +6,17 @@ import BattleBoard from "./BattleBoard";
 import ResolveActions from "./ResolveActions";
 import Fatigue from "./Fatigue";
 import phases from "../../utilities/battlePhases";
+import newBlankAction from "../../utilities/newBlankAction";
 
 export default ({ playerOne, playerTwo, setStep }) => {
   const [players, setPlayers] = useState([playerOne, playerTwo]);
-
+  const firstBlank = newBlankAction();
   const [phase, setPhase] = useState(phases.recovery);
   const [ready, setReady] = useState(false);
   const [matchedActions, setMatchedActions] = useState([]);
+  const [positions, setPositions] = useState([firstBlank]);
+  const [placements, setPlacements] = useState([]);
+  const [target, setTarget] = useState(null);
 
   const decideReady = newPhase => {
     console.log(`ready inside decideReady = ${ready}`);
@@ -65,8 +69,13 @@ export default ({ playerOne, playerTwo, setStep }) => {
           <BattleBoard
             players={players}
             setPhase={setPhase}
-            matchedActions={matchedActions}
             setMatchedActions={setMatchedActions}
+            placements={placements}
+            setPlacements={setPlacements}
+            positions={positions}
+            setPositions={setPositions}
+            target={target}
+            setTarget={setTarget}
           />
         </ul>
       )}

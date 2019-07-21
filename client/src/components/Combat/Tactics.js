@@ -10,7 +10,7 @@ export default ({ player, decideReady }) => {
     title: "No Action",
     name: "fatigue",
     value: 0,
-    src: "/img/game-armor-images/magic-socks.svg"
+    image: "/img/game-armor-images/magic-socks.svg"
   };
 
   const allDone = () => {
