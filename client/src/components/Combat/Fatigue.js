@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-materialize";
 
-export default ({ player, decideReady }) => {
+export default ({ player, decideReady, setMatchedActions, setPositions, setPlacements }) => {
   const [run, setRun] = useState(false);
 
   const allDone = () => {
@@ -16,6 +16,9 @@ export default ({ player, decideReady }) => {
     const total = player.countFatigueFromActions();
     player.setFatigue(total);
     player.actions = player.clearActions();
+    setMatchedActions([])
+    setPositions([])
+    setPlacements([])
 
     allDone();
   };

@@ -2,7 +2,6 @@ import React from "react";
 
 export default ({ action, doSomething, target }) => {
   const classes = item => {
-    console.log(item.id);
     if (target) {
       return `tiny-card-layout ${target.id === item.id ? "active" : "inert"} `;
     } else {

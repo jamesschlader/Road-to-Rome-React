@@ -5,10 +5,11 @@ import ExecuteAction from "./ExecuteAction";
 export default ({ actions, setMatchedActions, setPhase }) => {
   const [done, setDone] = useState(false);
 
-  const removeAction = item => {
-    const newArray = actions.filter(action => {
-      return action.id !== item.id;
-    });
+  const removeAction = index => {
+    const front = actions.slice(0, index);
+    const back = actions.slice(index);
+    back.shift();
+    const newArray = [...front, ...back];
     setMatchedActions(newArray);
   };
 
@@ -16,18 +17,17 @@ export default ({ actions, setMatchedActions, setPhase }) => {
     actions.length < 1 && setDone(true);
   }, [actions]);
 
-  console.log(`done is ${done}`);
-
   return (
     <div>
       <h5>Process actions in order</h5>
 
       {!done && (
         <ul>
-          {actions.map((action, index) => (
+          {actions.map((item, index) => (
             <ExecuteAction
               key={index}
-              action={action}
+              index={index}
+              actions={item}
               finishAction={removeAction}
             />
           ))}

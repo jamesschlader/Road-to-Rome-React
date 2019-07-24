@@ -19,7 +19,6 @@ export default ({ playerOne, playerTwo, setStep }) => {
   const [target, setTarget] = useState(null);
 
   const decideReady = newPhase => {
-    console.log(`ready inside decideReady = ${ready}`);
     if (ready) {
       setReady(!ready);
       setPhase(newPhase);
@@ -92,7 +91,8 @@ export default ({ playerOne, playerTwo, setStep }) => {
       {phase === phases.fatigue && (
         <ul>
           {players.map(player => (
-            <Fatigue player={player} decideReady={decideReady} />
+            <Fatigue player={player} decideReady={decideReady} setMatchedActions={setMatchedActions} setPositions={setPositions} setPlacements={setPlacements
+            }/>
           ))}
         </ul>
       )}

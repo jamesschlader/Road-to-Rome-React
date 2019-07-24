@@ -127,6 +127,12 @@ function Player(
     this.weapon = item;
     return this.weapon;
   };
+
+  this.getDamage = function(speed) {
+    return speed === 5
+      ? this.weapon.damage + this.strength
+      : Math.floor((this.weapon.damage + this.strength) / 5) * speed;
+  };
 }
 
 export default Player;

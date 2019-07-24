@@ -1,29 +1,10 @@
 import React from "react";
-import { Card } from "react-materialize";
+import CombatCard from "./CombatCard";
 
-export default ({ matchedActions, handleSelection }) => {
+export default ({ action }) => {
   return (
-    <ul>
-      {matchedActions.map(action => (
-        <li key={action.id} className="inline-content">
-          <Card
-            key={action.id}
-            className="card-layout inline-content"
-            header={<Header title={`${action.owner.name}'s Action`} />}
-            onClick={e => handleSelection(action)}
-          >
-            <img
-              src={action.owner.image}
-              alt={action.owner.name}
-              className="card-img lock"
-            />
-          </Card>
-        </li>
-      ))}
-    </ul>
+    <li key={action.id} className="inline-content">
+      <CombatCard item={action} className="" />{" "}
+    </li>
   );
-};
-
-const Header = ({ title }) => {
-  return <p>{title}</p>;
 };

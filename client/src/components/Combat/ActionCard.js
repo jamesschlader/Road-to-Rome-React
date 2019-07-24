@@ -57,6 +57,20 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
     return number > speed ? `btn btn-clear ${"exerted"}` : `btn btn-clear`;
   };
 
+  const withWeapon = options => {
+    if (title.includes("Attack")) {
+      if (player.weapon.size === "light") {
+        return options.slice(0, 3);
+      } else if (player.weapon.size === "medium") {
+        return options.slice(1, 4);
+      } else {
+        return options.slice(2);
+      }
+    } else {
+      return options;
+    }
+  };
+
   return (
     <>
       <Card
@@ -84,7 +98,7 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
                   </Button>
                 </li>
               ) : (
-                speedOptions(speed).map(item => (
+                withWeapon(speedOptions(speed)).map(item => (
                   <li key={item} className="inline-content tight">
                     <Button
                       className={speedClasses(item)}

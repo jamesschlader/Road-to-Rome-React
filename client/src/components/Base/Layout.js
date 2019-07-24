@@ -91,7 +91,7 @@ export default class Layout extends Component {
               <Route exact path="/" component={LandingPage} />
               <Route exact path="/getdata" component={GetSomeData} />
               <Route exact path="/warrior" component={WarriorConduit} />
-              <Route exact path="/combat" component={CombatConduit} />
+              <WarriorHome exact path="/combat" component={CombatConduit} />
 
               <WarriorHome exact path="/arena" component={ArenaConduit} />
             </Container>

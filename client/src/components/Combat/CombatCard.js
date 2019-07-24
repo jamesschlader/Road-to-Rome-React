@@ -1,23 +1,26 @@
 import React from "react";
 import { Card } from "react-materialize";
 
-export default ({ item, turn, add, remove, target }) => {
+export default ({ item, turn, add, remove, target, player }) => {
   const handleClick = item => {
-    console.log(item);
-    if (target && item.title === "Blank") {
-      add(target);
-    } else {
-      if (item.title !== "Blank") {
-        remove(item);
+    if (turn < 3) {
+      if (target && item.title === "Blank") {
+        add(target, item);
+      } else {
+        if (item.title !== "Blank") {
+          if (turn === player) {
+            remove(item);
+          }
+        }
       }
     }
   };
 
   return (
     <Card
-      className="card-layout"
+      className="card-layout small"
       title={item.title === "Blank" ? "Blank" : item.owner.name}
-      style={{ backgroundColor: turn ? "green" : "#ccc" }}
+      style={{ backgroundColor: "#ccc" }}
       onClick={e => handleClick(item)}
     >
       <img
