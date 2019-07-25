@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-materialize";
+import Action from "../../utilities/Action";
 
 export default ({ content, action, player, adjustSpeed, speed }) => {
   const { title, image, name, value } = content;
@@ -18,13 +19,18 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
     return obj;
   };
 
-  const handleClick = (value = 0) => {
+  const handleClick = (number = 0) => {
     if (!selected) {
-      const newAction = withValue(withId(content), value);
+      const newAction = withValue(withId(content), number);
       newAction.owner = player;
-      adjustSpeed(value);
+
+      const { id, name, title, image, value, speed, owner } = newAction;
+
+      const action = new Action(id, name, title, image, value, speed, owner);
+
+      adjustSpeed(number);
       setPicked(false);
-      player.addAction(newAction);
+      player.addAction(action);
       setSelected(false);
     } else if (content.playerId) {
       adjustSpeed(content.speed * -1);

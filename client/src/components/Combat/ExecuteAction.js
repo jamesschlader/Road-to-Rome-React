@@ -1,43 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-materialize";
 import FlipCard from "./FlipCard";
 import DisplayPlayerAttackResult from "./DisplayPlayerAttackResult";
 
-export default ({ actions, finishAction, index }) => {
+export default ({ actions, finishAction, index, setWoundedPlayer }) => {
   const playerOne = actions[0].owner;
   const playerTwo = actions[1].owner;
 
   const [resultOne, setResultOne] = useState(0);
   const [resultTwo, setResultTwo] = useState(0);
+  const [containsAttack, setContainsAttack] = useState(0);
+
+  useEffect(() => {
+    const attack = actions.filter(item => {
+      return item.title.includes("Attack");
+    });
+    if (attack.length > 0) {
+      setContainsAttack(attack.length);
+    } else {
+      setContainsAttack(0);
+    }
+  }, [actions]);
 
   const handleActionFinish = () => {
     finishAction(index);
   };
 
   const handleRoll = player => {
+    const rollResult = Math.floor(Math.random() * 20) + 1;
     player.id === playerOne.id
-      ? setResultOne(Math.floor(Math.random() * 20 + 1))
-      : setResultTwo(Math.floor(Math.random() * 20 + 1));
-  };
-
-  const getToHitResult = (action, result) => {
-    return action.title.includes("Weak")
-      ? result + action.owner.skill - 5
-      : result + action.owner.skill;
-  };
-
-  const getToHitTarget = action => {
-    if (action.title.includes("Full")) {
-      return 10 + action.owner.skill;
-    } else if (action.title.includes("end")) {
-      return 10 + action.speed;
-    } else {
-      return 10;
-    }
-  };
-
-  const getAttackResult = (attackRoll, targetToHit) => {
-    return attackRoll >= targetToHit ? true : false;
+      ? setResultOne(rollResult)
+      : setResultTwo(rollResult);
+    setContainsAttack(containsAttack - 1);
   };
 
   const showToHitTarget = action => {
@@ -65,13 +59,7 @@ export default ({ actions, finishAction, index }) => {
     }
   };
 
-  const withAttackType = (player, action) => {
-   
-    return action.title.includes("Weak")
-      ? player.getWoundThreshold()
-      : player.getWoundThreshold() + (parseInt(player.armor[0].strength) - 10);
-  };
-
+  console.log(`actions: `, actions);
   return (
     <div>
       <ul className="inline-content">
@@ -86,41 +74,38 @@ export default ({ actions, finishAction, index }) => {
       </ul>
 
       <div className="inline-content tight">
-        <h5>Show Results Here</h5>
+        <h5>Results</h5>
 
-       <DisplayPlayerAttackResult 
-       actionOne={actions[0]} 
-       actionTwo={actions[1]} 
-       playerOne={playerOne} 
-       playerTwo={playerTwo} 
-       result={resultOne} 
-       handleRoll={handleRoll} 
-       getToHitResult={getToHitResult} 
-       showToHitTarget={showToHitTarget} 
-       getAttackResult={getAttackResult} 
-       getToHitTarget={getToHitTarget} 
-       withAttackType={withAttackType}/>
+        <DisplayPlayerAttackResult
+          actionOne={actions[0]}
+          actionTwo={actions[1]}
+          playerOne={playerOne}
+          playerTwo={playerTwo}
+          index={index}
+          result={resultOne}
+          handleRoll={handleRoll}
+          showToHitTarget={showToHitTarget}
+          setWoundedPlayer={setWoundedPlayer}
+        />
 
-      <DisplayPlayerAttackResult 
-      actionOne={actions[1]}
-      actionTwo={actions[0]}
-      playerOne={playerTwo}
-      playerTwo={playerOne}
-      result={resultTwo}
-      handleRoll={handleRoll} 
-      getToHitResult={getToHitResult} 
-      showToHitTarget={showToHitTarget} 
-      getAttackResult={getAttackResult} 
-      getToHitTarget={getToHitTarget} 
-      withAttackType={withAttackType}
-      />
-
-    
+        <DisplayPlayerAttackResult
+          actionOne={actions[1]}
+          actionTwo={actions[0]}
+          playerOne={playerTwo}
+          playerTwo={playerOne}
+          index={index}
+          result={resultTwo}
+          handleRoll={handleRoll}
+          showToHitTarget={showToHitTarget}
+          setWoundedPlayer={setWoundedPlayer}
+        />
       </div>
 
-      <Button className="btn" onClick={e => handleActionFinish()}>
-        Post the results of this action
-      </Button>
+      {containsAttack < 1 && (
+        <Button className="btn" onClick={e => handleActionFinish()}>
+          Post the results of this action
+        </Button>
+      )}
     </div>
   );
 };

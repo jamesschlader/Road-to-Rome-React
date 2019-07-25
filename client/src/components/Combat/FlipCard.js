@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button } from "react-materialize";
+import { Card } from "react-materialize";
 
 export default ({ action, result }) => {
   const [flipped, setFlipped] = useState(false);

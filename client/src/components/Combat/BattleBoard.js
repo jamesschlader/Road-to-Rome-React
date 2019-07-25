@@ -3,6 +3,7 @@ import CombatCard from "./CombatCard";
 import ActionTinyCard from "./ActionTinyCard";
 import { Button, Row } from "react-materialize";
 import newBlankAction from "../../utilities/newBlankAction";
+import Action from "../../utilities/Action";
 import Fatigue from "./Fatigue";
 import DisplayMatchedActions from "./DisplayMatchedActions";
 
@@ -131,7 +132,19 @@ export default ({
       } else {
         const newBlank = newBlankAction();
         newBlank.owner = one.owner.id === playerOne.id ? playerOne : playerTwo;
-        const newPair = [one, newBlank];
+
+        const { id, name, title, image, value, speed, owner } = newBlank;
+
+        const blankToAdd = new Action(
+          id,
+          name,
+          title,
+          image,
+          value,
+          speed,
+          owner
+        );
+        const newPair = [one, blankToAdd];
 
         pairs.push(newPair);
       }
@@ -155,7 +168,20 @@ export default ({
         const newBlank = newBlankAction();
         newBlank.owner =
           placements[i].owner.id === playerOne.id ? playerTwo : playerOne;
-        const newPair = [placements[i], newBlank];
+
+        const { id, name, title, image, value, speed, owner } = newBlank;
+
+        const newToAdd = new Action(
+          id,
+          name,
+          title,
+          image,
+          value,
+          speed,
+          owner
+        );
+
+        const newPair = [placements[i], newToAdd];
 
         pairs.push(newPair);
       }

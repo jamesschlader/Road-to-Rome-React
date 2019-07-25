@@ -133,6 +133,19 @@ function Player(
       ? this.weapon.damage + this.strength
       : Math.floor((this.weapon.damage + this.strength) / 5) * speed;
   };
+
+  this.withAttackType = function(action) {
+    const noShield = this.armor.filter(item => {
+      return item.name !== "Shield";
+    });
+    return action.title.includes("Weak")
+      ? this.getWoundThreshold()
+      : this.getWoundThreshold() + noShield[0].strength - 10;
+  };
+
+  this.addWound = function(value) {
+    this.wounds = this.wounds + value;
+  };
 }
 
 export default Player;
