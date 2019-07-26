@@ -107,7 +107,7 @@ const WarriorType = new GraphQLObjectType({
               parent.save();
               return result[0];
             })
-          : Arena.findById({ _id: parent.ArenaId });
+          : Arena.findById(parent.ArenaId);
       }
     },
 
@@ -629,21 +629,11 @@ const Mutation = new GraphQLObjectType({
       type: BattleType,
       args: {
         id: { type: GraphQLID },
-        ArenaId: { type: GraphQLID },
-        playerOne: { type: GraphQLID },
-        playerTwo: { type: GraphQLID },
-        winner: { type: GraphQLID },
-        purse: { type: GraphQLInt },
+        winnerId: { type: GraphQLID },
         scheduled: { type: GraphQLBoolean }
       },
       resolve(parent, args) {
-        return Battle.findOneAndUpdate(
-          args.id,
-          {
-            ...args
-          },
-          { upsert: true }
-        );
+        return Battle.findByIdAndUpdate(args.id, { ...args });
       }
     },
 
@@ -783,11 +773,7 @@ const Mutation = new GraphQLObjectType({
         show: { type: GraphQLBoolean }
       },
       resolve(parent, args) {
-        return Warrior.updateOne(
-          { _id: args.id },
-          { ...args },
-          { upsert: true }
-        );
+        return Warrior.findByIdAndUpdate(args.id, { ...args });
       }
     },
 

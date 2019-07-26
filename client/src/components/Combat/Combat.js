@@ -21,6 +21,7 @@ export default ({ context }) => {
   const [step, setStep] = useState(steps.arms);
   const [playerOneObj, setPlayerOneObj] = useState(null);
   const [playerTwoObj, setPlayerTwoObj] = useState(null);
+  const [winner, setWinner] = useState(null);
 
   const staticProps = {
     Battle,
@@ -158,6 +159,8 @@ export default ({ context }) => {
                     playerOne={playerOneObj}
                     playerTwo={playerTwoObj}
                     setStep={setStep}
+                    Battle={Battle}
+                    setWinner={setWinner}
                   />
                 </Row>
               </>
@@ -166,7 +169,12 @@ export default ({ context }) => {
             {step === steps.done && <GameOverModal setStep={setStep} />}
 
             {step === steps.recap && (
-              <SaveBattleResults setStep={setStep} setLocation={setLocation} />
+              <SaveBattleResults
+                setStep={setStep}
+                setLocation={setLocation}
+                Battle={Battle}
+                winner={winner}
+              />
             )}
 
             {step === steps.exit && <Redirect to={location} />}

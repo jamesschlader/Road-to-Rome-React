@@ -14,7 +14,7 @@ export default ({ warrior, showDetails }) => {
       >
         <img src={warrior.image} alt={warrior.name} className="card-img" />
 
-        {warrior.Arena.name ? (
+        {warrior.Arena ? (
           <p>
             Current Arena: <strong>{warrior.Arena.name}</strong>
           </p>

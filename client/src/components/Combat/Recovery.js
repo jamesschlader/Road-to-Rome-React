@@ -1,7 +1,21 @@
 import React, { useState } from "react";
 import { Button } from "react-materialize";
+import { Mutation } from "react-apollo";
+import { updateWarriorMutation } from "../../api/Warrior/mutations/updateWarrior";
 
-export default ({ player, decideReady, setMatchedActions }) => {
+export default ({
+  player,
+  decideReady,
+  setMatchedActions,
+  gameOver,
+  setGameOver,
+  loser,
+  setLoser,
+
+  Battle
+}) => {
+  const { purse } = Battle;
+
   const [done, setDone] = useState(false);
   const [up, setUp] = useState(false);
   const [down, setDown] = useState(false);
@@ -25,7 +39,67 @@ export default ({ player, decideReady, setMatchedActions }) => {
 
     setMatchedActions([]);
     setrunrecovery(!runrecovery);
+    checkGameOver();
     return <p>All done running recovery</p>;
+  };
+
+  const checkGameOver = () => {
+    if (player.currentStamina <= 0) {
+      setLoser(player);
+
+      setGameOver(true);
+    }
+  };
+
+  const manageExit = () => {
+    console.log(player);
+    setDone(!done);
+    decideReady(7);
+  };
+
+  const addWinnerMutation = () => {
+    const obj = {
+      id: player.id,
+      wallet: player.wallet + purse,
+      winnings: player.winnings + purse
+    };
+    return (
+      <Mutation mutation={updateWarriorMutation} variables={{ ...obj }}>
+        {postMutation => (
+          <Button
+            className="btn"
+            onClick={e => {
+              postMutation();
+              manageExit();
+            }}
+          >
+            Exit
+          </Button>
+        )}
+      </Mutation>
+    );
+  };
+
+  const addLoserMutation = () => {
+    const obj = {
+      id: player.id,
+      alive: false
+    };
+    return (
+      <Mutation mutation={updateWarriorMutation} variables={{ ...obj }}>
+        {postMutation => (
+          <Button
+            className="btn"
+            onClick={e => {
+              postMutation();
+              manageExit();
+            }}
+          >
+            Exit
+          </Button>
+        )}
+      </Mutation>
+    );
   };
 
   return (
@@ -55,7 +129,7 @@ export default ({ player, decideReady, setMatchedActions }) => {
               {player.currentStamina}
             </td>
             <td>{player.getRecovery()}</td>
-            <td>{player.speed}</td>
+            <td>{player.currentSpeed}</td>
             <td>{player.getHarm()}</td>
             <td>{player.fatigue}</td>
             <td>{player.wounds}</td>
@@ -68,7 +142,19 @@ export default ({ player, decideReady, setMatchedActions }) => {
 
       {!runrecovery && runRecovery(player)}
 
-      {!done && (
+      {gameOver && (
+        <>
+          {loser.id === player.id ? (
+            <p>Whoa! You're stamina is below 0 after recovery. You lose!</p>
+          ) : (
+            <p>Congratulations! You won the battle!</p>
+          )}
+          {!done &&
+            (loser.id === player.id ? addLoserMutation() : addWinnerMutation())}
+        </>
+      )}
+
+      {!done && !gameOver && (
         <Button className="btn" onClick={e => allDone()}>
           Advance to Tactics Phase
         </Button>

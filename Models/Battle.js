@@ -5,7 +5,7 @@ const BattleSchema = new Schema({
   ArenaId: { type: Schema.Types.ObjectId, required: true },
   playerOneId: { type: Schema.Types.ObjectId, required: true },
   playerTwoId: { type: Schema.Types.ObjectId, required: true },
-  winner: Schema.Types.ObjectId,
+  winnerId: Schema.Types.ObjectId,
   purse: Number,
   scheduled: { type: Boolean, default: true },
   date: { type: String }

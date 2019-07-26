@@ -50,7 +50,7 @@ export default ({
 
     const obj = {
       id: warrior.id,
-      wallet: warrior.wallet - totalCost / MONEY_CONVERTER,
+      wallet: warrior.wallet - parseInt(totalCost / MONEY_CONVERTER),
       armorIdList: [...warrior.armorIdList, ...armorInCart],
       weaponsIdList: [...warrior.weaponsIdList, ...weaponsInCart]
     };

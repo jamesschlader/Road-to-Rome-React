@@ -9,6 +9,7 @@ export default ({ location, context }) => {
   const [create, setCreate] = useState(false);
   const [show, setShow] = useState(false);
   const [card, setCard] = useState();
+  const [alive, setAlive] = useState(true);
 
   const handleQuit = e => {
     e.preventDefault();
@@ -64,8 +65,19 @@ export default ({ location, context }) => {
       ) : !show ? (
         create ? null : (
           <Row className="center-align">
+            {alive && (
+              <Button className="btn" onClick={e => setAlive(!alive)}>
+                Show all warriors
+              </Button>
+            )}
+            {!alive && (
+              <Button className="btn" onClick={e => setAlive(!alive)}>
+                Show only living warriors
+              </Button>
+            )}
+
             <ul>
-              <AllWarriors showDetails={showDetails} />
+              <AllWarriors showDetails={showDetails} alive={alive} />
             </ul>
           </Row>
         )
