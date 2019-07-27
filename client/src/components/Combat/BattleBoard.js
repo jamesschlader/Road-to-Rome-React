@@ -67,8 +67,6 @@ export default ({
   };
 
   const removeFromPlacements = (item, turn) => {
-    console.log(item);
-    console.log(`turn is ${turn}`);
     if (turn === allFinished) {
     }
     const newPlacements = placements.filter(pos => {
@@ -114,46 +112,32 @@ export default ({
       return action.owner.id === playerOne.id ? 1 : 2;
     }
   };
-  const processPairs = (one, two) => {
+
+  const pairWithBlank = action => {
+    const zeroDefense = {
+      id: Date.now() * Math.random(),
+      title: "Defense",
+      image: "/img/game-weapon-images/battle-shield.svg",
+      value: 0,
+      name: Fatigue,
+      speed: 0,
+      owner: action.owner.id === playerOne.id ? playerTwo : playerOne
+    };
+    const { id, name, title, image, value, speed, owner } = zeroDefense;
+    const newToAdd = new Action(id, name, title, image, value, speed, owner);
+    const newPair = [action, newToAdd];
+    return newPair;
+  };
+
+  const processPairs = (one, two = null) => {
     let pairs = [];
 
-    if (one.owner.id === two.owner.id) {
-      if (one.title.includes("tta")) {
-        const zeroDefense = {
-          id: Date.now() * Math.random(),
-          title: "Defense",
-          value: 0,
-          name: Fatigue,
-          owner: one.owner.id === playerOne.id ? playerOne : playerTwo
-        };
-        const newPair = [one, zeroDefense];
-
-        pairs.push(newPair);
-      } else {
-        const newBlank = newBlankAction();
-        newBlank.owner = one.owner.id === playerOne.id ? playerOne : playerTwo;
-
-        const { id, name, title, image, value, speed, owner } = newBlank;
-
-        const blankToAdd = new Action(
-          id,
-          name,
-          title,
-          image,
-          value,
-          speed,
-          owner
-        );
-        const newPair = [one, blankToAdd];
-
-        pairs.push(newPair);
-      }
-    } else {
+    if (two) {
       const newPair = [one, two];
-
       pairs.push(newPair);
+    } else {
+      pairs.push(pairWithBlank(one));
     }
-
     return pairs;
   };
 
@@ -161,29 +145,16 @@ export default ({
     let pairs = [];
     for (let i = 0; i < placements.length; i++) {
       if (i + 1 < placements.length) {
-        const newPair = processPairs(placements[i], placements[i + 1]);
-        pairs.push(...newPair);
-        i++;
+        if (placements[i].owner.id === placements[i + 1].owner.id) {
+          const newPair = processPairs(placements[i]);
+          pairs.push(...newPair);
+        } else {
+          const newPair = processPairs(placements[i], placements[i + 1]);
+          pairs.push(...newPair);
+          i++;
+        }
       } else {
-        const newBlank = newBlankAction();
-        newBlank.owner =
-          placements[i].owner.id === playerOne.id ? playerTwo : playerOne;
-
-        const { id, name, title, image, value, speed, owner } = newBlank;
-
-        const newToAdd = new Action(
-          id,
-          name,
-          title,
-          image,
-          value,
-          speed,
-          owner
-        );
-
-        const newPair = [placements[i], newToAdd];
-
-        pairs.push(newPair);
+        pairs.push(pairWithBlank(placements[i]));
       }
     }
     return pairs;

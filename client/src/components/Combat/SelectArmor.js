@@ -11,7 +11,12 @@ export default ({ player, decideReady }) => {
     if (selected.length < 1) {
       setFail(true);
     } else {
-      player.setArmor(selected);
+      if (selected.name === "Shield") {
+        player.setShield(selected);
+      } else {
+        player.setArmor(selected);
+      }
+
       setDone(!done);
       decideReady();
     }
@@ -19,12 +24,22 @@ export default ({ player, decideReady }) => {
 
   const addSelected = value => {
     const newSelections = [...selected, value];
+    console.log(newSelections);
     if (newSelections.length > 1) {
       const checkShield = newSelections.filter(armor => {
         return armor.shield;
       });
-      if (checkShield.length < 1 || newSelections.length > 2) {
+      if (checkShield.length < 1) {
         setFail(true);
+      } else if (newSelections.length > 2) {
+        setFail(true);
+      } else {
+        setSelected(newSelections);
+
+        const newList = tempList.filter(item => {
+          return item.id !== value.id ? item : null;
+        });
+        setTempList(newList);
       }
     } else {
       setSelected(newSelections);

@@ -73,7 +73,7 @@ export default ({ warrior, opponent }) => {
               <tr key={armor.id}>
                 <td>{armor.name}</td>
                 <td>{armor.strength}</td>
-                <td>{armor.strength - 10}</td>
+                <td>{armor.strength - 8}</td>
                 <td>{armor.weight}</td>
                 <td>{armor.size}</td>
                 <td>

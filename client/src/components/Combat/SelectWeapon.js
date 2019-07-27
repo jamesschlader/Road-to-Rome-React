@@ -23,7 +23,7 @@ export default ({ player, decideReady }) => {
       const checkShield = player.armor.filter(armor => {
         return armor.shield;
       });
-      console.log(checkShield);
+
       if (checkShield.length > 0) {
         setFail(true);
       } else {

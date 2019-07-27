@@ -123,6 +123,15 @@ function Player(
     return this.armor;
   };
 
+  this.setShield = function(item) {
+    if (item.name === "Shield") {
+      this.shield = item;
+      return item;
+    } else {
+      return null;
+    }
+  };
+
   this.setWeapon = function(item) {
     this.weapon = item;
     return this.weapon;
@@ -140,7 +149,7 @@ function Player(
     });
     return action.title.includes("Weak")
       ? this.getWoundThreshold()
-      : this.getWoundThreshold() + noShield[0].strength - 10;
+      : this.getWoundThreshold() + noShield[0].strength - 8;
   };
 
   this.addWound = function(value) {

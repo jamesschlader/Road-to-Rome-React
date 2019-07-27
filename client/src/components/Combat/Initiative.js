@@ -22,10 +22,10 @@ export default ({ players, setPhase, setPlayers }) => {
   };
 
   const resetInitiative = () => {
-    if (playerOne.speed > playerTwo.speed) {
+    if (playerOne.currentSpeed > playerTwo.currentSpeed) {
       const order = [playerTwo, playerOne];
       setPlayers(order);
-    } else if (playerTwo.speed > playerOne.speed) {
+    } else if (playerTwo.currentSpeed > playerOne.currentSpeed) {
       const order = [playerOne, playerTwo];
       setPlayers(order);
     } else {

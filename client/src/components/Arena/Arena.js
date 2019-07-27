@@ -47,11 +47,11 @@ export default ({ arena, context, warrior, location }) => {
   };
 
   const removeFromCart = obj => {
-    const targetId = this.state.shoppingCart.filter(item => {
+    const targetId = shoppingCart.filter(item => {
       return item.id === obj.id;
     });
     targetId.pop();
-    const theRest = this.state.shoppingCart.filter(item => {
+    const theRest = shoppingCart.filter(item => {
       return item.id !== obj.id;
     });
     const updatedArray = [...theRest, ...targetId];

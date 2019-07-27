@@ -3,7 +3,7 @@ import { Card, Button } from "react-materialize";
 import Action from "../../utilities/Action";
 
 export default ({ content, action, player, adjustSpeed, speed }) => {
-  const { title, image, name, value } = content;
+  const { title, image, name, value, owner } = content;
   const [selected, setSelected] = useState(action);
   const [picked, setPicked] = useState(false);
 
@@ -32,7 +32,7 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
       setPicked(false);
       player.addAction(action);
       setSelected(false);
-    } else if (content.playerId) {
+    } else if (owner) {
       adjustSpeed(content.speed * -1);
       player.removeAction(content);
     }

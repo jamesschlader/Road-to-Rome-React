@@ -174,6 +174,7 @@ export default ({ context }) => {
                 setLocation={setLocation}
                 Battle={Battle}
                 winner={winner}
+                Warrior={Warrior}
               />
             )}
 

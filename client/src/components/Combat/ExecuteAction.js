@@ -6,10 +6,10 @@ import DisplayPlayerAttackResult from "./DisplayPlayerAttackResult";
 export default ({ actions, finishAction, index, setWoundedPlayer }) => {
   const playerOne = actions[0].owner;
   const playerTwo = actions[1].owner;
-
   const [resultOne, setResultOne] = useState(0);
   const [resultTwo, setResultTwo] = useState(0);
   const [containsAttack, setContainsAttack] = useState(0);
+  const [posted, setPosted] = useState(false);
 
   useEffect(() => {
     const attack = actions.filter(item => {
@@ -23,6 +23,7 @@ export default ({ actions, finishAction, index, setWoundedPlayer }) => {
   }, [actions]);
 
   const handleActionFinish = () => {
+    setPosted(true);
     finishAction(index);
   };
 
@@ -59,19 +60,22 @@ export default ({ actions, finishAction, index, setWoundedPlayer }) => {
     }
   };
 
-  console.log(`actions: `, actions);
   return (
     <div>
-      <ul className="inline-content">
-        {actions.map(action => (
-          <li key={action.id} className="inline-content tight">
-            <FlipCard
-              action={action}
-              result={action.owner.id === playerOne.id ? resultOne : resultTwo}
-            />
-          </li>
-        ))}
-      </ul>
+      {!posted && (
+        <ul className="inline-content">
+          {actions.map(action => (
+            <li key={action.id} className="inline-content tight">
+              <FlipCard
+                action={action}
+                result={
+                  action.owner.id === playerOne.id ? resultOne : resultTwo
+                }
+              />
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div className="inline-content tight">
         <h5>Results</h5>
@@ -101,7 +105,7 @@ export default ({ actions, finishAction, index, setWoundedPlayer }) => {
         />
       </div>
 
-      {containsAttack < 1 && (
+      {containsAttack < 1 && !posted && (
         <Button className="btn" onClick={e => handleActionFinish()}>
           Post the results of this action
         </Button>
