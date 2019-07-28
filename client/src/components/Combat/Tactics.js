@@ -6,7 +6,7 @@ import cardContent from "../../utilities/cardContent";
 export default ({ player, decideReady }) => {
   const [done, setDone] = useState(false);
   const [speed, setSpeed] = useState(player.currentSpeed);
-  const obj = {
+  const noActionObj = {
     title: "No Action",
     name: "fatigue",
     value: 0,
@@ -26,7 +26,7 @@ export default ({ player, decideReady }) => {
         return item.title !== "Full Defense";
       });
     } else {
-      return [obj];
+      return [noActionObj];
     }
   };
 

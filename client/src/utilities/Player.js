@@ -108,7 +108,7 @@ function Player(
       return 0;
     }
     return this.actions
-      .map(action => Math.floor(action.speed * action.value))
+      .map(action => Math.floor(action.cost * action.value))
       .reduce((total, current) => {
         return total + current;
       });

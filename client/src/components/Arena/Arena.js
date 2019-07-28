@@ -8,7 +8,7 @@ import WarriorCard from "../Warrior/WarriorCard";
 import WarriorTinyCard from "../Shared/WarriorTinyCard";
 import opponentWarriors from "../../utilities/opponentWarriors";
 
-export default ({ arena, context, warrior, location }) => {
+export default ({ context, location, arena, warrior }) => {
   const [ludus, setLudus] = useState(false);
   const [market, setMarket] = useState(false);
   const [shoppingCart, setShoppingCart] = useState([]);

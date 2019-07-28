@@ -15,6 +15,7 @@ export default ({ content, action, player, adjustSpeed, speed }) => {
   };
 
   const withValue = (obj, value) => {
+    obj.cost = value > speed ? 2 * value - speed : value;
     obj.speed = value;
     return obj;
   };
