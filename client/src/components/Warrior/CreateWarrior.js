@@ -4,6 +4,7 @@ import { Row, Col } from "react-materialize";
 import maleImages from "../../utilities/maleImages";
 import femalesImages from "../../utilities/femaleImages";
 import { Mutation } from "react-apollo";
+import d6 from "../../utilities/d6";
 
 import { addWarriorMutation } from "../../api/Warrior/mutations/addWarrior";
 
@@ -11,55 +12,90 @@ class CreateWarrior extends Component {
   state = {
     male: true,
     position: 0,
-    strength: 10,
-    stamina: 10,
-    speed: 5,
-    skill: 2,
-    wallet: 0,
-    valid: false
+    valid: false,
+    roll: true,
+    DropDownSelect: false
   };
 
-  handleChange = e => {
-    let { name, value } = e.target;
+  componentDidMount() {
     this.setState({
-      [name]: value
+      Arena: this.props.Arenas.filter(arena => {
+        return arena.name === "Carthago";
+      })[0]
+    });
+  }
+
+  handleChange = async e => {
+    e.preventDefault();
+    let { name, value, alt } = e.target;
+    console.log(`name = ${name}, value = ${value}`);
+    if (alt) {
+      await this.setState({
+        image: alt
+      });
+    } else {
+      await this.setState({
+        [name]: value,
+        wallet: name === "skill" ? value * 6 : this.state.skill * 6
+      });
+    }
+
+    this.validateData();
+  };
+
+  rollWallet = async value => {
+    await this.setState({
+      wallet: value
     });
     this.validateData();
   };
 
-  handleSex = e => {
+  handleToggle = async e => {
     e.preventDefault();
     let { name } = e.target;
-    this.setState({
-      [name]: !this.state.male
-    });
-  };
-
-  movePic = e => {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
-  handleImagePick = e => {
-    e.preventDefault();
-
-    this.setState({
-      image: e.target.alt
+    await this.setState({
+      [name]: !this.state[name],
+      image: "",
+      wallet: name === "roll" && this.state.roll ? 0 : this.state.wallet
     });
     this.validateData();
+  };
+
+  handleBalance = e => {
+    e.preventDefault();
+    const { name, value } = e.target;
+
+    if (name === "strength" || name === "stamina") {
+      const second = name === "strength" ? "stamina" : "strength";
+      const balance = 26;
+      this.setState({
+        [name]: value,
+        [second]: balance - value >= 18 ? 18 : balance - value
+      });
+    } else {
+      const second = name === "speed" ? "skill" : "speed";
+      const balance = 6;
+
+      this.setState({
+        [name]: value,
+        [second]: balance - value
+      });
+      const walletValue = name === "skill" ? value * 6 : (balance - value) * 6;
+      this.setState({
+        wallet: walletValue
+      });
+    }
   };
 
   displayPics = () => {
-    const primary = "#b71c1c";
+    const primary = "green";
     const clear = "rgba(0,0,0,0)";
     return this.state.male
       ? maleImages.map((image, index) => (
           <div
             key={index}
             className="layout-img-box"
-            onClick={this.handleImagePick}
+            onClick={this.handleChange}
             style={{
               transform: `translateX(${this.state.position * 10}vw)`,
               background: `${this.state.image === image ? primary : clear}`
@@ -72,7 +108,7 @@ class CreateWarrior extends Component {
           <div
             key={index}
             className="layout-img-box"
-            onClick={this.handleImagePick}
+            onClick={this.handleChange}
             style={{
               transform: `translateX(${this.state.position * 10}vw)`,
               background: `${this.state.image === image ? primary : clear}`
@@ -83,23 +119,6 @@ class CreateWarrior extends Component {
         ));
   };
 
-  handleAbility = e => {
-    const { name, value } = e.target;
-
-    this.setState({
-      [name]: value
-    });
-    this.validateData();
-  };
-
-  handleStatMethod = e => {
-    e.preventDefault();
-    const { name } = e.target;
-    this.setState({
-      [name]: !this.state.roll
-    });
-  };
-
   injectSex = () => {
     return <span>, {this.state.male ? `man` : `woman`} of awesome power</span>;
   };
@@ -107,7 +126,6 @@ class CreateWarrior extends Component {
   validateData = () => {
     const data = {
       name: this.state.name,
-      male: this.state.male,
       image: this.state.image,
       strength: parseInt(this.state.strength),
       stamina: parseInt(this.state.stamina),
@@ -117,7 +135,7 @@ class CreateWarrior extends Component {
     };
 
     const result = Object.values(data).filter(item => {
-      return item === undefined || item === null;
+      return !item;
     });
 
     if (result.length > 0) {
@@ -141,10 +159,10 @@ class CreateWarrior extends Component {
       speed: parseInt(this.state.speed),
       skill: parseInt(this.state.skill),
       wallet: parseInt(this.state.wallet),
-
+      ArenaId: this.state.Arena.id,
       living: true
     };
-
+    console.log(obj);
     return (
       <Mutation
         mutation={addWarriorMutation}
@@ -168,12 +186,26 @@ class CreateWarrior extends Component {
     );
   };
 
+  handleArena = arena => {
+    this.setState({ Arena: arena });
+  };
+
   render() {
+    const { handleQuit, Arenas } = this.props;
+    const displayArenaOptions = Arenas.map(arena => (
+      <li
+        key={arena.id}
+        style={{ listStyle: "none", cursor: "pointer", margin: "0 1em" }}
+        onClick={() => this.handleArena(arena)}
+      >
+        {arena.name}
+      </li>
+    ));
     return (
       <div>
-        <h3>Start making your warrior </h3>
+        <h3>Make a warrior </h3>
         <form>
-          <div className="row">
+          <Row>
             <input
               type="text"
               className="col s5"
@@ -184,28 +216,29 @@ class CreateWarrior extends Component {
               onChange={this.handleChange}
             />
 
-            <div className="col s5 offset-s1">
+            <Col s={5}>
               <Button
                 name="male"
                 value={true}
-                onClick={this.handleSex}
-                style={{ background: this.state.male ? "green" : null }}
+                onClick={this.handleToggle}
+                style={{ background: this.state.male && "green" }}
               >
                 Male
               </Button>
               <Button
                 name="male"
                 value={false}
-                onClick={this.handleSex}
-                style={{ background: !this.state.male ? "green" : null }}
+                onClick={this.handleToggle}
+                style={{ background: !this.state.male && "green" }}
               >
                 Female
               </Button>
-            </div>
-          </div>
-          <div style={{ overflow: "hidden" }}>
+            </Col>
+          </Row>
+
+          <Row style={{ overflow: "hidden" }}>
             <div style={{ width: "400vw" }}>{this.displayPics()}</div>
-          </div>
+          </Row>
 
           <p>
             Images
@@ -216,7 +249,7 @@ class CreateWarrior extends Component {
               min="-23"
               max="3"
               value={this.state.position}
-              onChange={this.movePic}
+              onChange={this.handleChange}
             />
           </p>
 
@@ -226,8 +259,8 @@ class CreateWarrior extends Component {
               <Button
                 name="roll"
                 value={true}
-                onClick={this.handleStatMethod}
-                style={{ background: this.state.roll ? "green" : null }}
+                onClick={this.handleToggle}
+                style={{ background: this.state.roll && "green" }}
               >
                 Roll your stats
               </Button>
@@ -236,62 +269,102 @@ class CreateWarrior extends Component {
               <Button
                 name="roll"
                 value={false}
-                onClick={this.handleStatMethod}
-                style={{ background: !this.state.roll ? "green" : null }}
+                onClick={this.handleToggle}
+                style={{ background: !this.state.roll && "green" }}
               >
                 Balance
               </Button>
             </Col>
           </Row>
-          <div className="row">
-            <div className="col s5">
+
+          <Row>
+            <Col s={5}>
               <p>
-                Strength: <span> {this.state.strength}</span>
+                Strength: <span> {this.state.strength} </span>
+              </p>
+
+              {this.state.roll && !this.state.strength && (
+                <Button
+                  name="strength"
+                  value={this.state.male ? d6(3) + 2 : d6(3)}
+                  onClick={this.handleChange}
+                >
+                  Roll it
+                </Button>
+              )}
+              {!this.state.roll && (
                 <input
                   className="range-field"
                   type="range"
                   name="strength"
                   min="3"
-                  max="18"
+                  max="20"
                   value={this.state.strength}
-                  onChange={this.handleAbility}
+                  onChange={this.handleBalance}
                 />
-              </p>
-            </div>
-            <div className="col s5">
+              )}
+            </Col>
+            <Col s={5}>
               <p>
                 Stamina: <span>{this.state.stamina}</span>
+              </p>
+              {this.state.roll && !this.state.stamina && (
+                <Button
+                  name="stamina"
+                  value={d6(3) + 2}
+                  onClick={this.handleChange}
+                >
+                  Roll it
+                </Button>
+              )}
+              {!this.state.roll && (
                 <input
                   className="range-field"
                   type="range"
                   name="stamina"
                   min="3"
-                  max="18"
+                  max="20"
                   value={this.state.stamina}
-                  onChange={this.handleAbility}
+                  onChange={this.handleBalance}
                 />
-              </p>
-            </div>
-          </div>
+              )}
+            </Col>
+          </Row>
 
-          <div className="row">
-            <div className="col s5">
+          <Row>
+            <Col s={5}>
               <p>
-                Speed: <span>{this.state.speed}</span>
+                Speed: <span>{this.state.speed}</span>{" "}
+              </p>
+
+              {this.state.roll && !this.state.speed && (
+                <Button name="speed" value={d6()} onClick={this.handleChange}>
+                  Roll it
+                </Button>
+              )}
+              {!this.state.roll && (
                 <input
                   className="range-field"
                   type="range"
                   name="speed"
                   min="1"
-                  max="8"
+                  max="5"
                   value={this.state.speed}
-                  onChange={this.handleAbility}
+                  onChange={this.handleBalance}
                 />
-              </p>
-            </div>
-            <div className="col s5">
+              )}
+            </Col>
+            <Col s={5}>
               <p>
-                Skill: <span>{this.state.skill}</span>
+                Skill: <span>{this.state.skill}</span>{" "}
+              </p>
+
+              {this.state.roll && !this.state.skill && (
+                <Button name="skill" value={d6()} onClick={this.handleChange}>
+                  Roll it
+                </Button>
+              )}
+              {!this.state.roll && (
                 <input
                   className="range-field"
                   type="range"
@@ -299,44 +372,66 @@ class CreateWarrior extends Component {
                   min="1"
                   max="5"
                   value={this.state.skill}
-                  onChange={this.handleAbility}
+                  onChange={this.handleBalance}
                 />
-              </p>
-            </div>
-          </div>
+              )}
+            </Col>
+          </Row>
           <Row>
             <p>
-              Wallet: <span>{this.state.wallet}</span>
-              <input
-                className="range-field"
-                type="range"
-                name="wallet"
-                min="1"
-                max="30"
-                value={this.state.wallet}
-                onChange={this.handleAbility}
-              />
+              Wallet:{" "}
+              <span>
+                {this.state.wallet
+                  ? `${this.state.wallet}`
+                  : "Roll or select a Skill rating"}
+              </span>{" "}
             </p>
+
+            {this.state.roll && !this.state.wallet && (
+              <Button name="wallet" onClick={() => this.rollWallet(d6(5))}>
+                Roll it
+              </Button>
+            )}
           </Row>
         </form>
+        {this.state.image && this.state.name && (
+          <Row>
+            <p>
+              Name: {this.state.name}
+              {this.injectSex()}
+            </p>
+            <img
+              src={this.state.image}
+              alt={this.state.image}
+              className="layout-img"
+            />
+          </Row>
+        )}
 
-        <Row>
-          <p>
-            Name: {this.state.name}
-            {this.injectSex()}
-          </p>
-          <img
-            src={this.state.image}
-            alt={this.state.image}
-            className="layout-img"
-          />
-        </Row>
+        {this.state.valid && this.state.Arena && (
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            {" "}
+            <ul>
+              <li>Choose an Arena to start</li>
+              {displayArenaOptions}
+            </ul>
+            <p style={{ margin: "0 2em" }}>{this.state.Arena.name}</p>
+          </div>
+        )}
 
-        <Row>
-          {this.state.valid ? <Col s={6}>{this.createWarrior()}</Col> : null}
+        <Row style={{ borderTop: "1px solid black", margin: "2em 0" }}>
+          {this.state.valid && (
+            <Col s={6} style={{ marginTop: "2em" }}>
+              {this.createWarrior()}
+            </Col>
+          )}
 
           <Col s={6}>
-            <Button className="btn" onClick={this.props.handleQuit}>
+            <Button
+              className="btn"
+              onClick={handleQuit}
+              style={{ marginTop: "2em" }}
+            >
               Nevermind
             </Button>
           </Col>

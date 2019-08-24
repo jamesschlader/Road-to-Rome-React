@@ -4,6 +4,7 @@ import { Row, Col, Button } from "react-materialize";
 import CreateWarrior from "./CreateWarrior";
 import AllWarriors from "./AllWarriors";
 import WarriorDelete from "./WarriorDelete";
+import GetArenaIds from "./GetArenaIds";
 
 export default ({ location, context }) => {
   const [create, setCreate] = useState(false);
@@ -27,15 +28,24 @@ export default ({ location, context }) => {
     setShow(!show);
   };
 
+  const handleArenas = data => {
+    if (context.Arenas.length < 1) {
+      context.setArenas(data);
+    }
+  };
+
   return (
     <div>
       <h1 className="landing-title center-align">Warriors</h1>
 
+      <GetArenaIds handleArenas={handleArenas}></GetArenaIds>
+
       <Row>
         <Col s={8} offset="s2">
-          {create ? (
-            <CreateWarrior handleQuit={handleQuit} />
-          ) : show ? null : (
+          {create && (
+            <CreateWarrior handleQuit={handleQuit} Arenas={context.Arenas} />
+          )}
+          {!create && context.Arenas.length > 0 && (
             <Button className="btn create-btn" onClick={handleQuit}>
               Create a Warrior
             </Button>
@@ -62,8 +72,9 @@ export default ({ location, context }) => {
             />
           </Col>
         </React.Fragment>
-      ) : !show ? (
-        create ? null : (
+      ) : (
+        !show &&
+        (!create && (
           <Row className="center-align">
             {alive && (
               <Button className="btn" onClick={e => setAlive(!alive)}>
@@ -80,8 +91,8 @@ export default ({ location, context }) => {
               <AllWarriors showDetails={showDetails} alive={alive} />
             </ul>
           </Row>
-        )
-      ) : null}
+        ))
+      )}
     </div>
   );
 };

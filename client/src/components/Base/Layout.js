@@ -62,11 +62,17 @@ export default class Layout extends Component {
       obj1.authenticate();
     };
 
+    this.setArenas = Arenas => {
+      this.setState({ Arenas: Arenas });
+    };
+
     this.state = {
       Arena: null,
+      Arenas: [],
       Warrior: null,
       Battle: null,
       setArena: this.setArena,
+      setArenas: this.setArenas,
       RoadAuth: RoadAuth,
       MONEY_CONVERTER: 10,
       handleRedirect: this.handleRedirect,
