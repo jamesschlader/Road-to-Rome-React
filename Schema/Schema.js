@@ -735,16 +735,11 @@ const Mutation = new GraphQLObjectType({
         show: { type: GraphQLBoolean }
       },
       resolve(parent, args) {
-        let obj = {};
-        Arena.findOne({ name: "Carthago" }).then(result => {
-          args.ArenaId = result._id;
-          let warrior = new Warrior({
-            ...args
-          });
-          obj = warrior.save();
-          return obj.then(warrior => {
-            result.warriorIds.push(warrior._id);
-            return result.save();
+        let warrior = new Warrior({ ...args });
+        const obj = warrior.save();
+        return obj.then(warrior => {
+          return Arena.findById(warrior.ArenaId).then(arena => {
+            arena.warriorIds.push(warrior._id);
           });
         });
       }
