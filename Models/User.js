@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const Schema = mongoose.Schema;
+
+const SALT_ROUNDS = 12;
 
 const UserSchema = new Schema({
   first: {
@@ -52,6 +55,22 @@ const UserSchema = new Schema({
   stable: [Schema.Types.ObjectId],
   image: { type: String }
 });
+
+UserSchema.pre("save", async function preSave(next) {
+  const user = this;
+  if (!user.isModified("password")) return next();
+  try {
+    const hash = await bcrypt.hash(user.password, SALT_ROUNDS);
+    user.password = hash;
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+});
+
+UserSchema.methods.comparePassword = async function comparePassword(candidate) {
+  return bcrypt.compare(candidate, this.password);
+};
 
 const User = mongoose.model("User", UserSchema);
 
