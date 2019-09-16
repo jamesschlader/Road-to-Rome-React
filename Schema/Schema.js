@@ -18,6 +18,38 @@ const { Weapon } = require("../Models/Weapon");
 const { Armor } = require("../Models/Armor");
 const { Market } = require("../Models/Market");
 const { Battle } = require("../Models/Battle");
+const { User } = require("../Models/User");
+
+const UserType = new GrapghQLOobjectType({
+  name: "User",
+  fields: () => ({
+    id: { type: GraphQLID },
+    first: { type: GraphQLString },
+    last: { type: GraphQLString },
+    image: { type: GraphQLString },
+    username: { type: GraphQLString },
+    password: { type: GraphQLString },
+    email: { type: GraphQLString },
+    motto: { type: GraphQLString },
+    stableIds: {
+      type: new GraphQLList(GraphQLID)
+    },
+    stable: {
+      type: new GraphQLList(WarriorType),
+      resolve(parent, args) {
+        return parent.stableIds.map(id => Warrior.findById(id));
+      }
+    },
+    activeStable: {
+      type: new GraphQLList(WarriorType),
+      resolve(parent, args) {
+        return parent.stable.filter(warrior => {
+          return warrior.alive;
+        });
+      }
+    }
+  })
+});
 
 const ArenaType = new GraphQLObjectType({
   name: "Arena",
