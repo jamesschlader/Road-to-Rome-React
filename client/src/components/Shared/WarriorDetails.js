@@ -29,11 +29,7 @@ export default ({ warrior, context, showDetails, show, location }) => {
                     <h2
                       className="center-align"
                       onClick={e => {
-                        context.handleRedirect(
-                          context.setArena,
-                          context.RoadAuth,
-                          activeWarrior
-                        );
+                        context.setArena(activeWarrior.Arena);
                       }}
                     >
                       {warrior.Arena.name}

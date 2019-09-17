@@ -35,7 +35,7 @@ const UserSchema = new Schema({
     lowercase: true,
     trim: true,
     minlength: [8, "password must be at least 8 characters"],
-    maxlength: [30, "password cannot be more than 30 characters"]
+    maxlength: [100, "password cannot be more than 100 characters"]
   },
   email: {
     type: String,
@@ -69,7 +69,7 @@ UserSchema.pre("save", async function preSave(next) {
 });
 
 UserSchema.methods.comparePassword = async function comparePassword(candidate) {
-  return bcrypt.compare(candidate, this.password);
+  return await bcrypt.compare(candidate, this.password);
 };
 
 const User = mongoose.model("User", UserSchema);

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container } from "react-materialize";
 import Header from "./Header";
 import Footer from "./Footer";
+import AuthConduit from "../Auth/AuthConduit";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import GetSomeData from "../GetSomeData";
 import LandingPage from "./LandingPage";
@@ -13,6 +14,7 @@ import CombatConduit from "../Combat/CombatConduit";
 const RoadAuth = {
   isAuthenticated: false,
   authenticate(cb) {
+    console.log(`Authenticating...`);
     this.isAuthenticated = true;
     setTimeout(cb, 100);
   },
@@ -33,7 +35,7 @@ const WarriorHome = ({ component: Component, ...rest }) => (
       RoadAuth.isAuthenticated ? (
         <Component {...props} />
       ) : (
-        <Redirect to="/warrior" />
+        <Redirect to="/login" />
       )
     }
   />
@@ -62,10 +64,19 @@ export default class Layout extends Component {
       obj1.authenticate();
     };
 
+    this.handleLogin = (obj, cb = () => {}) => {
+      this.setState({
+        User: obj
+      });
+      RoadAuth.authenticate(cb);
+    };
+
     this.setArenas = Arenas => {
       this.setState({ Arenas: Arenas });
     };
-
+    this.setUser = obj => {
+      this.setState({ User: obj });
+    };
     this.state = {
       Arena: null,
       Arenas: [],
@@ -73,10 +84,13 @@ export default class Layout extends Component {
       Battle: null,
       setArena: this.setArena,
       setArenas: this.setArenas,
+      setUser: this.setUser,
+      handleLogin: this.handleLogin,
       RoadAuth: RoadAuth,
       MONEY_CONVERTER: 10,
       handleRedirect: this.handleRedirect,
-      startCombat: this.startCombat
+      startCombat: this.startCombat,
+      User: null
     };
   }
 
@@ -96,9 +110,9 @@ export default class Layout extends Component {
             <Container>
               <Route exact path="/" component={LandingPage} />
               <Route exact path="/getdata" component={GetSomeData} />
-              <Route exact path="/warrior" component={WarriorConduit} />
+              <Route exact path="/login" component={AuthConduit}></Route>
+              <WarriorHome exact path="/warrior" component={WarriorConduit} />
               <WarriorHome exact path="/combat" component={CombatConduit} />
-
               <WarriorHome exact path="/arena" component={ArenaConduit} />
             </Container>
             <BottomSpacer />

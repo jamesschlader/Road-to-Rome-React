@@ -150,16 +150,27 @@ class CreateWarrior extends Component {
   };
 
   createWarrior = () => {
+    const {
+      name,
+      male,
+      image,
+      strength,
+      stamina,
+      speed,
+      skill,
+      wallet,
+      Arena
+    } = this.state;
     const obj = {
-      name: this.state.name,
-      male: this.state.male,
-      image: this.state.image,
-      strength: parseInt(this.state.strength),
-      stamina: parseInt(this.state.stamina),
-      speed: parseInt(this.state.speed),
-      skill: parseInt(this.state.skill),
-      wallet: parseInt(this.state.wallet),
-      ArenaId: this.state.Arena.id,
+      name,
+      male,
+      image,
+      strength: parseInt(strength),
+      stamina: parseInt(stamina),
+      speed: parseInt(speed),
+      skill: parseInt(skill),
+      wallet: parseInt(wallet),
+      ArenaId: Arena.id,
       living: true
     };
     console.log(obj);

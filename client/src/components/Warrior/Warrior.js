@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import RtoRBtn from "../Shared/RtoRBtn";
 import { Row, Col, Button } from "react-materialize";
 import CreateWarrior from "./CreateWarrior";
-import AllWarriors from "./AllWarriors";
+import UserWarriors from "./UserWarriors";
 import WarriorDelete from "./WarriorDelete";
 import GetArenaIds from "./GetArenaIds";
 
 export default ({ location, context }) => {
+  console.log(`in Warrior, context:`, context);
   const [create, setCreate] = useState(false);
   const [show, setShow] = useState(false);
   const [card, setCard] = useState();
@@ -86,10 +87,21 @@ export default ({ location, context }) => {
                 Show only living warriors
               </Button>
             )}
-
-            <ul>
-              <AllWarriors showDetails={showDetails} alive={alive} />
-            </ul>
+            {alive ? (
+              <ul>
+                <UserWarriors
+                  showDetails={showDetails}
+                  stable={context.User.activeStable}
+                />
+              </ul>
+            ) : (
+              <ul>
+                <UserWarriors
+                  showDetails={showDetails}
+                  stable={context.User.stable}
+                />
+              </ul>
+            )}
           </Row>
         ))
       )}
