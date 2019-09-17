@@ -37,7 +37,7 @@ const UserSchema = new Schema({
 
     trim: true,
     minlength: [8, "password must be at least 8 characters"],
-    maxlength: [30, "password cannot be more than 100 characters"]
+    maxlength: [100, "password cannot be more than 100 characters"]
   },
   email: {
     type: String,
@@ -54,7 +54,7 @@ const UserSchema = new Schema({
     trim: true,
     maxlength: [220, "the motto cannot exceed 220 characters"]
   },
-  stable: [Schema.Types.ObjectId],
+  stableIds: [Schema.Types.ObjectId],
   image: { type: String }
 });
 

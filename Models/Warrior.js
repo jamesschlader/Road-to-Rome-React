@@ -16,7 +16,8 @@ const WarriorSchema = new Schema({
   battlesIdList: [Schema.Types.ObjectId],
   winnings: Number,
   alive: { type: Boolean, default: true },
-  show: { type: Boolean, default: true }
+  show: { type: Boolean, default: true },
+  username: { type: String, required: true, default: "CPU" }
 });
 
 const Warrior = mongoose.model("Warrior", WarriorSchema);

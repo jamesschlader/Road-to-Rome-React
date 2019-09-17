@@ -14,14 +14,10 @@ import CombatConduit from "../Combat/CombatConduit";
 const RoadAuth = {
   isAuthenticated: false,
   authenticate(cb) {
-    console.log(`Authenticating...`);
     this.isAuthenticated = true;
     setTimeout(cb, 100);
   },
   signOut() {
-    console.log(
-      `Running RoadAuth.signOut() and isAuthenticated = ${this.isAuthenticated}`
-    );
     this.isAuthenticated = false;
   }
 };
@@ -77,6 +73,10 @@ export default class Layout extends Component {
     this.setUser = obj => {
       this.setState({ User: obj });
     };
+
+    this.setWarrior = obj => {
+      this.setState({ Warrior: obj });
+    };
     this.state = {
       Arena: null,
       Arenas: [],
@@ -85,6 +85,7 @@ export default class Layout extends Component {
       setArena: this.setArena,
       setArenas: this.setArenas,
       setUser: this.setUser,
+      setWarrior: this.setWarrior,
       handleLogin: this.handleLogin,
       RoadAuth: RoadAuth,
       MONEY_CONVERTER: 10,

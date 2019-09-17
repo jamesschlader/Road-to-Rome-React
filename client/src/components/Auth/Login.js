@@ -66,9 +66,7 @@ export default class Login extends Component {
         }}
         onCompleted={async data => {
           this.setState({ loading: false });
-          console.log(`data coming back is: `, data);
           const result = login ? data.login : data.register;
-          console.log(`result coming from server: `, result);
           if (result) {
             await this.props.context.handleLogin(result, this.loggedIn);
           } else {

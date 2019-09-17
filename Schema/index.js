@@ -1,8 +1,5 @@
 const graphql = require("graphql");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { APP_SECRET, getUserId } = require("./util");
-const SALT_ROUNDS = bcrypt.genSaltSync(12);
+
 const {
   GraphQLObjectType,
   GraphQLID,
@@ -46,11 +43,15 @@ const UserType = new GraphQLObjectType({
     },
     activeStable: {
       type: new GraphQLList(WarriorType),
-      resolve(parent, args) {
-        if (parent.stable) {
-          return parent.stable.filter(warrior => {
-            return warrior.alive;
-          });
+      async resolve(parent, args) {
+        if (parent.stableIds) {
+          console.log(`parent has some warriors: `, parent.stableIds);
+          return await parent.stableIds.map(
+            async id =>
+              await Warrior.findById(id).then(warrior => {
+                return warrior.alive ? warrior : null;
+              })
+          );
         } else return [];
       }
     }
@@ -208,7 +209,8 @@ const WarriorType = new GraphQLObjectType({
     },
     winnings: { type: GraphQLInt },
     alive: { type: GraphQLBoolean },
-    show: { type: GraphQLBoolean }
+    show: { type: GraphQLBoolean },
+    username: { type: GraphQLString }
   })
 });
 
@@ -532,7 +534,8 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         console.log(`in register, here's the incoming args: `, args);
-        let user = new User({ ...args });
+        const obj = { ...args, stableIds: [] };
+        let user = new User({ ...obj });
         return await user.save();
       }
     },
@@ -829,14 +832,24 @@ const Mutation = new GraphQLObjectType({
         battlesIdList: { type: new GraphQLList(GraphQLID) },
         winnings: { type: GraphQLInt },
         alive: { type: GraphQLBoolean },
-        show: { type: GraphQLBoolean }
+        show: { type: GraphQLBoolean },
+        username: { type: GraphQLString }
       },
       resolve(parent, args) {
+        console.log(`warrior args: `, args);
         let warrior = new Warrior({ ...args });
         const obj = warrior.save();
+
         return obj.then(warrior => {
-          return Arena.findById(warrior.ArenaId).then(arena => {
+          console.log(`warrior object = `, warrior);
+          Arena.findById(warrior.ArenaId).then(arena => {
             arena.warriorIds.push(warrior._id);
+            arena.save();
+          });
+          User.findOne({ username: args.username }).then(user => {
+            console.log(`user = `, user);
+            user.stableIds.push(warrior._id);
+            user.save();
           });
         });
       }

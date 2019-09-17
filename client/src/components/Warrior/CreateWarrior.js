@@ -19,7 +19,7 @@ class CreateWarrior extends Component {
 
   componentDidMount() {
     this.setState({
-      Arena: this.props.Arenas.filter(arena => {
+      Arena: this.props.context.Arenas.filter(arena => {
         return arena.name === "Carthago";
       })[0]
     });
@@ -171,6 +171,7 @@ class CreateWarrior extends Component {
       skill: parseInt(skill),
       wallet: parseInt(wallet),
       ArenaId: Arena.id,
+      username: this.props.context.User.username,
       living: true
     };
     console.log(obj);
@@ -202,8 +203,8 @@ class CreateWarrior extends Component {
   };
 
   render() {
-    const { handleQuit, Arenas } = this.props;
-    const displayArenaOptions = Arenas.map(arena => (
+    const { handleQuit, context } = this.props;
+    const displayArenaOptions = context.Arenas.map(arena => (
       <li
         key={arena.id}
         style={{ listStyle: "none", cursor: "pointer", margin: "0 1em" }}

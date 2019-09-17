@@ -11,6 +11,7 @@ const addWarriorMutation = gql`
     $speed: Int
     $skill: Int
     $ArenaId: ID
+    $username: String
   ) {
     addWarrior(
       name: $name
@@ -22,6 +23,7 @@ const addWarriorMutation = gql`
       skill: $skill
       wallet: $wallet
       ArenaId: $ArenaId
+      username: $username
     ) {
       id
       name

@@ -7,7 +7,6 @@ import WarriorDelete from "./WarriorDelete";
 import GetArenaIds from "./GetArenaIds";
 
 export default ({ location, context }) => {
-  console.log(`in Warrior, context:`, context);
   const [create, setCreate] = useState(false);
   const [show, setShow] = useState(false);
   const [card, setCard] = useState();
@@ -44,7 +43,7 @@ export default ({ location, context }) => {
       <Row>
         <Col s={8} offset="s2">
           {create && (
-            <CreateWarrior handleQuit={handleQuit} Arenas={context.Arenas} />
+            <CreateWarrior handleQuit={handleQuit} context={context} />
           )}
           {!create && context.Arenas.length > 0 && (
             <Button className="btn create-btn" onClick={handleQuit}>
