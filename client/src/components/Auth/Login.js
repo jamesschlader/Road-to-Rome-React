@@ -16,7 +16,8 @@ export default class Login extends Component {
     password: "",
     loggedIn: false,
     noData: false,
-    loading: false
+    loading: false,
+    errors: []
   };
 
   handleChange = e => {
@@ -41,14 +42,33 @@ export default class Login extends Component {
       email,
       motto
     };
+    const loginVariables = {
+      username,
+      password
+    };
 
     return (
       <Mutation
         mutation={login ? loginMutation : registerMutation}
-        variables={{ ...registration }}
+        variables={login ? { ...loginVariables } : { ...registration }}
+        onError={error => {
+          console.log(`oh snap, an error!`, error.graphQLErrors);
+          const errors = error.graphQLErrors[0].message
+            .split(",")
+            .map(message => {
+              const firstRun = message.slice(message.indexOf(":") + 1);
+
+              return firstRun.includes(":")
+                ? firstRun.slice(firstRun.indexOf(":") + 1)
+                : firstRun;
+            });
+          this.setState({ loading: false, errors });
+        }}
         onCompleted={async data => {
           this.setState({ loading: false });
+          console.log(`data coming back is: `, data);
           const result = login ? data.login : data.register;
+          console.log(`result coming from server: `, result);
           if (result) {
             await this.props.context.handleLogin(result, this.loggedIn);
           } else {
@@ -83,8 +103,10 @@ export default class Login extends Component {
       username,
       loggedIn,
       noData,
-      loading
+      loading,
+      errors
     } = this.state;
+
     return (
       <div>
         <h1 className="landing-title center-align ">
@@ -179,12 +201,21 @@ export default class Login extends Component {
             )}
           </Row>
           {!loading && (
-            <Row>
-              <Col s={6}>{this.handleLogin()}</Col>
-              <Button onClick={() => this.setState({ login: !login })}>
-                Register
-              </Button>
-            </Row>
+            <>
+              <Row>
+                {errors.map((message, index) => (
+                  <p key={index} style={{ color: "red" }}>
+                    {message}
+                  </p>
+                ))}
+              </Row>
+              <Row>
+                <Col s={6}>{this.handleLogin()}</Col>
+                <Button onClick={() => this.setState({ login: !login })}>
+                  Register
+                </Button>
+              </Row>
+            </>
           )}
         </div>
         {loggedIn && <Redirect to="/warrior"></Redirect>}

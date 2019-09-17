@@ -2,7 +2,7 @@ const graphql = require("graphql");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { APP_SECRET, getUserId } = require("./util");
-const SALT_ROUNDS = 12;
+const SALT_ROUNDS = bcrypt.genSaltSync(12);
 const {
   GraphQLObjectType,
   GraphQLID,
@@ -47,9 +47,11 @@ const UserType = new GraphQLObjectType({
     activeStable: {
       type: new GraphQLList(WarriorType),
       resolve(parent, args) {
-        return parent.stable.filter(warrior => {
-          return warrior.alive;
-        });
+        if (parent.stable) {
+          return parent.stable.filter(warrior => {
+            return warrior.alive;
+          });
+        } else return [];
       }
     }
   })
@@ -335,21 +337,8 @@ const RootQuery = new GraphQLObjectType({
       },
       async resolve(parent, args, context) {
         const { username, password } = args;
-        let returnValue;
-        await User.findOne({ username }, async (err, data) => {
-          console.log(`data = `, data);
-          const same = await data.comparePassword(password);
-          console.log(`result is ${same}`);
-
-          if (same) {
-            console.log(`gonna return the user = `, data);
-            returnValue = data;
-          } else {
-            console.log(`gonna return null`);
-            returnValue = null;
-          }
-        });
-        return returnValue;
+        const user = await User.findOne({ username });
+        return (await user.comparePassword(password)) ? user : null;
       }
     },
 
@@ -524,11 +513,10 @@ const Mutation = new GraphQLObjectType({
         username: { type: GraphQLString },
         password: { type: GraphQLString }
       },
-      resolve(parent, args, context) {
-        console.log(`in login, here's the incoming args: `, args);
-        console.log(`context = `, context.session);
-        const { username } = args;
-        return User.findOne({ username });
+      async resolve(parent, args, context) {
+        const { username, password } = args;
+        const user = await User.findOne({ username });
+        return (await user.comparePassword(password)) ? user : null;
       }
     },
 
@@ -542,10 +530,10 @@ const Mutation = new GraphQLObjectType({
         email: { type: GraphQLString },
         motto: { type: GraphQLString }
       },
-      resolve(parent, args) {
+      async resolve(parent, args) {
         console.log(`in register, here's the incoming args: `, args);
         let user = new User({ ...args });
-        return user.save();
+        return await user.save();
       }
     },
 
