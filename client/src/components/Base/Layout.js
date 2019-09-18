@@ -3,39 +3,16 @@ import { Container } from "react-materialize";
 import Header from "./Header";
 import Footer from "./Footer";
 import AuthConduit from "../Auth/AuthConduit";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import GetSomeData from "../GetSomeData";
 import LandingPage from "./LandingPage";
 import BottomSpacer from "./BottomSpacer";
 import ArenaConduit from "../Arena/ArenaConduit";
 import WarriorConduit from "../Warrior/WarriorConduit";
 import CombatConduit from "../Combat/CombatConduit";
-
-const RoadAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    setTimeout(cb, 100);
-  },
-  signOut() {
-    this.isAuthenticated = false;
-  }
-};
+import AccountConduit from "../Account/AccountConduit";
 
 export const ArenaContext = React.createContext();
-
-const WarriorHome = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      RoadAuth.isAuthenticated ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
 
 export default class Layout extends Component {
   constructor(props) {
@@ -62,14 +39,16 @@ export default class Layout extends Component {
 
     this.handleLogin = (obj, cb = () => {}) => {
       this.setState({
-        User: obj
+        User: obj,
+        loggedIn: true
       });
-      RoadAuth.authenticate(cb);
+      this.props.RoadAuth.authenticate(cb);
     };
 
     this.setArenas = Arenas => {
       this.setState({ Arenas: Arenas });
     };
+
     this.setUser = obj => {
       this.setState({ User: obj });
     };
@@ -77,6 +56,7 @@ export default class Layout extends Component {
     this.setWarrior = obj => {
       this.setState({ Warrior: obj });
     };
+
     this.state = {
       Arena: null,
       Arenas: [],
@@ -87,40 +67,50 @@ export default class Layout extends Component {
       setUser: this.setUser,
       setWarrior: this.setWarrior,
       handleLogin: this.handleLogin,
-      RoadAuth: RoadAuth,
+      RoadAuth: this.props.RoadAuth,
       MONEY_CONVERTER: 10,
       handleRedirect: this.handleRedirect,
       startCombat: this.startCombat,
-      User: null
+      User: null,
+      loggedIn: false
     };
   }
 
   componentDidMount() {
+    console.log(`Layout just mounted!`);
     localStorage.setItem("whereWasI", "/arena");
   }
 
   render() {
+    const { WarriorHome } = this.props;
     return (
-      <ArenaContext.Provider value={this.state}>
-        <Router>
+      <Router>
+        <ArenaContext.Provider value={this.state}>
           <div className="body-padding">
             <header>
-              <Header />
+              <Header loggedIn={this.state.loggedIn} />
             </header>
 
             <Container>
-              <Route exact path="/" component={LandingPage} />
-              <Route exact path="/getdata" component={GetSomeData} />
-              <Route exact path="/login" component={AuthConduit}></Route>
-              <WarriorHome exact path="/warrior" component={WarriorConduit} />
-              <WarriorHome exact path="/combat" component={CombatConduit} />
-              <WarriorHome exact path="/arena" component={ArenaConduit} />
+              <Switch>
+                <Route exact path="/" component={LandingPage} />
+                <Route exact path="/getdata" component={GetSomeData} />
+                <Route exact path="/login" component={AuthConduit}></Route>
+                <WarriorHome exact path="/warrior" component={WarriorConduit} />
+                <WarriorHome exact path="/combat" component={CombatConduit} />
+                <WarriorHome exact path="/arena" component={ArenaConduit} />
+                <WarriorHome
+                  exact
+                  path="/account"
+                  component={AccountConduit}
+                ></WarriorHome>
+              </Switch>
             </Container>
             <BottomSpacer />
             <Footer />
           </div>
-        </Router>
-      </ArenaContext.Provider>
+        </ArenaContext.Provider>
+      </Router>
     );
   }
 }
