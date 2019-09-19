@@ -1,19 +1,21 @@
-const request = require("request");
 const { Armor } = require("../Models/Armor");
 const { Weapon } = require("../Models/Weapon");
 const { Arena } = require("../Models/Arena");
 const { Market } = require("../Models/Market");
 const mongoose = require("mongoose");
 const db = mongoose.connection;
+const getDbUri = require("../getDbUri");
 
 // Connect to the Mongo DB
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/road-to-rome-react";
+const MONGODB_URI = getDbUri(process.env.NODE_ENV || "development");
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", () => {
-  console.log(`Connected succesfully to local mongo db.`);
+  console.log(`Connected successfully to local mongo db.`);
   Weapon.find({}, (err, weapons) => {
     const mediumWeapons = weapons.filter(weapon => {
       return weapon.cost * 100 < 1000 ? weapon : null;
@@ -43,74 +45,82 @@ db.once("open", () => {
             `Arena: ${arena.name} Value = ${value} MarketId: ${arena.MarketId}`
           );
           if (value < 24) {
-            Market.update(
+            Market.updateOne(
               { _id: arena.MarketId },
               {
                 armorIds: mediumArmors,
                 weaponIds: mediumWeapons
               },
               (err, result) => {
-                if (err)
+                if (err) {
                   console.log(
-                    `Failure to update ${
-                      arena.MarketId
-                    } with armors and weapons.`
+                    `Failure to update ${arena.MarketId} with armors and weapons.`
                   );
-                console.log(`Updated ${arena.name} with armor and weapons.`);
+                }
+
+                console.log(
+                  `Updated ${arena.name} with armor and weapons. Market._id = ${result._id}`
+                );
               }
             );
           }
           if (value > 23 && value < 40) {
-            Market.update(
+            Market.updateOne(
               { _id: arena.MarketId },
               {
                 armorIds: bigArmors,
                 weaponIds: bigWeapons
               },
               (err, result) => {
-                if (err)
+                if (err) {
                   console.log(
-                    `Failure to update ${
-                      arena.MarketId
-                    } with armors and weapons.`
+                    `Failure to update ${arena.MarketId} with armors and weapons.`
                   );
-                console.log(`Updated ${arena.name} with armor and weapons.`);
+                }
+
+                console.log(
+                  `Updated ${arena.name} with armor and weapons. Market._id = ${result._id}`
+                );
               }
             );
           }
           if (value > 39 && value < 60) {
-            Market.update(
+            Market.updateOne(
               { _id: arena.MarketId },
               {
                 armorIds: largerArmors,
                 weaponIds: biggerWeapons
               },
               (err, result) => {
-                if (err)
+                if (err) {
                   console.log(
-                    `Failure to update ${
-                      arena.MarketId
-                    } with armors and weapons.`
+                    `Failure to update ${arena.MarketId} with armors and weapons.`
                   );
-                console.log(`Updated ${arena.name} with armor and weapons.`);
+                }
+
+                console.log(
+                  `Updated ${arena.name} with armor and weapons. Market._id = ${result._id}`
+                );
               }
             );
           }
           if (value > 59) {
-            Market.update(
+            Market.updateOne(
               { _id: arena.MarketId },
               {
                 armorIds: armors,
                 weaponIds: weapons
               },
               (err, result) => {
-                if (err)
+                if (err) {
                   console.log(
-                    `Failure to update ${
-                      arena.MarketId
-                    } with armors and weapons.`
+                    `Failure to update ${arena.MarketId} with armors and weapons.`
                   );
-                console.log(`Updated ${arena.name} with armor and weapons.`);
+                }
+
+                console.log(
+                  `Updated ${arena.name} with armor and weapons. Market._id = ${result._id}`
+                );
               }
             );
           }

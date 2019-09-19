@@ -1,4 +1,3 @@
-//const jasmine = require("jasmine");
 const d6 = require("../utilities/d6");
 require("./originTests/origin.tests");
 const createWarrior = require("../utilities/createWarrior");
@@ -8,9 +7,11 @@ const { pickImage } = require("../utilities/pickImage");
 
 describe("d6.js", () => {
   it("should return an integer equal to or greater than n but not greater than n * 6", () => {
-    const result = d6(3);
-    expect(result).toBeGreaterThanOrEqual(3);
-    expect(result).toBeLessThanOrEqual(18);
+    for (let i = 0; i < 10000; i++) {
+      const result = d6(3);
+      expect(result).toBeGreaterThanOrEqual(3);
+      expect(result).toBeLessThanOrEqual(18);
+    }
   });
 });
 

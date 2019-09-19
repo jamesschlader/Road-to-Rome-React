@@ -576,7 +576,7 @@ const Mutation = new GraphQLObjectType({
         MarketId: { type: GraphQLID }
       },
       resolve(parent, args) {
-        return Arena.update(
+        return Arena.findOneAndUpdate(
           { _id: args.id },
           {
             ...args

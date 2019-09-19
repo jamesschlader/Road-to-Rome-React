@@ -18,7 +18,7 @@ export default ({ arena, setActiveArena }) => {
         if (loading) {
           return null;
         }
-
+        console.log(`getting arena: `, data.arena);
         setActiveArena(data.arena);
 
         return <div />;

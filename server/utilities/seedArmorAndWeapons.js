@@ -1,22 +1,28 @@
+require("dotenv").config();
 const axios = require("axios");
 const { Armor } = require("../Models/Armor");
 const { Weapon } = require("../Models/Weapon");
 const dnd = "http://www.dnd5eapi.co/api/equipment/";
 const mongoose = require("mongoose");
 const db = mongoose.connection;
+const getDbUri = require("../getDbUri");
+
+console.log(`process.env.NODE_ENV = ${process.env.NODE_ENV}`);
 
 // Connect to the Mongo DB
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/road-to-rome-react";
+const MONGODB_URI = getDbUri(process.env.NODE_ENV || "development");
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", () => {
-  console.log(`Connected succesfully to local mongo db.`);
+  console.log(`Connected successfully to local mongo db.`);
 
   for (var i = 1; i < 51; i++) {
     axios.get(`${dnd}${i}`).then(body => {
-      const target = JSON.parse(body.data);
+      const target = body.data;
 
       if (target.equipment_category === "Weapon") {
         if (target.weapon_range === "Melee") {

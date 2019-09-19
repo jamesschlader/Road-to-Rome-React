@@ -7,18 +7,11 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const db = mongoose.connection;
-var Jasmine = require("jasmine");
-var jasmine = new Jasmine();
+const getDbUri = require("./getDbUri");
 
+console.log(`process.env.NODE_ENV = ${process.env.NODE_ENV}`);
 // Connect to the Mongo DB
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/road-to-rome-react";
-
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
-db.on("error", console.error.bind(console, "connection error"));
-db.once("open", () => {
-  console.log(`Connected successfully to local mongo db.`);
-});
+const MONGODB_URI = getDbUri(process.env.NODE_ENV || "development");
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -39,12 +32,14 @@ app.use(
   })
 );
 
-jasmine.loadConfigFile("spec/support/jasmine.json");
-jasmine.configureDefaultReporter({
-  showColors: true
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
-
-app.listen(PORT, () => {
-  //jasmine.execute();
-  console.log(`🌎 ==> A GraphQL Server is now running on port ${PORT}!`);
+db.on("error", console.error.bind(console, "connection error"));
+db.once("open", () => {
+  console.log(`Connected successfully to mongo db.`);
+  app.listen(PORT, () => {
+    console.log(`🌎 ==> A GraphQL Server now running on port ${PORT}!`);
+  });
 });
