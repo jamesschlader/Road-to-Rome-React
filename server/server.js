@@ -9,7 +9,6 @@ const cors = require("cors");
 const db = mongoose.connection;
 const getDbUri = require("./getDbUri");
 
-console.log(`process.env.NODE_ENV = ${process.env.NODE_ENV}`);
 // Connect to the Mongo DB
 const MONGODB_URI = getDbUri(process.env.NODE_ENV || "development");
 
