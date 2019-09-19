@@ -13,7 +13,7 @@ const getDbUri = env => {
       );
       return (
         process.env.DEVELOPMENT_DB_DSN ||
-        "mongodb+srv://admin:p9b2p7SzQ%23FgsAc@cluster0-ducdn.mongodb.net/ROAD_TO_ROME_DEVELOPMENT?retryWrites=true&w=majority"
+        "mongodb://localhost:27017/road-to-rome-react"
       );
     case "production":
       return (
