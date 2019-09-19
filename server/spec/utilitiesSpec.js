@@ -1,5 +1,8 @@
-const d6 = require("../utilities/d6");
+require("dotenv").config({ path: "../.env" });
 require("./originTests/origin.tests");
+require("./connectionTests/connection.tests");
+
+const d6 = require("../utilities/d6");
 const createWarrior = require("../utilities/createWarrior");
 const maleImages = require("../StaticData/maleImages");
 const femaleImages = require("../StaticData/femaleImages");

@@ -18,7 +18,7 @@ const getDbUri = env => {
         "mongodb://localhost:27017/road-to-rome-react"
       );
     default:
-      return "mongodb://localhost:27017/road-to-rome-react";
+      return "";
   }
 };
 
