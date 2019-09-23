@@ -13,6 +13,7 @@ axios({
                 armorIdList
                 weaponsIdList
                 Arena{
+                  id
                   Market{
                     weaponList{
                       id
@@ -39,7 +40,8 @@ axios({
       return (
         item.show &&
         item.weaponList.length === 1 &&
-        item.weaponList[0].name === "Fists"
+        item.weaponList[0].name === "Fists" &&
+        item.username === "CPU"
       );
     });
     theUnarmed.map(item => {

@@ -1,14 +1,30 @@
 const createWarrior = require("./createWarrior");
-let warriors = [];
 
-async function fillArenaWithWarriors(n) {
-  for (let i = 0; i < n; i++) {
-    const newWarrior = await createWarrior();
-    console.log(`getting a warrior...`);
-    warriors = [...warriors, newWarrior];
+async function getFiveMore(n, arenaId) {
+  let warriors = [];
+  if (n <= 5) {
+    for (let i = 0; i < n; i++) {
+      setTimeout(() => {
+        const warrior = createWarrior(arenaId);
+        warrior.then(content => {
+          warriors.push(content);
+        });
+      }, i * 250);
+    }
+    return warriors;
+  } else {
+    setTimeout(() => {
+      getFiveMore(5, arenaId);
+    }, 250);
+    setTimeout(() => {
+      getFiveMore(n - 5, arenaId);
+    }, 6 * 250);
   }
-  console.log(`about to return warriors...`);
-  return warriors;
 }
 
-module.exports = fillArenaWithWarriors;
+const arenas = [1];
+const warriorsToGet = 18;
+
+const result = getFiveMore(warriorsToGet, arenas[0]);
+
+// module.exports = fillArenaWithWarriors;
