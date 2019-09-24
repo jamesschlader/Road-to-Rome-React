@@ -5,7 +5,7 @@ import Layout from "./components/Base/Layout";
 import { Route, Redirect } from "react-router-dom";
 
 const client = new ApolloClient({
-  uri: "http://localhost:3001/graphql"
+  uri: "https://floating-reaches-70644.herokuapp.com"
 });
 
 const RoadAuth = {

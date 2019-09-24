@@ -16,7 +16,15 @@ function EventPicker({ arena, setEvent, week }) {
 
     const events = nextDates.map(date => {
       return timeSlots.map(slot => {
-        const event = new Date(2019, 6, date, slot.hour, slot.minutes);
+        const currentMonth = new Date().getMonth();
+
+        const event = new Date(
+          2019,
+          currentMonth,
+          date,
+          slot.hour,
+          slot.minutes
+        );
         return event;
       });
     });
