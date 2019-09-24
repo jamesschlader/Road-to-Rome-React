@@ -6,20 +6,9 @@ const loginMutation = gql`
       first
       last
       username
+      password
       motto
       stable {
-        id
-        name
-        image
-        male
-        alive
-        show
-        Arena {
-          id
-          name
-        }
-      }
-      activeStable {
         id
         name
         image
@@ -55,20 +44,9 @@ const registerMutation = gql`
       first
       last
       username
+      password
       motto
       stable {
-        id
-        name
-        image
-        male
-        alive
-        show
-        Arena {
-          id
-          name
-        }
-      }
-      activeStable {
         id
         name
         image

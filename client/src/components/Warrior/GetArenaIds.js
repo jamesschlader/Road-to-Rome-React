@@ -7,7 +7,7 @@ export default ({ handleArenas }) => {
     <Query query={getArenasIds}>
       {({ loading, error, data }) => {
         if (error) {
-          return <h3>Fucking error</h3>;
+          return <h3>Error retrieving Arenas</h3>;
         }
         if (loading) {
           return null;

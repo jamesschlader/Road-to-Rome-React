@@ -1,19 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RtoRBtn from "../Shared/RtoRBtn";
 import { Row, Col, Button } from "react-materialize";
 import CreateWarrior from "./CreateWarrior";
 import UserWarriors from "./UserWarriors";
 import WarriorDelete from "./WarriorDelete";
 import GetArenaIds from "./GetArenaIds";
+import GetUserWarriors from "./GetUserWarriors";
 
 export default ({ location, context }) => {
+  console.log(`context inside warrior = `, context);
   const [create, setCreate] = useState(false);
   const [show, setShow] = useState(false);
   const [card, setCard] = useState();
   const [alive, setAlive] = useState(true);
+  const [stable, setStable] = useState([]);
+
+  useEffect(() => {
+    setStable(context.User.stable);
+  }, []);
 
   const handleQuit = e => {
     e.preventDefault();
+
     setCreate(!create);
   };
 
@@ -34,11 +42,22 @@ export default ({ location, context }) => {
     }
   };
 
+  const activeWarriors =
+    stable &&
+    stable.filter(warrior => {
+      return warrior.show && warrior.alive;
+    });
+
   return (
     <div>
       <h1 className="landing-title center-align">Warriors</h1>
 
       <GetArenaIds handleArenas={handleArenas}></GetArenaIds>
+
+      <GetUserWarriors
+        setStable={setStable}
+        username={context.User.username}
+      ></GetUserWarriors>
 
       <Row>
         <Col s={8} offset="s2">
@@ -86,21 +105,20 @@ export default ({ location, context }) => {
                 Show only living warriors
               </Button>
             )}
-            {alive ? (
-              <ul>
-                <UserWarriors
-                  showDetails={showDetails}
-                  stable={context.User.activeStable}
-                />
-              </ul>
-            ) : (
-              <ul>
-                <UserWarriors
-                  showDetails={showDetails}
-                  stable={context.User.stable}
-                />
-              </ul>
-            )}
+            {alive
+              ? stable && (
+                  <ul>
+                    <UserWarriors
+                      showDetails={showDetails}
+                      stable={activeWarriors}
+                    ></UserWarriors>
+                  </ul>
+                )
+              : stable && (
+                  <ul>
+                    <UserWarriors showDetails={showDetails} stable={stable} />
+                  </ul>
+                )}
           </Row>
         ))
       )}
