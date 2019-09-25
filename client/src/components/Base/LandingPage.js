@@ -32,7 +32,7 @@ export default ({ location }) => {
           <LandingCard
             src="/img/game-character-images/Alexander.svg"
             text="Advance your warrior"
-            details="Upgrade your skills with as you win to improve your chances for glory."
+            details="Upgrade your skills as you win to improve your chances for glory."
           />
         </div>
       )}

@@ -1,7 +1,16 @@
-FROM node:8.16.1-alpine as builder
+# base image
+FROM node:12.2.0-alpine
+
+# set working directory
 WORKDIR /app
 COPY . .
-RUN npm run build
+
+# install and cache app dependencies
+COPY package.json /app/package.json
 EXPOSE 3000
-COPY --from=builder /app/build .
-CMD ["node", "start"]
+RUN npm install 
+RUN npm audit fix
+RUN ls
+
+# start app
+CMD ["npm", "start"]
