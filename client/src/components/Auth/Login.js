@@ -52,17 +52,19 @@ export default class Login extends Component {
         mutation={login ? loginMutation : registerMutation}
         variables={login ? { ...loginVariables } : { ...registration }}
         onError={error => {
-          console.log(`oh snap, an error!`, error.graphQLErrors);
-          const errors = error.graphQLErrors[0].message
-            .split(",")
-            .map(message => {
-              const firstRun = message.slice(message.indexOf(":") + 1);
+          if (error.graphQLErrors) {
+            console.log(`oh snap, an error!`, error.graphQLErrors);
+            // const errors = error.graphQLErrors[0].message
+            //   .split(",")
+            //   .map(message => {
+            //     const firstRun = message.slice(message.indexOf(":") + 1);
 
-              return firstRun.includes(":")
-                ? firstRun.slice(firstRun.indexOf(":") + 1)
-                : firstRun;
-            });
-          this.setState({ loading: false, errors });
+            //     return firstRun.includes(":")
+            //       ? firstRun.slice(firstRun.indexOf(":") + 1)
+            //       : firstRun;
+            //   });
+            this.setState({ loading: false, error });
+          }
         }}
         onCompleted={async data => {
           this.setState({ loading: false });

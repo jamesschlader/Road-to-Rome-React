@@ -8,7 +8,6 @@ import GetArenaIds from "./GetArenaIds";
 import GetUserWarriors from "./GetUserWarriors";
 
 export default ({ location, context }) => {
-  console.log(`context inside warrior = `, context);
   const [create, setCreate] = useState(false);
   const [show, setShow] = useState(false);
   const [card, setCard] = useState();
@@ -93,7 +92,7 @@ export default ({ location, context }) => {
         </React.Fragment>
       ) : (
         !show &&
-        (!create && (
+        !create && (
           <Row className="center-align">
             {alive && (
               <Button className="btn" onClick={e => setAlive(!alive)}>
@@ -120,7 +119,7 @@ export default ({ location, context }) => {
                   </ul>
                 )}
           </Row>
-        ))
+        )
       )}
     </div>
   );

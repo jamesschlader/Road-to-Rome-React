@@ -54,8 +54,6 @@ export default ({ actions, setMatchedActions, setPhase }) => {
       cancelActions.map(action => player.removeAction(action));
       removeAction(index);
       // setWorkingActions(doctoredActions);
-
-      console.log(`doctoredActions: `, doctoredActions);
     }
   }, [woundedPlayer]);
 

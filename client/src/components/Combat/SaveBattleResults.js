@@ -13,13 +13,11 @@ export default ({ setStep, setLocation, Battle, winner, Warrior }) => {
   };
 
   const updateBattle = () => {
-    console.log(`winner is `, winner);
     const obj = {
       id: Battle.id,
       scheduled: false,
       winnerId: winner.id
     };
-    console.log(`obj going to db is `, obj);
     return (
       <Mutation mutation={updateBattleMutation} variables={{ ...obj }}>
         {postMutation => (

@@ -3,7 +3,7 @@ import { ApolloProvider } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import Layout from "./components/Base/Layout";
 import { Route, Redirect } from "react-router-dom";
-require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 
 const appURI = process.env.APP_URI || "http://localhost:3001/graphql";
 

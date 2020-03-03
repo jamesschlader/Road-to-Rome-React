@@ -52,7 +52,6 @@ export default ({
   };
 
   const manageExit = () => {
-    console.log(player);
     setDone(!done);
     decideReady(7);
   };

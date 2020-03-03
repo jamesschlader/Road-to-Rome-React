@@ -8,7 +8,6 @@ export default ({ player, allDone, matchedActions, handlePositions }) => {
   const unfinishedBusiness = () => {
     const placedIds = placed.map(item => item.id);
     return player.actions.filter(action => {
-      console.log(action);
       return !placedIds.includes(action.id) && action;
     });
   };
@@ -33,7 +32,6 @@ export default ({ player, allDone, matchedActions, handlePositions }) => {
       setDone(!done);
     }
   }, [player]);
-  console.log(unfinishedBusiness().map(item => console.log(item)));
   return (
     <div>
       <h5>Place actions for {player.name}</h5>

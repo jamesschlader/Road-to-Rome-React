@@ -28,7 +28,6 @@ class CreateWarrior extends Component {
   handleChange = async e => {
     e.preventDefault();
     let { name, value, alt } = e.target;
-    console.log(`name = ${name}, value = ${value}`);
     if (alt) {
       await this.setState({
         image: alt
@@ -174,7 +173,6 @@ class CreateWarrior extends Component {
       username: this.props.context.User.username,
       living: true
     };
-    console.log(obj);
     return (
       <Mutation
         mutation={addWarriorMutation}

@@ -8,7 +8,6 @@ export default ({ ids, removeSelectedToDelete, children }) => {
       {postMutation => (
         <th
           onClick={e => {
-            console.log(`inside delete battles, here's the ids: `, ids);
             ids.map(id => removeSelectedToDelete(id));
             postMutation();
           }}

@@ -77,7 +77,6 @@ export default class Layout extends Component {
   }
 
   componentDidMount() {
-    console.log(`Layout just mounted!`);
     localStorage.setItem("whereWasI", "/arena");
   }
 

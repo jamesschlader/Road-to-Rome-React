@@ -12,7 +12,6 @@ export default ({ setStable, username }) => {
         if (loading) {
           return null;
         }
-        console.log(`getting warriors: `, data);
         setStable(data.getUserWarriors.stable);
         return <div></div>;
       }}

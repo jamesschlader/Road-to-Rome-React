@@ -24,7 +24,6 @@ export default ({ player, decideReady }) => {
 
   const addSelected = value => {
     const newSelections = [...selected, value];
-    console.log(newSelections);
     if (newSelections.length > 1) {
       const checkShield = newSelections.filter(armor => {
         return armor.shield;
